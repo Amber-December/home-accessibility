@@ -110,7 +110,7 @@
 3. **户型补全**（P1）：户型里缺的家具（比如没有冰箱的厨房）由 Lux3D 补上。
 4. **自己的家**（P2，待定）：用 Aholo Reality 把实拍的房间重建成 3D，作为"体检我自己家"的入口。
 
-候选商品、尺寸来源和生成参数在 `src/ha/assets/catalog.yaml`，接口和资产工厂见 [aholo-lux3d.md](../docs/tech/aholo-lux3d.md)。按询价，10 件候选合计约 270 积分，在团队 3000 积分以内。每次付费 create 前由 A 在群里确认。
+候选商品、尺寸来源和生成参数在 `src/ha/assets/catalog.yaml`，接口和资产工厂见 [aholo-lux3d.md](../docs/tech/aholo-lux3d.md)。按询价，10 件候选合计 268 积分（明细见 aholo-lux3d §3.1），在团队 3000 积分以内。每次付费 create 前由 A 在群里确认。
 
 ## 5. 奖项与目标
 
