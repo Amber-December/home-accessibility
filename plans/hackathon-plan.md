@@ -286,15 +286,24 @@ P0 是现场段必须跑通的主线，P1 现场段有余力就做、线上段�
 - 共享契约先冻结再分头开发：Scene IR（`src/ha/ir/schema.py`，B）；仿真结果结构（`src/ha/evaluator/result_schema.py` 和示例 `tests/fixtures/H1/sim_result.json`，B）；SSE 和 REST（[agent-backend](../docs/tech/agent-backend.md) §10.1、§11，A）；运行目录和 manifest（`src/ha/runlog.py`，A）。改契约先在群里说，另外至少一人看过再合并。
 - 每次运行的 `manifest.json` 记录 Git commit。检查点打 tag，视频和报告书里的数字以对应 tag 下的运行为准。
 - 冻结（`onsite-freeze`、`online-freeze`）之后，`src/ha/{evaluator,resident,enrich}` 和阈值只接受修 bug 的 PR，修完重跑受影响的运行。
-- 分支、PR、CI、大文件的规则见 [CONTRIBUTING.md](../CONTRIBUTING.md)。
+- 分支、PR、CI、大文件和共享文件的规则见 [CONTRIBUTING.md](../CONTRIBUTING.md)；用 Agent 时让它先读 [AGENTS.md](../AGENTS.md)。
 
 ### 11.1 进度
 
-每人只追加自己的条目，写做完了什么、结果在哪个 run。
+每人只在自己角色的小节末尾追加，写做完了什么、结果在哪个 run。不改别人的条目。
+
+#### A 后端与 Agent
+
+- Lux3D 资产工厂和尺寸规范化：默认 dry run，还没有调用付费 create。
+- 浏览器截图（playwright）冒烟通过。
+- CI：PR 和 `main` 上自动跑 `pytest`。
+
+#### B 仿真与评估
 
 - 户型导入：WSR 500 套全部导入成功（E1）；门 3687 扇，其中净宽 < 0.80 m 的 3168 扇。
 - USDZ 转 GLB：按 IR 物体 id 分节点、减面。
 - 住户画像卡和物体属性模板：数值带规范出处，一致性测试 `tests/test_cards.py` 通过。
-- Lux3D 资产工厂和尺寸规范化：默认 dry run，还没有调用付费 create。
-- 浏览器截图（playwright）冒烟通过。
-- CI：PR 和 `main` 上自动跑 `pytest`。
+
+#### C 前端与产品
+
+- （暂无）

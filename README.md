@@ -14,7 +14,8 @@
 | 竞品调研 | [docs/research/competitive-research.md](docs/research/competitive-research.md) | — | 8 个方向、73 条调研，空白点和可借用做法 |
 | 标准 | [docs/standards/standards-check.md](docs/standards/standards-check.md) | B | GB 55019 / GB 50763 / ADA 2010 阈值逐条核对 |
 | 比赛计划 | [plans/hackathon-plan.md](plans/hackathon-plan.md) | 共享 | 赛事规则和评分拆解、提交物、按赛程排的三人分工、待团队决定的事项 |
-| 协作 | [CONTRIBUTING.md](CONTRIBUTING.md) | 共享 | 代码目录和归属、分支和 PR、CI、大文件和凭证 |
+| 协作 | [CONTRIBUTING.md](CONTRIBUTING.md) | 共享 | 代码目录和归属、共享文件规则、fork 和 PR、CI、大文件和凭证 |
+| Agent 协作协议 | [AGENTS.md](AGENTS.md) | 共享 | 给编码 Agent 读：先确认角色，只改本角色文件，共享契约和进度怎么改，禁止事项 |
 
 `docs/papers/`（论文、学员手册 PDF）只在本地，不进 Git。
 
@@ -85,7 +86,8 @@
 需要 Python 3.12 和 Git。不需要 GPU。
 
 ```bash
-git clone https://github.com/Amber-December/home-accessibility.git && cd home-accessibility
+git clone https://github.com/<你的账号>/home-accessibility.git && cd home-accessibility   # 先 fork
+git remote add upstream https://github.com/Amber-December/home-accessibility.git
 python3.12 -m venv .venv && . .venv/bin/activate
 pip install -r env/requirements-lock-20261030.txt pytest==9.2.0 playwright==1.55.0
 cp .env.example .env        # 填 HA_DATA、HA_REPO、HF_TOKEN 等
@@ -97,6 +99,13 @@ pytest -q tests/
 - 不下数据也能开发前端和评估器：用 `tests/fixtures/H1/`。
 - 导入户型：`python scripts/run_import.py <scene_id>`，结果写到 `$HA_OUTPUTS/runs/E1/<run_id>/`。导出 GLB：`python -m ha.ir.export_glb <scene_id> --ir-run <run_id>`。
 - 浏览器录屏和截图要另装 Chromium：`playwright install chromium`。
+
+## 参与开发
+
+1. fork 本仓库，按[本地环境](#本地环境)装好依赖，`pytest` 通过。
+2. 在团队里认领角色 A、B、C（[比赛计划 §8.1](plans/hackathon-plan.md)），只改本角色负责的文件。
+3. 每个任务开短分支，向本仓库 `main` 发 PR；改共享契约和共享文档前先在群里说。规则见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+4. 用 Codex、Claude Code 等 Agent 写代码时，它会读仓库根目录的 [AGENTS.md](AGENTS.md)（Claude Code 经 `CLAUDE.md` 引入）。开始前告诉它你的角色。
 
 ## 交互原型
 

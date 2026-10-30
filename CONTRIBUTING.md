@@ -1,6 +1,6 @@
 # 协作规则
 
-三人只通过 GitHub 协作（私有仓库 `Amber-December/home-accessibility`，分支 `main`）。每个人在自己电脑上下载数据、跑代码，彼此看不到对方的机器。角色分工和检查点见 [plans/hackathon-plan.md §8](plans/hackathon-plan.md)，本文只写日常操作。
+三人只通过 GitHub 协作（公开仓库 `Amber-December/home-accessibility`，分支 `main`）。每个人在自己电脑上下载数据、跑代码，彼此看不到对方的机器。角色分工和检查点见 [plans/hackathon-plan.md §8](plans/hackathon-plan.md)，本文只写日常操作。用 Agent 写代码时，Agent 读 [AGENTS.md](AGENTS.md)（Claude Code 通过 `CLAUDE.md` 引入同一份）。
 
 ## 代码目录
 
@@ -38,28 +38,50 @@ plans/        比赛计划（冻结后只追加进度）                        
 env/          Python 依赖锁定文件                                                          B
 prototypes/   浏览器端交互原型（Three.js r128，无构建），只做演示参考                       C
 media/        视频素材清单（原件不进 Git）                                                 C
-.github/      CI：每个 PR 和 main 上跑 pytest                                              共享
+.github/      CI：每个 PR 和 main 上跑 pytest；PR 模板                                    共享
+AGENTS.md     给编码 Agent 的协作协议（CLAUDE.md 引入同一份）                              共享
 ```
 
 - 每个人（和自己的 Agent）只改自己负责的目录和文档。要改别人的，提 issue 或在 PR 里请负责人改。
 - 接口由产出方维护定义：Scene IR 和评估结果结构在 [simulation](docs/tech/simulation.md) §3.1、§8.2（代码 `src/ha/ir/schema.py`、`src/ha/evaluator/result_schema.py`），REST 和 SSE 事件协议在 [agent-backend](docs/tech/agent-backend.md) §10.1、§11。
-- 共享契约改动前在群里说一声，PR 要另一人 Approve：上面两类接口、`plans/`、`personas.yaml` 和 `templates.yaml` 里的阈值。
 - 文档按主题放：产品 `docs/product/`，技术 `docs/tech/`，调研 `docs/research/`，规范 `docs/standards/`，比赛计划 `plans/`。不新建带日期后缀的同主题文档，直接改原文件。
+
+### 共享文件
+
+下面这些文件不止一人会改，按各自的规则改，合并时才不冲突：
+
+| 文件 | 规则 |
+|---|---|
+| 共享契约：`src/ha/ir/schema.py`、`src/ha/evaluator/result_schema.py`、`tests/fixtures/H1/`、agent-backend §10.1 和 §11、`personas.yaml` 和 `templates.yaml` 里的阈值 | 改之前在群里说一声；单独开 PR，标题以 `[契约]` 开头，另一人 Approve 后才合并 |
+| `plans/hackathon-plan.md` | §11.1 进度分 A、B、C 三个小节，每人只在自己小节末尾追加。其他章节的改动和契约一样，先在群里说 |
+| `README.md`、`CONTRIBUTING.md`、`AGENTS.md` | 只改和本次任务直接相关的段落；改协作规则先在群里说 |
+| `env/requirements-lock-*.txt` | 加依赖时单独一行，按字母顺序插入，PR 描述写明为什么要加 |
+
+## Fork 和同步
+
+队友 fork 本仓库后，在自己的 fork 上开分支，向本仓库的 `main` 发 PR。
+
+```bash
+git clone https://github.com/<你的账号>/home-accessibility.git && cd home-accessibility
+git remote add upstream https://github.com/Amber-December/home-accessibility.git
+```
 
 ## 分支和 PR
 
 ```bash
-git fetch origin && git rebase origin/main      # 开始工作前、发 PR 前各一次
+git fetch upstream && git rebase upstream/main   # 开始工作前、发 PR 前各一次
 git switch -c sim/evaluator-l0                   # be/* sim/* fe/*，一个分支一般不超过半天
 pytest -q tests/                                 # 发 PR 前
+git push origin sim/evaluator-l0                 # 推到自己的 fork，再在网页上发 PR
 ```
 
 - `main` 随时可运行，不直接提交。
 - CI（`.github/workflows/test.yml`）在每个 PR 和 `main` 上跑 `pytest -q tests/`，没过不合。
-- 用 squash merge。只动自己目录且自测通过的 PR 可以自己合。
+- 一个 PR 只做一件事，按 PR 模板填写。冲突在发 PR 的人本地 rebase 解决，不留给合并的人。
+- 仓库所有者用 squash merge 合并。只动自己目录、CI 通过的 PR 直接合；动了共享文件的按上表的规则。
 - 已推送且别人在用的分支不 rebase，改用 merge。
 - C 的网页改动在 PR 里附截图。
-- 检查点打 tag：`cp2`、`offline-freeze`、`offline-submit-20261101`、`online-submit-20261118`。视频和报告书里的数字以对应 tag 下的运行为准。
+- 检查点打 tag，名字见[比赛计划 §8](plans/hackathon-plan.md)（`cp2`、`onsite-freeze`、`onsite-submit`、`online-w1`、`online-w2`、`online-freeze`、`online-submit`）。视频和报告书里的数字以对应 tag 下的运行为准。
 
 ## 不进 Git 的东西
 
@@ -73,4 +95,4 @@ pytest -q tests/                                 # 发 PR 前
 - 分数只来自 `src/ha/evaluator`。原型 `prototypes/` 里的判定只做演示参考。
 - 每次运行写 `$HA_OUTPUTS/runs/<实验>/<run_id>/manifest.json`（`src/ha/runlog.py`），记录 Git commit。
 - 门没过就记 REJECTED 或降级，不改阈值、不换种子、不删失败的 run。
-- 进度记在 [plans/hackathon-plan.md §11.1](plans/hackathon-plan.md)，每人只追加自己的条目。
+- 进度记在 [plans/hackathon-plan.md §11.1](plans/hackathon-plan.md) 自己角色的小节，只追加。
