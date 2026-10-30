@@ -1,0 +1,190 @@
+# M3 Lux3D asset catalog (simulation §5). Reference products checked 2026-10-30.
+# nominal_m = W x D x H used by the evaluator (accessibility checks use these, never the generated mesh).
+# published = dimension text as read on the source page; source_quality: page | pdf | search_snippet.
+# route: multiview_g1turbo = 1 image -> 4-view (24 cr) -> G1-Turbo PBR 20k faces, aiPredictSize=false
+#        text_to_3d        = no usable image URL (13 cr)
+# articulate: run Lux3D articulation (28 cr) to get door sweep.
+# NO create calls have been made for any entry. S1 is the planned E7 smoke.
+version: 1
+checked: 2026-10-30
+skus:
+  - id: S1
+    name: 双门冰箱（补缺 H1 无冰箱户型）
+    category: refrigerator
+    use: fill_missing
+    nominal_m: [0.83, 0.70, 1.80]
+    reference:
+      product: Haier CUBE 83 Series 3 HCR3818DWMM
+      url: https://www.haier-europe.com/de_DE/mehrturer/34006058/hcr3818dwmm/
+      published: "B x T x H (mm) 833x650x1815"
+      source_quality: page
+      image: https://www.haier-europe.com/h-image/haier-product/2025/6/17495657/640-28_34006058_15_01_f_hcr3818dwmm-M.jpg?w=1200&h=1200&q=60&s=bXtg1RpwdsZrW-6j
+      caveat: 4 doors (French doors + 2 freezer drawers), not strictly two-door
+    alternatives:
+      - product: Haier HRS-682KS side-by-side
+        url: https://www.haier.com/in/refrigerators/side-by-side-refrigerator-602-litres-hrs-682ks.shtml
+        published: "905*697*1775 (W*D*H mm)"
+        image: https://image.haier.com/in/refrigerators/W020250508537882496984_480.jpg
+    route: multiview_g1turbo
+    articulate: true
+    prompt: modern stainless steel French-door refrigerator, two upper doors, two lower freezer drawers, vertical bar handles
+
+  - id: S2
+    name: 窄单门冰箱（S2 替换）
+    category: refrigerator
+    use: replace
+    nominal_m: [0.55, 0.60, 1.60]
+    reference:
+      product: Siemens iQ300 KD25NVL3AK
+      url: https://media3.bsh-group.com/Documents/specsheet/en-HK/KD25NVL3AK.pdf
+      published: "155.6 x 55 cm; Width 550 mm; Depth 605 mm; Reversible Door Hinge: Yes"
+      source_quality: pdf
+      image: none
+      caveat: top-freezer two-door; no official 55 cm single-door model found
+    alternatives:
+      - product: Siemens iQ300 KS29VVW3P (single door)
+        url: https://www.ruislipappliances.com/images/PDF/KS29VVW3P.pdf
+        published: "Height 1610 / Width 600 / Depth 650 mm; left hinged, door reversible"
+        source_quality: pdf (dealer copy of BSH sheet)
+    route: text_to_3d
+    articulate: true
+    prompt: narrow white single-door refrigerator 55 cm wide, flat front, vertical handle on the right edge, reversible hinge
+
+  - id: S3
+    name: 壁挂无障碍洗手盆
+    category: washbasin
+    use: replace
+    nominal_m: [0.60, 0.48, 0.85]   # H = rim height; knee clearance below ~0.68
+    reference:
+      product: HEWI Washbasin 950.11.300
+      url: https://catalog.hewi.com/en-DE/media/287175/original/HEWI_950_11_300_en.pdf?v=1772995683
+      published: "600 mm wide, 100 mm high and 450 mm deep; wheelchair accessible"
+      source_quality: pdf
+      image: none
+      caveat: mounting height not in datasheet; 0.85 rim -> ~0.75 underside is our assumption
+    alternatives:
+      - product: HEWI 950.11.301
+        published: "600 mm wide, 100 mm high and 500 mm deep"
+        source_quality: search_snippet
+    route: text_to_3d
+    articulate: false
+    prompt: shallow white wall-hung accessible washbasin, 60 cm wide, thin 10 cm body, open space underneath, wall-mounted faucet
+
+  - id: S4
+    name: 窄床头柜
+    category: nightstand
+    use: replace
+    nominal_m: [0.42, 0.335, 0.52]   # adopted from the reference (target was 0.35 x 0.40 x 0.55)
+    reference:
+      product: IKEA KNARREVIK bedside table, black, 20569977
+      url: https://www.ikea.com/no/en/p/knarrevik-bedside-table-black-20569977/
+      published: "Width 42 cm, Depth 33.5 cm, Height 52 cm"
+      source_quality: page
+      image: https://www.ikea.com/no/en/images/products/knarrevik-bedside-table-black__1255278_pe924478_s5.jpg
+    route: multiview_g1turbo
+    articulate: false
+
+  - id: S5
+    name: 小圆餐桌
+    category: diningtable
+    use: replace
+    nominal_m: [0.85, 0.85, 0.75]
+    reference:
+      product: IKEA PINNTORP table 30637834
+      url: https://www.ikea.com/gb/en/p/pinntorp-table-light-brown-stained-white-stained-pine-30637834/
+      published: "Diameter 85 cm, Height 75 cm, Seats 2-4"
+      source_quality: page
+      image: https://www.ikea.com/gb/en/images/products/pinntorp-table-light-brown-stained-white-stained-pine__1508778_pe1009579_s5.jpg
+      caveat: leg layout not checked (matters for wheelchair knee clearance)
+    alternatives:
+      - product: IKEA STENSELE bistro table
+        url: https://www.ikea.com/gb/en/p/stensele-table-anthracite-anthracite-s79288230/
+        published: "Diameter 70 cm / Height 75 cm"
+    route: multiview_g1turbo
+    articulate: false
+
+  - id: S6
+    name: 推拉门扇（替换平开门）
+    category: door_leaf
+    use: replace
+    nominal_m: [0.914, 0.035, 2.134]
+    reference:
+      product: eightdoors 36x84x1-3/8 in Frosted Glass 4-Lite Shaker Barn Door Slab 52088014843635FRSH
+      url: https://www.homedepot.com/p/eightdoors-36-in-x-84-in-x-1-3-8-in-Frosted-Glass-4-Lite-Shaker-Primed-Solid-Wood-Core-Interior-Barn-Door-Slab-52088014843635FRSH/314952883
+      published: "36 in. x 84 in. x 1-3/8 in."
+      source_quality: search_snippet   # page returns 403 to fetchers
+      image: none
+    alternatives:
+      - product: Sartodoors PLANUM0888S-BEM-3684
+        published: "36 x 84 in; thickness of the door slab is 40 mm"
+        source_quality: search_snippet
+    route: text_to_3d
+    articulate: false   # slide kinematics come from the IR door model, not Lux3D
+    prompt: white shaker interior barn door slab with four frosted glass panes, 36 x 84 inch, top rail hardware
+
+  - id: S7
+    name: 床边扶手
+    category: bed_rail
+    use: add_aid
+    nominal_m: [0.43, 0.53, 0.56]   # 17 x 21 x 22 in; target was 0.50 x 0.10 x 0.80 (0.80 too tall for a bed rail)
+    reference:
+      product: Stander Bed Rail Advantage Traveler (5000)
+      url: https://stander.com/products/advantage-traveler
+      published: "Height 22 in, Width 17 in, Depth 21 in; Rail Height 22 in from base of mattress; mattress 6-16 in; 400 lbs"
+      source_quality: page
+      image: http://cdn.shopify.com/s/files/1/0697/1729/5354/files/5000_mainABTest.jpg?v=1737672773
+    alternatives:
+      - product: Drive M-Rail 1222P
+        published: "17.75 in W x (15.25 or 20.5 in) H x 31.5 in L"
+        source_quality: dealer page
+    do_not_use: Drive RTL15063-ADJ / 15064 / 15062 / RTL15073 (CPSC recall 2022, entrapment deaths)
+    route: multiview_g1turbo
+    articulate: false
+
+  - id: S8
+    name: L 形马桶扶手
+    category: grab_bar
+    use: add_aid
+    nominal_m: [0.50, 0.091, 0.75]
+    reference:
+      product: HEWI L-shaped support rail 801.22B136
+      url: https://catalog.hewi.com/en-DE/media/328549/original/HEWI_801_22B136_en.pdf?v=1778784051
+      published: "horizontal length 500 mm, vertical length 750 mm, 91 mm deep; bar 33 mm; left or right mounting"
+      source_quality: pdf
+      image: none
+      caveat: target 0.70 x 0.60 x 0.75; made-to-measure 801.22D1S (300-850 x 600-1100 mm, snippet only) can match
+    route: text_to_3d
+    articulate: false
+    prompt: white L-shaped toilet grab bar, 33 mm round tube, 50 cm horizontal and 75 cm vertical arm, round wall roses
+
+  - id: S9
+    name: 折叠手动轮椅（住户可视化道具）
+    category: wheelchair
+    use: resident_prop
+    nominal_m: [0.66, 1.07, 0.91]
+    reference:
+      product: Drive Medical Silver Sport 2, 18 in seat, SSP218DFA-SF
+      url: https://shop.drivemedical.com/us/en/Products/Mobility/Wheelchairs/Standard-Wheelcharis/c/p/SSP218DFA-SF
+      published: "42 in (L) w/ riggings x 26 in (W) x 36 in (H); seat 18 x 16 in; folded 12.5 in; 300 lb"
+      source_quality: page
+      image: https://shop.drivemedical.com/medias/SSP218DFA-SF?context=bWFzdGVyfGltYWdlc3wyMDMwMTB8aW1hZ2UvanBlZ3xhRFE0TDJoaFppOHhNalE0T1RVeU5UYzRPRGN3TWk5VFUxQXlNVGhFUmtFdFUwWXxmMTYwOWViYWUzZGI4Yjc2MTlkMjliNmUzYmE0ZDQwYjQ5OWY4N2I2ODQ2MWEzYWZlY2Q5NjNjNjNlYzc1M2Zm
+      image_note: product moved to shop.drivemedical.com; media context token copied from the live page 2026-10-30 (1200x1200 jpeg), may change
+    note: collision footprint stays the persona rectangle 0.70 x 1.20 m; this mesh is visual only
+    route: multiview_g1turbo
+    articulate: false
+
+  - id: S10
+    name: 助行器（住户可视化道具）
+    category: walker
+    use: resident_prop
+    nominal_m: [0.61, 0.44, 0.85]   # handle 0.81-0.99 adjustable; depth from dealer snippet
+    reference:
+      product: Drive Medical Deluxe Folding Walker, Two Button, 5 in wheels, 10210-1
+      url: https://shop.drivemedical.com/us/en/p/10210-1
+      published: "width 24 in; handle height 32-39 in; 350 lb (depth 17-1/2 in from Global Industrial snippet)"
+      source_quality: page
+      image: https://shop.drivemedical.com/medias/10210-1?context=bWFzdGVyfGltYWdlc3w2ODc4N3xpbWFnZS9qcGVnfGFHTmhMMmczTlM4eE1qUTVNREF3T1RjM01qQTJNaTh4TURJeE1DMHh8MmMxYWQ1MjFjZTljNTBlNjI0YjBhOTI2YTBjOGM2ODVmYmNlY2Y0MmJlNGJjMTU1YmVjYzkzNWZhZmJkMDJkOA
+      image_note: product moved to shop.drivemedical.com; media context token copied from the live page 2026-10-30 (1200x1200 jpeg), may change
+    note: collision footprint stays the persona rectangle 0.65 x 0.80 m (walker + person)
+    route: multiview_g1turbo
+    articulate: false

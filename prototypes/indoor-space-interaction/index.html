@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ACCESS · 室内无障碍通行实验室</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23258e82'/%3E%3Ctext x='8' y='25' font-family='sans-serif' font-size='28' fill='white'%3Ea%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="digital-twin.css">
+</head>
+<body>
+  <header class="app-header">
+    <a class="brand" href="./index.html" aria-label="ACCESS 首页"><span class="brand-mark">◈</span><div><b>ACCESS<span class="brand-cn"> / Spatial Twin</span></b><small>室内空间 · 无障碍通行仿真</small></div></a>
+    <nav class="main-nav" aria-label="工作模式"><button data-mode="overview" class="active">空间总览<small>SPACE OVERVIEW</small></button><button data-mode="agents">行为模拟<small>AGENT SIMULATION</small></button><button data-mode="analysis">通行热力<small>ACCESS ANALYSIS</small></button><button data-mode="events">事件回溯<small>EVENT INSIGHTS</small></button></nav>
+    <div class="header-project"><span class="live-dot"></span><span id="project-name">Digital Workplace</span><span class="tag">本地运行</span></div>
+    <div class="header-clock"><b id="wall-clock">00:00:00</b><small id="wall-date"></small></div>
+    <button id="help-button" class="quiet-button" title="使用说明">?</button>
+  </header>
+  <main class="workspace">
+    <aside class="control-panel">
+      <div class="panel-intro"><span class="eyebrow">SCENE CONTROL</span><h1>场景与人群</h1><button class="panel-collapse" id="hide-controls" aria-label="收起设置面板">−</button><p>模型、身体尺度与行为参数</p></div>
+      <section class="control-section">
+        <div class="section-heading"><h2>空间模型</h2><span class="step">01</span></div>
+        <select id="operation-mode" aria-label="仿真工作方式"><option value="resident">任务驱动数字住户 · 内置可编辑住宅</option><option value="crowd">自由探索 · 模型通行与人流</option></select>
+        <select id="demo-preset" aria-label="示例空间"><option value="home">Resident Home · 可编辑住宅</option><option value="office">Digital Workplace · 办公空间</option><option value="gallery">Media Lab · 九展台展馆</option></select>
+        <label class="upload-zone" id="drop-zone" tabindex="0" role="button" aria-label="上传室内模型"><input id="model-files" type="file" multiple hidden accept=".obj,.mtl,.stl,.3dm,.3ds,.gltf,.glb,.fbx,.dae,.bin,.png,.jpg,.jpeg,.webp,.bmp,.tga"><span class="upload-icon">↥</span><strong>导入室内模型</strong><span>拖入文件或点击选择</span><small>OBJ · STL · 3DM · 3DS · GLB · FBX</small></label>
+        <div class="model-info"><span class="file-symbol">▧</span><div><b id="model-name">Media Lab / 示例展馆</b><small id="model-meta">28 × 30 m · 九个展台</small></div><button id="demo-button" class="icon-button" title="重新加载示例展馆" aria-label="重新加载示例展馆">↺</button></div>
+        <details class="import-options"><summary>导入设置 <span>单位 / 轴向 / 地面</span></summary><div class="form-grid"><label>模型单位<select id="model-unit"><option value="1">米 m</option><option value="0.001">毫米 mm</option><option value="0.01">厘米 cm</option><option value="0.3048">英尺 ft</option></select></label><label>向上轴<select id="model-up"><option value="auto">按格式自动</option><option value="y">Y 向上</option><option value="z">Z 向上</option></select></label></div><label class="stack-label">地面距模型最低点（m）<input id="floor-level" type="number" min="0" step="0.01" placeholder="自动识别地板顶面"></label><button id="reimport-button" class="small-button" disabled>应用设置并重新导入</button><p class="hint">多选模型和配套 MTL、BIN、贴图。每次导入替换当前场景，自动居中；保留真实米制尺度。3DM 需通过本地服务打开。</p></details>
+      </section>
+      <section class="control-section" id="resident-controls">
+        <div class="section-heading"><h2>任务驱动数字住户</h2><span class="step">02</span></div>
+        <label class="stack-label">住户画像<select id="resident-profile"><option value="wheelchair">轮椅住户</option><option value="assisted">助行器老人</option><option value="blind">视障 / 白杖住户</option><option value="upper">上肢活动受限住户</option></select></label>
+        <p class="hint" id="resident-profile-note"></p>
+        <details class="resident-parameters"><summary>查看 / 调整画像参数</summary><div class="form-grid"><label>身体宽度 m<input id="resident-width" type="number" min="0.3" max="1.2" step="0.01"></label><label>包络长度 m<input id="resident-length" type="number" min="0.3" max="1.8" step="0.01"></label><label>速度 m/s<input id="resident-speed" type="number" min="0.2" max="1.8" step="0.05"></label><label>水平触达 m<input id="resident-reach" type="number" min="0.2" max="1.2" step="0.01"></label><label>最高触达 m<input id="resident-maxHeight" type="number" min="0.5" max="2" step="0.05"></label><label>操作阻力阈值<input id="resident-doorEffort" type="number" min="0.1" max="1" step="0.05"></label></div><p class="hint">这些是可调整的行为假设，不能代表所有同类住户。转向按身体长宽扫掠；操作阻力使用归一化参数。</p></details>
+        <div class="resident-task-list" id="resident-task-list"><label><input type="checkbox" value="sofa" checked>入户到沙发</label><label><input type="checkbox" value="bathroom" checked>卧室到卫生间</label><label><input type="checkbox" value="fridge" checked>取用冰箱</label><label><input type="checkbox" value="transfer" checked>床椅转移</label><label><input type="checkbox" value="evacuate" checked>紧急疏散</label></div>
+        <button id="resident-run" class="play-button">执行所选任务</button><button id="resident-repair" class="small-button">修复 Agent · 搜索并复测</button><button id="resident-restore" class="small-button" disabled>还原修复前场景</button>
+        <p class="hint">每项任务从固定起点独立执行。动作包括靠近、转向、门把手操作、开门退让、取物或转移；不把未完成任务的短耗时当作提升。</p>
+      </section>
+      <section class="control-section" id="crowd-controls">
+        <div class="section-heading"><h2>行人行为</h2><span class="step">02</span></div>
+        <label class="range-label">行人数量 <output id="count-value">32 人</output><input id="agent-count" type="range" min="4" max="100" value="32" step="4"></label>
+        <label class="stack-label">人群构成<select id="population"><option value="mixed">混合人群 · 步行 / 轮椅 / 辅助器</option><option value="pedestrian">全部步行者 · 半径 0.25 m</option><option value="wheelchair">全部轮椅使用者 · 半径 0.45 m</option><option value="assisted">全部辅助器使用者 · 半径 0.38 m</option></select></label>
+        <div class="profile-key"><span><i style="--c:#1ca7a0"></i>步行</span><span><i style="--c:#607ce0"></i>轮椅</span><span><i style="--c:#d39c53"></i>辅助器</span></div>
+        <label class="range-label">期望速度 <output id="speed-value">1.0 ×</output><input id="walk-speed" type="range" min="0.4" max="1.6" step="0.1" value="1"></label>
+        <div class="form-grid"><label>视野角度<select id="vision"><option value="120">120°</option><option value="180" selected>180°</option><option value="270">270°</option></select></label><label>搜索范围<select id="search-range"><option value="4">4 m</option><option value="8" selected>8 m</option><option value="16">16 m</option><option value="999">整个场景</option></select></label></div>
+      </section>
+      <section class="control-section">
+        <div class="section-heading"><h2>分析与渲染</h2><span class="step">03</span></div>
+        <label class="stack-label">地面栅格<select id="cell-size"><option value="0.15">0.15 m · 精细</option><option value="0.2" selected>0.20 m · 住宅推荐</option><option value="0.25">0.25 m · 标准</option><option value="0.4">0.40 m · 快速</option></select></label>
+        <label class="stack-label">画面品质<select id="render-quality"><option value="high" selected>精细 · 环境遮蔽 / 柔和阴影</option><option value="balanced">流畅 · 材质 / 阴影</option></select></label>
+        <div class="launch-note" id="launch-note"></div>
+        <p class="hint" id="grid-note">按人体活动高度提取障碍物；窄缝采用保守判定。</p>
+      </section>
+      <div class="control-foot"><span class="status-dot"></span>本地计算 · 模型不会上传到服务器</div>
+    </aside>
+    <section class="stage-column">
+      <div class="stage-toolbar"><div class="view-tabs" role="group" aria-label="相机视角"><button class="active" data-view="perspective">空间透视</button><button data-view="detail">细节近景</button><button data-view="top">平面分析</button><button data-view="human">跟随住户</button><button data-view="walk">自由步入</button></div><div class="scene-tools"><button id="show-controls" class="icon-button" title="场景设置" aria-label="展开设置面板">☷</button><button id="fit-button" class="icon-button" title="适配视图" aria-label="适配视图">⛶</button><button id="snapshot-button" class="icon-button" title="保存视图 PNG" aria-label="保存视图 PNG">▣</button></div></div>
+      <div class="stage" id="stage">
+        <div id="viewport" aria-label="室内通行三维场景"></div>
+        <div class="stage-caption"><span class="eyebrow">DIGITAL TWIN / <span id="scene-code">LEVEL 01</span></span><h2 id="scene-title">Digital Workplace</h2><p id="scene-subtitle">办公空间 / 单层通行仿真</p></div>
+        <div class="stage-badge"><span class="live-dot"></span><span id="run-status">准备就绪</span></div>
+        <div id="loading" class="loading" hidden><span class="spinner"></span><b id="loading-text">正在构建场景…</b><small>提取几何 / 栅格化 / 构建通行场</small></div>
+        <div id="toast" class="toast" role="status" hidden></div>
+        <div class="selection-card" id="selection" hidden><button data-close-selection aria-label="关闭行人信息">×</button><div class="selection-body"></div></div>
+        <div class="cell-inspector" id="cell-inspector" hidden aria-live="polite"><button class="inspector-close" data-close-cell aria-label="关闭磕碰详情">×</button><div class="cell-inspector-body"></div></div>
+        <div class="stage-bottom"><div class="layer-pills"><label><input type="checkbox" id="heat-visible" checked>磕碰热点</label><label><input type="checkbox" id="trails-visible">行走轨迹</label><label><input type="checkbox" id="obstacles-visible">碰撞栅格</label><label><input type="checkbox" id="vision-visible">行人视野</label><label><input type="checkbox" id="walls-visible" checked>建筑墙体</label><label><input type="checkbox" id="zones-visible">空间分区</label></div><div class="stage-hints"><span id="tool-hint">左键旋转 / 右键平移 / 滚轮缩放 · 点击磕碰栅格查看原因</span><span class="north">N ↑</span></div></div>
+      </div>
+      <div class="playback-bar"><button id="play-button" class="play-button"><span id="play-icon">▶</span><span id="play-text">开始模拟</span></button><button id="reset-button" class="icon-button" title="重置行人和统计" aria-label="重置行人和统计">↺</button><div class="playback-time"><b id="elapsed">00:00</b><small>SIMULATED TIME</small></div><div class="playback-divider"></div><span class="playback-label">时间倍率</span><div class="speed-tabs" aria-label="时间倍率"><button data-rate="1" class="active">1×</button><button data-rate="2">2×</button><button data-rate="4">4×</button></div><div class="frame-meter"><span class="live-dot"></span><span id="fps">— FPS</span></div></div>
+      <div class="method-note"><span>↗</span><p><b>观察通行，理解空间。</b> 这是单层平面上的探索性模拟；身体半径、模型单位和地面标高直接影响结果。碰撞以保守栅格近似，结果用于设计比较。</p><button id="clear-heat" class="quiet-button">清空热力</button></div>
+    </section>
+    <aside class="results-panel">
+      <div class="results-heading"><div><span class="eyebrow">ACCESSIBILITY MONITOR</span><h2>通行分析</h2></div><span class="record-tag"><span class="live-dot"></span>LIVE</span></div>
+      <section id="resident-results" class="result-section"><div class="section-heading"><h3>住户任务执行</h3><button id="resident-export" class="text-button">导出报告</button></div><div id="resident-live" class="resident-live"></div><div id="resident-comparison"></div><div class="goal-actions"><button class="small-button" id="resident-before" disabled>查看修改前</button><button class="small-button" id="resident-after" disabled>查看修改后</button></div><div id="resident-table"></div><div id="resident-changes"></div></section>
+      <div class="primary-metric"><span>已完成目的地到达</span><div><strong id="arrivals">0</strong><small>次</small><svg viewBox="0 0 105 38" aria-hidden="true"><path id="sparkline" d="M0,35 L105,35" fill="none" stroke="#279a91" stroke-width="2"/></svg></div><p>持续记录每位行人的目标旅程</p></div>
+      <div class="metric-grid"><div><span>障碍接触</span><b id="contacts">0</b><small>事件 · 1 秒去重</small></div><div><span>受阻旅程</span><b id="blocked">0</b><small>事件 · 每旅程一次</small></div><div><span>正在行走</span><b id="moving">0 <small>/ 32</small></b><small>其余行人等待或停留</small></div><div><span>已结束旅程到达率</span><b id="success-rate">—</b><small>到达 / (到达 + 受阻)</small></div></div>
+      <section class="result-section"><div class="section-heading"><h3>无障碍磕碰热点</h3><button id="clear-events" class="text-button">清空记录</button></div><select id="heat-mode" aria-label="热力图指标"><option value="access">磕碰 + 障碍受阻 · 事件数</option><option value="contact">仅障碍磕碰 · 事件数</option><option value="obstruction">仅障碍受阻 · 事件数</option></select><div class="heat-legend"></div><div class="legend-labels"><span>少</span><span id="heat-max">尚无障碍事件</span><span>多</span></div><div class="analysis-pair"><span>问题栅格面积<b id="sample-area">0.0 m²</b></span><span>每百米磕碰次数<b id="risk-score">—</b></span></div><p class="hint">只累计障碍事件，不叠加人流和停留密度。点击彩色栅格查看对象、身体尺度、原因及发生时间。颜色按本次最大值归一化。</p></section>
+      <section class="result-section destinations"><div class="section-heading"><h3>目的地</h3><button id="restore-goals" class="text-button">恢复默认</button></div><select id="goal-policy" aria-label="目的地模式"><option value="default">使用默认目的地</option><option value="custom">只使用自定义目的地</option><option value="mixed">默认 + 自定义</option></select><div id="goal-list"></div><div class="goal-actions"><button id="add-goal" class="small-button">＋ 在地面点选</button><button id="goal-form-toggle" class="small-button">输入坐标</button></div><div id="goal-form" hidden><label class="stack-label">目的地名称<input id="goal-name" type="text" maxlength="40" placeholder="例如：会议室入口"></label><div class="form-grid"><label>X（m）<input id="goal-x" type="number" step="0.1" value="0"></label><label>Z（m）<input id="goal-z" type="number" step="0.1" value="0"></label></div><button id="save-goal" class="small-button">添加目的地</button></div><p class="hint" id="goal-note">可使用场景默认目标，也可点选地面或输入坐标添加自定义目标。修改目标会重置本次模拟。</p></section>
+      <section class="result-section event-section"><div class="section-heading"><h3>摩擦记录</h3><span class="count-tag" id="event-count">0</span></div><div id="event-list"><div class="empty-state"><span>⌁</span><p>从一次行走开始。<br>接触和受阻将在这里留下记录。</p></div></div></section>
+      <button id="export-button" class="export-button">导出分析数据 <span>↓ CSV / JSON</span></button>
+    </aside>
+  </main>
+  <dialog id="help-dialog"><button id="close-help" class="dialog-close" aria-label="关闭">×</button><span class="eyebrow">HOW IT WORKS</span><h2>一个空间，多种通行体验。</h2><ol><li><b>先试运行。</b> 点击开始，在室内空间观察行人；切换细节近景查看人物与家具，或切换平面分析查看磕碰热点。</li><li><b>导入模型。</b> 选择主模型及配套资源；米制默认，Rhino / STL 常用 Z 向上。单位或地面不对时，在导入设置中调整并重新应用。</li><li><b>设置目的地。</b> 在默认、自定义、混合三种模式间切换。自定义支持点击地面或输入名称及 X / Z 坐标；恢复默认会保留自定义列表。修改目的地会重置旅程和统计。</li><li><b>比较身体尺度。</b> 混合人群含步行、轮椅和辅助器使用者。身体碰撞为圆盘，活动高度为 0.08–1.80 m，视野控制局部避障，搜索范围控制随机目的地选择。全局栅格寻路帮助绕行。</li><li><b>理解热力。</b> 磕碰热点只累计障碍接触与障碍受阻，不显示人流密度。点击彩色栅格查看涉及对象、身体宽度、原因及时间。人际等待单独记录；不可达目标的附近对象是定位线索，不代表实际接触面。</li></ol><p>该工具借鉴 Quelea 的代理行为思路，不依赖 Grasshopper。自由探索使用圆盘通行，任务住宅另外实现朝向包络、转向扫掠和可操作门；两者均模拟单一水平地面，不分析楼梯、坡度或规范合规；悬挑和桌底按统一人体高度保守处理。无地板模型使用包围范围内的虚拟地面；小型封闭家具内腔会填实，碰撞栅格可直接检查。原展馆仅复用布局与视觉语言，不共享其城市分析。数字住户支持四类可调画像和五项住宅任务；修复 Agent 为规则候选重建复测，商品仅为内置尺寸方案。任务与自动修复当前只支持有语义的内置住宅；上传模型仍使用自由通行检测。</p><p>GLTF 的 Draco / Meshopt / KTX2 压缩资源需先转为未压缩模型；未导出网格的 Rhino 曲面需先在 Rhino 中生成渲染网格再保存。模型数据仅在浏览器内解析。</p></dialog>
+  <script src="../js/vendor/three-r128/build/three.min.js"></script>
+  <script src="../js/vendor/three-r128/controls/OrbitControls.js"></script>
+  <script src="js/vendor/postprocessing/Pass.js"></script><script src="js/vendor/postprocessing/CopyShader.js"></script><script src="js/vendor/postprocessing/ShaderPass.js"></script><script src="js/vendor/postprocessing/EffectComposer.js"></script><script src="js/vendor/postprocessing/SimplexNoise.js"></script><script src="js/vendor/postprocessing/SSAOShader.js"></script><script src="js/vendor/postprocessing/SSAOPass.js"></script><script src="js/vendor/postprocessing/GammaCorrectionShader.js"></script><script src="js/vendor/postprocessing/FXAAShader.js"></script>
+  <script src="../js/vendor/three-r128/libs/fflate.min.js"></script>
+  <script src="../js/vendor/three-r128/loaders/OBJLoader.js"></script><script src="../js/vendor/three-r128/loaders/MTLLoader.js"></script><script src="../js/vendor/three-r128/loaders/TDSLoader.js"></script><script src="js/vendor/Rhino3dmLoader.js"></script><script src="../js/vendor/three-r128/loaders/GLTFLoader.js"></script><script src="../js/vendor/three-r128/loaders/FBXLoader.js"></script><script src="../js/vendor/three-r128/loaders/ColladaLoader.js"></script>
+  <script src="js/core.js"></script><script src="js/geometry.js"></script><script src="js/avatars.js"></script><script src="js/rendering.js"></script><script src="js/scene.js"></script><script src="js/office.js"></script><script src="js/home.js"></script><script src="js/resident-nav.js"></script><script src="js/importers.js"></script><script src="js/simulation.js"></script><script src="js/resident-tasks.js"></script><script src="js/resident-repair.js"></script><script src="js/resident-workbench.js"></script><script src="js/app.js"></script>
+</body>
+</html>
+
+
+
+
+

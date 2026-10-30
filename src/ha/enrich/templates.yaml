@@ -1,0 +1,120 @@
+# M2 attribute templates (simulation §4). Every value filled from here is tagged `source: template`.
+# Only fills what WSR metadata lacks (500-scene E1 v3 survey: mass_kg missing on 18683 / 22294 objects).
+# Category keys are lower-cased WSR `category`; `aliases` maps the other spellings onto one group.
+# Thresholds follow docs/standards/standards-check.md; `src: custom` = our choice, no clause behind it.
+version: 1
+checked: 2026-10-30
+status: draft
+
+groups:
+  bed: [bed]
+  sofa: [sofa, couch, lshapedsofa, sofachair, loungechair, armchair]
+  chair: [chair, diningchair, officechair, stool, barstool, ottoman]
+  table: [table, diningtable, coffeetable, desk, sidetable]
+  cabinet: [cabinet, wardrobe, shoecabinet, bookshelf, shelf, sideboard, tvstand, bathroomcabinet,
+            kitchencabinet, storagecabinet]
+  bedside: [nightstand, bedsidecabinet, bedsidetable]
+  toilet: [toilet]
+  washbasin: [washbasin]
+  bathtub: [bathtub]
+  refrigerator: [refrigerator]
+  washer: [washingmachine]
+  switch: [switch, lightswitch]
+  lamp: [floorlamp]
+  small: [vase, cosmeticbottle, books, book, coffee, cup, winebottle, plate, magazine, ornament,
+          decoration, decorationpiece, sculpture, storagebox]
+
+# mass_kg = density_kgm3 * aabb_volume * fill, clamped to [min, max]. src: custom (order-of-magnitude
+# values for wood/board furniture; used only for MuJoCo push/replay, never for pass/fail).
+mass:
+  default: {density_kgm3: 500, fill: 0.15, min: 0.5, max: 150}
+  bed: {density_kgm3: 500, fill: 0.20, min: 30, max: 150}
+  sofa: {density_kgm3: 300, fill: 0.25, min: 15, max: 120}
+  chair: {density_kgm3: 600, fill: 0.08, min: 2, max: 25}
+  table: {density_kgm3: 700, fill: 0.06, min: 5, max: 80}
+  cabinet: {density_kgm3: 650, fill: 0.12, min: 10, max: 150}
+  bedside: {density_kgm3: 650, fill: 0.15, min: 5, max: 30}
+  toilet: {density_kgm3: 2300, fill: 0.10, min: 20, max: 50, fixed: true}
+  refrigerator: {density_kgm3: 180, fill: 1.0, min: 50, max: 130, fixed: true}
+  washer: {density_kgm3: 250, fill: 1.0, min: 50, max: 90, fixed: true}
+  lamp: {density_kgm3: 300, fill: 0.03, min: 2, max: 10}
+  small: {density_kgm3: 800, fill: 0.30, min: 0.1, max: 5}
+
+# Interaction zones, placed in the object frame on the named side ("front" = side facing the room
+# centre or the open floor; "long_side" = bed long edges). Sizes are width x depth in metres.
+zones:
+  bed:
+    - id: transfer
+      side: long_side
+      depth_m: 1.20
+      judge: at_least_one_side      # second side reported, tagged "两侧是否都要求未核实"
+      src: GB55019 3.4.6
+      ada_ref_m: 0.76               # ADA 806.2.3, transient lodging only
+  toilet:
+    - id: clearance
+      shape: rect_from_walls
+      from_side_wall_m: 1.525
+      from_rear_wall_m: 1.42
+      dwelling_exception_from_rear_m: 1.675  # lavatory on rear wall >= 0.455 from centreline
+      centreline_to_side_wall_m: [0.405, 0.455]
+      src: ADA 604.2, 604.3.1, 604.3.2
+    - id: room_checks
+      gb_area_m2: {three_fixtures: 4.00, wc_bath_or_shower: 3.00, wc_basin: 2.50, wc_only: 2.00}
+      gb_turning_d_m: 1.50
+      src: GB50763 3.12.4 / GB55019 3.4.4
+  refrigerator:
+    - {id: parking, side: front, size_m: [0.76, 1.22], src: ADA 305.3}
+  cabinet:
+    - {id: parking, side: front, size_m: [0.76, 1.22], src: ADA 305.3}
+  bedside:
+    - {id: parking, side: front, size_m: [0.76, 1.22], src: ADA 305.3}
+  washer:
+    - {id: parking, side: front, size_m: [0.76, 1.22], src: ADA 305.3}
+  sofa:
+    - {id: front, side: front, depth_m: 0.90, src: custom}
+  bathtub:
+    - {id: parking, side: long_side, size_m: [1.50, 0.80], src: GB55019 3.1.12}
+
+# Reach targets: heights the motion layer's `reach` primitive tests against the persona card.
+reach_targets:
+  refrigerator:
+    fridge_shelves_m: [0.40, 1.50]
+    src: custom
+  wall_cabinet:
+    match: {group: cabinet, type: wall_mounted_object}
+    lower_edge: from_mesh          # take the aabb min z of the mounted cabinet
+  switch:
+    height: from_object            # WSR has 518 `switch` objects over 500 scenes; use their z first
+    fallback_height_m: 1.30        # "现状假设": common Chinese install height, not compliant
+    fallback_place: latch_side_wall_of_room_door
+    compliant_m: {gb: [0.85, 1.10], ada: [0.38, 1.22]}
+    src: GB55019 3.1.6 / ADA 308, 309.3; fallback = custom
+  door_hardware:
+    default_height_m: 0.95
+    compliant_m: {gb: [0.85, 1.00], ada: [0.865, 1.22]}
+    src: GB55019 2.5.4 / ADA 404.2.7; default = custom
+  hooks_shelves:
+    max_m: 1.20
+    src: GB55019 3.1.7
+
+doors:
+  hinged: {open_force_n: 30, src: custom (assumption)}
+  sliding: {open_force_n: 20, src: custom (assumption)}
+  hardware: {default: lever, src: custom}
+  limits:
+    force_n: {gb: 25.0, ada: 22.2}
+    closer_min_close_s: 3.0
+    src: GB55019 2.5.4, 2.5.8 / ADA 404.2.9
+
+floors:
+  slip_hint:
+    rooms: [bathroom, kitchen]
+    kinds: [polished_tile, ceramic_tile]
+    flag: SLIP_HINT                # report only; not scored, not evaluated
+    src: custom
+
+lighting:
+  night_path:
+    rel_illum_min: 0.30
+    walker_hard_floor: 0.50
+    src: custom (no clause found in GB 50763 / GB 55019 / ADA; GB 50034 not checked)

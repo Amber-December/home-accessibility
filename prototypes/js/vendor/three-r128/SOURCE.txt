@@ -1,0 +1,2 @@
+three.js r128 (npm three@0.128.0, sha256 of tarball df6a5d06dcd9a361831669f1b6dd081b2a43f9933d7b16de532417cc8d7c6153).
+Only the files referenced by prototypes/indoor-space-interaction/index.html. MIT license.

@@ -1,0 +1,170 @@
+# M4 resident persona cards (simulation §6). Decision layer and motion layer read this same file.
+# Units: m, s, deg, N. Thresholds follow docs/standards/standards-check.md (GB 55019 primary,
+# GB 50763 supplement, ADA 2010 comparison column). Every value carries `src`:
+#   GB55019 x.y.z / GB50763 x.y.z / ADA xxx = clause; custom = our own choice, no clause behind it.
+# Scores come only from the deterministic motion layer; the LLM never edits these numbers.
+version: 1
+checked: 2026-10-30
+status: draft  # freeze before E3 baseline; any later change -> new version + note
+
+# Which persona runs which task (docs/product/prd.md §3.3). T7 uses the stretcher carrier below.
+tasks:
+  wheelchair: [T1, T2, T3, T4, T5, T6, T8]
+  walker_elder: [T1, T2, T3, T5, T6]
+  upper_limb: [T1, T2, T3, T5, T6]
+  walking_control: [T1, T2, T3, T5]   # E3 sanity gate: success >= 90% on applicable tasks
+  stretcher: [T7]
+
+personas:
+  - id: wheelchair
+    name: 手动轮椅使用者
+    footprint:
+      shape: rect
+      size: [0.70, 1.20]            # width x length
+      src: custom (ADA 305.3 space 0.76x1.22 is the parking box, not the chair)
+      layers:
+        body: {z: [0.30, 1.30]}
+        toe: {z: [0.00, 0.30], front_m: 0.30, src: custom (footrest)}
+    kinematics:
+      model: nonholonomic
+      in_place_turn: true            # only if the swept circle fits
+      v_mps: 0.8
+      v_slow_mps: 0.4
+      slow_when_clearance_below_m: 0.10
+      yaw_rate_dps: 60
+      src: custom
+    turning:
+      circle_d_m: {gb: 1.50, ada: 1.525}
+      ada_t_shape: {square_m: 1.525, arm_w_m: 0.915}
+      src: GB50763 3.5.3 / GB55019 3.1.2 (no number) / ADA 304.3.1, 304.3.2
+    reach:
+      vertical_m: [0.38, 1.22]
+      obstructed_forward_max_m: 1.12   # reach depth 0.51-0.635 m
+      obstructed_side_max_m: 1.17
+      horizontal_m: {front: 0.50, side: 0.25}
+      src: ADA 308.2, 308.3; horizontal = custom
+    doors:
+      push: ok
+      pull_latch_side:
+        ada_m: 0.455
+        ada_depth_m: 1.525
+        gb_wall_m: 0.40
+        src: ADA 404.2.4.1 / GB50763 3.5.3
+      push_latch_side:
+        ada_m: 0.0
+        ada_m_closer_and_latch: 0.305
+        ada_depth_m: 1.22
+        src: ADA 404.2.4.1
+      clear_width_m:
+        gb_new: 0.90
+        gb_retrofit: 0.80
+        ada: 0.815
+        note: GB clear width excludes leaf thickness; ADA measured to leaf face; compute both
+        src: GB55019 2.5.4 / ADA 404.2.3
+    threshold:
+      gb_max_m: 0.015
+      gb_bevel_max_slope: 0.10       # 1:10; raised stop strip = fail
+      ada_max_m: 0.013
+      ada_vertical_ok_m: 0.0064
+      ada_bevel_slope_6_13mm: 0.5    # 1:2
+      src: GB55019 2.5.3 / ADA 404.2.5, 303
+    corridor:
+      gb_min_m: 0.90
+      gb50763_m: 1.20
+      gb55038_m: {entry: 1.10, bedroom_living: 1.00, kitchen_bath_storage: 0.90}
+      ada_m: 0.915
+      ada_pinch: {width_m: 0.815, max_len_m: 0.61, min_gap_m: 1.22}
+      src: GB55019 3.1.2 / GB50763 3.5.1 / GB55038 4.1.13 / ADA 403.5.1
+    night_light:
+      min_rel_illum: 0.30
+      src: custom (no clause; GB 50034 not checked)
+
+  - id: walker_elder
+    name: 助行器老人
+    footprint:
+      shape: rect
+      size: [0.65, 0.80]
+      src: custom
+      layers:
+        body: {z: [0.00, 1.60]}
+    kinematics:
+      model: near_holonomic
+      turn_margin_each_side_m: 0.10
+      v_mps: 0.5
+      yaw_rate_dps: 30
+      src: custom
+    reach:
+      vertical_m: [0.60, 1.50]
+      horizontal_m: {front: 0.45, side: 0.45}
+      src: custom (bending limited)
+    doors:
+      release_walker_extra_s: 6.0
+      src: custom
+    threshold: {same_as: wheelchair}
+    corridor: {same_as: wheelchair}
+    night_light:
+      min_rel_illum: 0.30
+      hard_floor_rel_illum: 0.50     # never below this on the path
+      src: custom
+
+  - id: upper_limb
+    name: 上肢受限者
+    footprint:
+      shape: disc
+      r: 0.25
+      src: custom
+      layers:
+        body: {z: [0.00, 1.70]}
+    kinematics:
+      model: holonomic
+      v_mps: 1.0
+      yaw_rate_dps: 90
+      src: custom
+    reach:
+      vertical_m: [0.70, 1.40]
+      horizontal_m: {front: 0.40, side: 0.40}
+      src: custom
+    doors:
+      max_force_n: {ada: 22.2, gb: 25.0}
+      knob_turn: false                # round knob = cannot operate
+      lever_ok: true
+      hardware_height_m: {gb: [0.85, 1.00], ada: [0.865, 1.22]}
+      src: ADA 404.2.9, 309.4, 404.2.7 / GB55019 2.5.4 / GB50763 3.5.3 note
+    threshold: {check: false}
+    night_light:
+      min_rel_illum: 0.30
+      src: custom
+
+  - id: walking_control
+    name: 步行对照
+    footprint:
+      shape: disc
+      r: 0.25
+      src: custom
+      layers:
+        body: {z: [0.00, 1.75]}
+    kinematics:
+      model: holonomic
+      v_mps: 1.15
+      yaw_rate_dps: 120
+      src: custom
+    reach:
+      vertical_m: [0.40, 1.80]
+      horizontal_m: {front: 0.60, side: 0.60}
+      src: custom
+    doors: {unrestricted: true}
+    threshold: {check: false}
+    night_light: {check: false}
+
+# T7 carrier, not a resident: stretcher 0.60x1.90 plus one medic disc r=0.25 at each end, one rigid
+# body on the body layer. Report wording: "按平抬担架计算" (risk, not an absolute verdict).
+carriers:
+  - id: stretcher
+    parts:
+      - {shape: rect, size: [0.60, 1.90], at: [0.0, 0.0]}
+      - {shape: disc, r: 0.25, at: [0.0, 1.20]}
+      - {shape: disc, r: 0.25, at: [0.0, -1.20]}
+    layers:
+      body: {z: [0.00, 1.80]}
+    kinematics: {model: holonomic_rigid, in_place_turn: true, reverse: true, v_mps: 0.6, yaw_rate_dps: 30}
+    src: custom

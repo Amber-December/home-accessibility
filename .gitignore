@@ -1,0 +1,46 @@
+# 数据、产物、权重放在 $HA_DATA、$HA_OUTPUTS 指向的目录，不进 Git
+data/
+datasets/
+outputs/
+runs/
+logs/
+caches/
+checkpoints/
+*.zip
+*.tar
+*.tar.gz
+*.usd
+*.usda
+*.usdc
+*.usdz
+*.glb
+*.ply
+*.spz
+*.pt
+*.pth
+*.ckpt
+
+# 论文原件和外部手册只留本地
+docs/papers/*.pdf
+docs/*.pdf
+
+# 视频、演示文稿原件放 $HA_OUTPUTS/deliveries
+*.mp4
+*.mov
+*.pptx
+*.key
+
+# 凭证
+.env
+*.env
+private/
+
+# Python / Node / 编辑器
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+node_modules/
+.DS_Store
