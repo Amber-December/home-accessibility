@@ -1,20 +1,20 @@
-"""Download every product image in assets/catalog.yaml once and check it decodes (no Lux3D calls).
+"""Download every product image in src/ha/assets/catalog.yaml once and check it decodes (no Lux3D calls).
 
 Lux3D img-to-3d needs an image URL or upload it can fetch; this confirms the inputs exist before paying.
-Output: $HA_OUTPUTS/assets/catalog-images-<date>/{<sku>_<tag>.<ext>, check.json}.
+Output: $HA_OUTPUTS/assets/catalog-images-<date>/{<sku>_<tag>.<ext>, check.json} ($HA_OUTPUTS defaults to outputs/).
 """
 from __future__ import annotations
 
 import datetime as dt
 import hashlib
 import json
-import os
 import urllib.request
-from pathlib import Path
 
 import cv2
 import numpy as np
 import yaml
+
+from ha.runlog import REPO, outputs_root
 
 EXT = {"image/jpeg": ".jpg", "image/png": ".png", "image/webp": ".webp"}
 
@@ -26,8 +26,8 @@ def fetch(url: str) -> tuple[bytes, str, str]:
 
 
 def main():
-    cat = yaml.safe_load(open(Path(os.environ["HA_REPO"]) / "src/ha/assets/catalog.yaml"))
-    out = Path(os.environ["HA_OUTPUTS"]) / f"assets/catalog-images-{dt.date.today():%Y%m%d}"
+    cat = yaml.safe_load((REPO / "src/ha/assets/catalog.yaml").read_text())
+    out = outputs_root() / f"assets/catalog-images-{dt.date.today():%Y%m%d}"
     out.mkdir(parents=True, exist_ok=True)
     res = {}
     for s in cat["skus"]:

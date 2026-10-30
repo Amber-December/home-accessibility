@@ -1,15 +1,15 @@
-# M3 Lux3D asset catalog (simulation §5). Reference products checked 2026-10-30.
+# M3 Lux3D asset catalog (docs/tech/aholo-lux3d.md §3). checked_at = date the reference pages were read.
 # nominal_m = W x D x H used by the evaluator (accessibility checks use these, never the generated mesh).
 # published = dimension text as read on the source page; source_quality: page | pdf | search_snippet.
 # route: multiview_g1turbo = 1 image -> 4-view (24 cr) -> G1-Turbo PBR 20k faces, aiPredictSize=false
 #        text_to_3d        = no usable image URL (13 cr)
 # articulate: run Lux3D articulation (28 cr) to get door sweep.
-# NO create calls have been made for any entry. S1 is the planned E7 smoke.
+# create 记录见 ledger（docs/tech/aholo-lux3d.md §3）。
 version: 1
-checked: 2026-10-30
+checked_at: 2026-10-30
 skus:
   - id: S1
-    name: 双门冰箱（补缺 H1 无冰箱户型）
+    name: 双门冰箱（补全没有冰箱的户型）
     category: refrigerator
     use: fill_missing
     nominal_m: [0.83, 0.70, 1.80]
@@ -30,7 +30,7 @@ skus:
     prompt: modern stainless steel French-door refrigerator, two upper doors, two lower freezer drawers, vertical bar handles
 
   - id: S2
-    name: 窄单门冰箱（S2 替换）
+    name: 窄款双门冰箱
     category: refrigerator
     use: replace
     nominal_m: [0.55, 0.60, 1.60]
@@ -40,7 +40,7 @@ skus:
       published: "155.6 x 55 cm; Width 550 mm; Depth 605 mm; Reversible Door Hinge: Yes"
       source_quality: pdf
       image: none
-      caveat: top-freezer two-door; no official 55 cm single-door model found
+      caveat: top-freezer two-door, 55 cm wide
     alternatives:
       - product: Siemens iQ300 KS29VVW3P (single door)
         url: https://www.ruislipappliances.com/images/PDF/KS29VVW3P.pdf
@@ -48,7 +48,7 @@ skus:
         source_quality: pdf (dealer copy of BSH sheet)
     route: text_to_3d
     articulate: true
-    prompt: narrow white single-door refrigerator 55 cm wide, flat front, vertical handle on the right edge, reversible hinge
+    prompt: narrow white two-door refrigerator 55 cm wide, small freezer door on top and tall fridge door below, flat front, vertical handles on the right edge, reversible hinge
 
   - id: S3
     name: 壁挂无障碍洗手盆
@@ -74,7 +74,7 @@ skus:
     name: 窄床头柜
     category: nightstand
     use: replace
-    nominal_m: [0.42, 0.335, 0.52]   # adopted from the reference (target was 0.35 x 0.40 x 0.55)
+    nominal_m: [0.42, 0.335, 0.52]
     reference:
       product: IKEA KNARREVIK bedside table, black, 20569977
       url: https://www.ikea.com/no/en/p/knarrevik-bedside-table-black-20569977/
@@ -126,7 +126,7 @@ skus:
     name: 床边扶手
     category: bed_rail
     use: add_aid
-    nominal_m: [0.43, 0.53, 0.56]   # 17 x 21 x 22 in; target was 0.50 x 0.10 x 0.80 (0.80 too tall for a bed rail)
+    nominal_m: [0.43, 0.53, 0.56]   # 17 x 21 x 22 in
     reference:
       product: Stander Bed Rail Advantage Traveler (5000)
       url: https://stander.com/products/advantage-traveler
@@ -152,7 +152,7 @@ skus:
       published: "horizontal length 500 mm, vertical length 750 mm, 91 mm deep; bar 33 mm; left or right mounting"
       source_quality: pdf
       image: none
-      caveat: target 0.70 x 0.60 x 0.75; made-to-measure 801.22D1S (300-850 x 600-1100 mm, snippet only) can match
+      caveat: layouts needing 0.70 x 0.60 x 0.75 can use made-to-measure 801.22D1S (300-850 x 600-1100 mm, snippet only)
     route: text_to_3d
     articulate: false
     prompt: white L-shaped toilet grab bar, 33 mm round tube, 50 cm horizontal and 75 cm vertical arm, round wall roses
@@ -168,7 +168,7 @@ skus:
       published: "42 in (L) w/ riggings x 26 in (W) x 36 in (H); seat 18 x 16 in; folded 12.5 in; 300 lb"
       source_quality: page
       image: https://shop.drivemedical.com/medias/SSP218DFA-SF?context=bWFzdGVyfGltYWdlc3wyMDMwMTB8aW1hZ2UvanBlZ3xhRFE0TDJoaFppOHhNalE0T1RVeU5UYzRPRGN3TWk5VFUxQXlNVGhFUmtFdFUwWXxmMTYwOWViYWUzZGI4Yjc2MTlkMjliNmUzYmE0ZDQwYjQ5OWY4N2I2ODQ2MWEzYWZlY2Q5NjNjNjNlYzc1M2Zm
-      image_note: product moved to shop.drivemedical.com; media context token copied from the live page 2026-10-30 (1200x1200 jpeg), may change
+      image_note: 1200x1200 jpeg from shop.drivemedical.com; the media context token in the URL may expire
     note: collision footprint stays the persona rectangle 0.70 x 1.20 m; this mesh is visual only
     route: multiview_g1turbo
     articulate: false
@@ -184,7 +184,7 @@ skus:
       published: "width 24 in; handle height 32-39 in; 350 lb (depth 17-1/2 in from Global Industrial snippet)"
       source_quality: page
       image: https://shop.drivemedical.com/medias/10210-1?context=bWFzdGVyfGltYWdlc3w2ODc4N3xpbWFnZS9qcGVnfGFHTmhMMmczTlM4eE1qUTVNREF3T1RjM01qQTJNaTh4TURJeE1DMHh8MmMxYWQ1MjFjZTljNTBlNjI0YjBhOTI2YTBjOGM2ODVmYmNlY2Y0MmJlNGJjMTU1YmVjYzkzNWZhZmJkMDJkOA
-      image_note: product moved to shop.drivemedical.com; media context token copied from the live page 2026-10-30 (1200x1200 jpeg), may change
+      image_note: 1200x1200 jpeg from shop.drivemedical.com; the media context token in the URL may expire
     note: collision footprint stays the persona rectangle 0.65 x 0.80 m (walker + person)
     route: multiview_g1turbo
     articulate: false

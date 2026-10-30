@@ -27,19 +27,24 @@ src/ha/
   llm.py  runlog.py                                                              公共        A
 server/       app.py  sessions.py  events.py                                     REST、SSE   A
 web/          index.html  js/  css/                                              前端        C
-scripts/      run_import.py  finalize_import.py  select_heroes.py  download_*.py              B
-              run_eval.py  run_repair.py  run_crawl.py  pw_smoke.py                          A
-tests/        单元测试、缺陷注入、确定性测试；fixtures/H1/ 是一套 WSR 户型（scene000064）的 IR    各自
+scripts/      run_import.py  finalize_import.py  list_demo_candidates.py  download_*.py       B
+              check_doors.py  verify_candidate_doors.py  sage_layout_stats.py                B
+              run_eval.py  run_repair.py  run_crawl.py  pw_smoke.py  e0_env_smoke.py         A
+              check_catalog_images.py                                                        A
+tests/        单元测试、缺陷注入、确定性测试；fixtures/H1/ 是一套 WSR 户型（scene000064）的 IR，  各自
+              只作开发样例，和演示户型的选择无关
 docs/         product/、report/                                                            C
               tech/simulation.md、tech/data.md、standards/                                  B
               tech/agent-backend.md、tech/aholo-lux3d.md                                    A
-              research/；papers/ 不进 Git
-plans/        比赛计划（冻结后只追加进度）                                                共享
+              research/                                                                     共享
+              papers/ 不进 Git
+plans/        比赛计划：§11.1 进度只追加，其他章节按共享文件规则改                        共享
 env/          Python 依赖锁定文件                                                          B
 prototypes/   浏览器端交互原型（Three.js r128，无构建），只做演示参考                       C
 media/        视频素材清单（原件不进 Git）                                                 C
 .github/      CI：每个 PR 和 main 上跑 pytest；PR 模板                                    共享
-AGENTS.md     给编码 Agent 的协作协议（CLAUDE.md 引入同一份）                              共享
+AGENTS.md     给编码 Agent 的协作协议；CLAUDE.md 只有一行 @AGENTS.md                        共享
+.env.example  环境变量模板（.env 不进 Git）                                                 共享
 ```
 
 - 每个人（和自己的 Agent）只改自己负责的目录和文档。要改别人的，提 issue 或在 PR 里请负责人改。
@@ -52,10 +57,10 @@ AGENTS.md     给编码 Agent 的协作协议（CLAUDE.md 引入同一份）    
 
 | 文件 | 规则 |
 |---|---|
-| 共享契约：`src/ha/ir/schema.py`、`src/ha/evaluator/result_schema.py`、`tests/fixtures/H1/`、agent-backend §10.1 和 §11、`personas.yaml` 和 `templates.yaml` 里的阈值 | 改之前在群里说一声；单独开 PR，标题以 `[契约]` 开头，另一人 Approve 后才合并 |
+| 共享契约：`src/ha/ir/schema.py`（Scene IR）、`src/ha/evaluator/result_schema.py` 和 `tests/fixtures/H1/`（仿真结果结构和样例）、`src/ha/runlog.py`（运行目录和 manifest）、agent-backend §10.1 和 §11（REST 和 SSE）、`personas.yaml` 和 `templates.yaml` 里的阈值 | 改之前在群里说一声；单独开 PR，标题以 `[契约]` 开头，另一人 Approve 后才合并 |
 | `plans/hackathon-plan.md` | §11.1 进度分 A、B、C 三个小节，每人只在自己小节末尾追加。其他章节的改动和契约一样，先在群里说 |
 | `README.md`、`CONTRIBUTING.md`、`AGENTS.md` | 只改和本次任务直接相关的段落；改协作规则先在群里说 |
-| `env/requirements-lock-*.txt` | 加依赖时单独一行，按字母顺序插入，PR 描述写明为什么要加 |
+| `env/requirements-lock.txt` | 加依赖时单独一行，按字母顺序插入，PR 描述写明为什么要加 |
 
 ## Fork 和同步
 

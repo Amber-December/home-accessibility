@@ -1,9 +1,8 @@
 # M2 attribute templates (simulation §4). Every value filled from here is tagged `source: template`.
-# Only fills what WSR metadata lacks (500-scene E1 v3 survey: mass_kg missing on 18683 / 22294 objects).
+# Only fills what WSR metadata lacks (mass_kg is null on 18683 / 22294 objects across the 500 scenes).
 # Category keys are lower-cased WSR `category`; `aliases` maps the other spellings onto one group.
 # Thresholds follow docs/standards/standards-check.md; `src: custom` = our choice, no clause behind it.
 version: 1
-checked: 2026-10-30
 status: draft
 
 groups:
@@ -85,7 +84,7 @@ reach_targets:
     lower_edge: from_mesh          # take the aabb min z of the mounted cabinet
   switch:
     height: from_object            # WSR has 518 `switch` objects over 500 scenes; use their z first
-    fallback_height_m: 1.30        # "现状假设": common Chinese install height, not compliant
+    fallback_height_m: 1.30        # "现状假设": common Chinese install height, outside the compliant range
     fallback_place: latch_side_wall_of_room_door
     compliant_m: {gb: [0.85, 1.10], ada: [0.38, 1.22]}
     src: GB55019 3.1.6 / ADA 308, 309.3; fallback = custom
@@ -98,6 +97,8 @@ reach_targets:
     src: GB55019 3.1.7
 
 doors:
+  # Custom assumptions, no measured source. Violations driven by these values carry source=template
+  # and are reported as "基于模板假设" (simulation §4).
   hinged: {open_force_n: 30, src: custom (assumption)}
   sliding: {open_force_n: 20, src: custom (assumption)}
   hardware: {default: lever, src: custom}
@@ -110,11 +111,11 @@ floors:
   slip_hint:
     rooms: [bathroom, kitchen]
     kinds: [polished_tile, ceramic_tile]
-    flag: SLIP_HINT                # report only; not scored, not evaluated
+    flag: SLIP_HINT                # report only; excluded from scoring and evaluation
     src: custom
 
 lighting:
   night_path:
-    rel_illum_min: 0.30
-    walker_hard_floor: 0.50
+    rel_illum_min: 0.30            # wheelchair, upper_limb
+    walker_elder: 0.50
     src: custom (no clause found in GB 50763 / GB 55019 / ADA; GB 50034 not checked)

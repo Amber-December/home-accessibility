@@ -1,6 +1,6 @@
 """Layered occupancy grids from world-space triangles.
 
-Layers (technical plan §3): floor 0-0.05 m is a height map (max geometry height, so rugs and
+Layers (simulation §3): floor 0-0.05 m is a height map (max geometry height, so rugs and
 thresholds can be told apart); toe / body / head are label grids holding the index of the
 entity that occupies the cell (-1 = free). Later writers win, so callers rasterize walls first
 and furniture last, which makes attribution point at furniture where it touches a wall.

@@ -1,10 +1,10 @@
-"""M3 Lux3D asset factory (simulation §5; integration doc §3). Dry run unless --create is given.
+"""M3 Lux3D asset factory (docs/tech/aholo-lux3d.md §3). Dry run unless --create is given.
 
   python -m ha.assets.lux3d_factory --sku S1                  # plan, cost, cache and ledger check; no paid call
   python -m ha.assets.lux3d_factory --sku S1 --create         # paid: runs the SKU's route end to end
   python -m ha.assets.lux3d_factory --sku S1 --from-glb x.glb # local post-processing only (normalize + CoACD)
 
-Rules enforced here (plan §4): every create is appended to $HA_OUTPUTS/assets/<run_id>/ledger.jsonl before
+Rules enforced here (docs/tech/aholo-lux3d.md §3): every create is appended to $HA_OUTPUTS/assets/<run_id>/ledger.jsonl before
 polling, failures included; a SKU whose cache key already has a successful generation is not created again; a
 created-but-unfinished task is resumed instead of re-created; remote tasks missing from every ledger stop the run;
 the cumulative estimated spend across all ledgers may not pass BUDGET. Result URLs expire after 2 h, so every
@@ -32,7 +32,7 @@ from ha.runlog import outputs_root
 
 CATALOG = Path(__file__).with_name("catalog.yaml")
 BUDGET = 600
-# Quote 2026-10-30, BEFORE_ACCOUNT_BENEFITS ($HA_OUTPUTS/assets/quote-20261030/quote.json).
+# 单价来自 Lux3D quote 接口，见 docs/tech/aholo-lux3d.md §3
 PRICE = {"four_view": 24, "img_to_3d": 1, "text_to_3d": 13, "articulation": 28, "export": 1}
 GEN = {"version": "G1-Turbo", "face_count": 20000, "output_format": ["glb"], "enable_pbr": True,
        "ai_predict_size": False}
@@ -183,7 +183,7 @@ class Factory:
         if (hit := cached(records, key)) is not None:
             raise SystemExit(f"{sku['id']}: cache hit {hit['files'][0]}; not creating again")
         if sum(r.get("event") == "qa" and r.get("sku") == sku["id"] and not r.get("qa_pass") for r in records) >= 2:
-            raise SystemExit(f"{sku['id']}: QA failed twice; use the bounding box stand-in (plan §4)")
+            raise SystemExit(f"{sku['id']}: QA failed twice; use the bounding box stand-in (aholo-lux3d.md §3)")
         if (unk := self.unknown_remote_tasks(records)) and not allow_unknown:
             raise SystemExit(f"remote tasks missing from every ledger: {unk}; reconcile before creating")
         cost = sum(PRICE[s] for s in steps(sku))
@@ -225,7 +225,7 @@ def main(argv=None) -> None:
 
     ap = argparse.ArgumentParser()
     ap.add_argument("--sku", nargs="+", required=True)
-    ap.add_argument("--create", action="store_true", help="spend credits (needs user approval per plan §4)")
+    ap.add_argument("--create", action="store_true", help="spend credits (needs user approval, AGENTS.md)")
     ap.add_argument("--from-glb", help="local post-processing of an existing GLB; no network")
     ap.add_argument("--up", default="y", choices=["y", "z"])
     ap.add_argument("--allow-unknown", action="store_true")

@@ -1,8 +1,10 @@
-"""E1 hero-home selection from an E1 batch run (reads summary*.jsonl and each scene_ir.json).
+"""List demo-home candidates by criteria (plans/hackathon-plan.md §10 #2).
 
-Slots (plan §3.1): H1 has no fridge (Lux3D S1 fills it), H2 has an eldersRoom, H3 has a fridge (S2 swap).
-Every hero must support T1-T4: entrance door, bed, toilet, sofa; and have >= 1 door below 0.80 m clear width.
-Ranking prefers clean imports, 60-120 m2, more distinct failure types, and at least one sliding door as a bonus.
+Reads an E1 import run (summary*.jsonl and each scene_ir.json). A candidate must support T1-T4: an entrance
+door, a bed, a toilet and a sofa, plus at least one door below 0.80 m clear width. Each row also reports
+fridge, eldersRoom and sliding-door flags so the team can filter for the demo storylines. Ranking prefers
+clean imports, 60-120 m2, a narrow entrance, more narrow doors, and at least one sliding door as a bonus.
+Writes demo_candidates.json into the run directory.
 """
 from __future__ import annotations
 
@@ -11,6 +13,8 @@ import json
 from pathlib import Path
 
 THRESH = 0.80
+SHOW = ("scene", "score", "area", "doors", "narrow", "min_clear", "entrance_clear", "fridge", "elders",
+        "sliding", "bathrooms", "missing", "warnings")
 
 
 def facts(run: Path, r: dict) -> dict | None:
@@ -36,31 +40,35 @@ def facts(run: Path, r: dict) -> dict | None:
 
 
 def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("run")
-    ap.add_argument("--top", type=int, default=5)
+    ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    ap.add_argument("run", help="E1 import run directory")
+    ap.add_argument("--top", type=int, default=15)
+    ap.add_argument("--fridge", choices=["yes", "no"], help="keep only homes with / without a refrigerator")
+    ap.add_argument("--elders", action="store_true", help="keep only homes with an eldersRoom")
+    ap.add_argument("--sliding", action="store_true", help="keep only homes with a sliding door")
     a = ap.parse_args()
     run = Path(a.run)
     rows = [json.loads(line) for p in sorted(run.glob("summary*.jsonl")) for line in p.read_text().splitlines()]
     ok = [r for r in rows if r.get("ok")]
     fs = [facts(run, r) for r in ok]
     el = [f for f in fs if f["eligible"]]
-    slots = {"H1_no_fridge": [f for f in el if not f["fridge"]],
-             "H2_elders_room": [f for f in el if f["elders"]],
-             "H3_fridge": [f for f in el if f["fridge"]]}
-    out = {"run": str(run), "homes": len(rows), "imported": len(ok), "eligible": len(el),
+    if a.fridge:
+        el = [f for f in el if f["fridge"] == (a.fridge == "yes")]
+    if a.elders:
+        el = [f for f in el if f["elders"]]
+    if a.sliding:
+        el = [f for f in el if f["sliding"]]
+    filters = {"fridge": a.fridge, "elders": a.elders, "sliding": a.sliding}
+    out = {"run": str(run), "homes": len(rows), "imported": len(ok), "eligible": len(el), "filters": filters,
            "stats": {"with_fridge": sum(f["fridge"] for f in fs), "with_elders_room": sum(f["elders"] for f in fs),
                      "with_sliding_door": sum(f["sliding"] for f in fs),
                      "with_narrow_door": sum(f["narrow"] > 0 for f in fs),
                      "entrance_below_080": sum((f["entrance_clear"] or 1) < THRESH for f in fs)},
-           "candidates": {k: sorted(v, key=lambda f: -f["score"])[:a.top] for k, v in slots.items()}}
-    (run / "hero_candidates.json").write_text(json.dumps(out, ensure_ascii=False, indent=1))
+           "candidates": sorted(el, key=lambda f: -f["score"])[:a.top]}
+    (run / "demo_candidates.json").write_text(json.dumps(out, ensure_ascii=False, indent=1))
     print(json.dumps(out["stats"]), out["imported"], "/", out["homes"], "eligible", out["eligible"])
-    for k, v in out["candidates"].items():
-        print(k)
-        for f in v:
-            print("  ", {x: f[x] for x in ("scene", "score", "area", "doors", "narrow", "min_clear", "entrance_clear",
-                                           "sliding", "bathrooms", "missing", "warnings")})
+    for f in out["candidates"]:
+        print("  ", {x: f[x] for x in SHOW})
 
 
 if __name__ == "__main__":

@@ -1,5 +1,5 @@
 const{chromium}=require('playwright'),assert=require('node:assert/strict'),path=require('node:path');
-const url='http://127.0.0.1:8910/'+encodeURIComponent('室内空间交互')+'/index.html?quality=balanced';
+const url='http://127.0.0.1:8910/'+'indoor-space-interaction'+'/index.html?quality=balanced';
 (async()=>{const browser=await chromium.launch({channel:'msedge',headless:true,args:['--use-angle=swiftshader','--enable-unsafe-swiftshader']});try{const page=await browser.newPage({viewport:{width:1600,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});await page.goto(url);await page.waitForFunction(()=>IndoorLab.app.simulation&&!IndoorLab.app.busy);await page.locator('#demo-preset').selectOption('office');await page.waitForFunction(()=>!IndoorLab.app.busy&&IndoorLab.app.model.preset==='office');
  assert.deepEqual(await page.locator('#heat-mode option').evaluateAll(nodes=>nodes.map(n=>n.value)),['access','contact','obstruction']);assert.equal(await page.locator('#heat-mode').inputValue(),'access');
  // Dwell / traffic alone must never paint the default obstacle heat.

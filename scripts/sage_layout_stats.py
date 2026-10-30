@@ -1,7 +1,7 @@
 """统计已解压的 SAGE-10k 场景：房间数、房间类型、门宽、物体数和摆放类型。
 
 用法：python scripts/sage_layout_stats.py [--out <json>]
-只读 datasets/SAGE-10k/extracted/*/layout_*.json，不读网格。
+只读 $HA_DATA/SAGE-10k/extracted/*/layout_*.json（手动解压的样本），不读网格。
 """
 import argparse
 import collections

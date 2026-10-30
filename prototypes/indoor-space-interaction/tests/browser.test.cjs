@@ -1,5 +1,5 @@
 const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
-const root=path.resolve(__dirname,'..'),url='http://127.0.0.1:8910/'+encodeURIComponent('室内空间交互')+'/index.html?quality=balanced';
+const root=path.resolve(__dirname,'..'),url='http://127.0.0.1:8910/'+'indoor-space-interaction'+'/index.html?quality=balanced';
 (async()=>{
  const browser=await chromium.launch({channel:'msedge',headless:true,args:['--enable-webgl','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
  try{

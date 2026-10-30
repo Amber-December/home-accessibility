@@ -1,6 +1,6 @@
 # 先住 LiveFirst · home-accessibility
 
-住进去之前，先替你住一遍。数字住户（轮椅使用者、助行器老人、上肢受限者、步行对照）在 3D 户型里完成日常任务，系统找出过不去、够不着的地方，按物体和规范条文归因，给出改造方案并重新仿真验证。参赛项目：群核 Aholo 全球 3D AI 黑客松（北京站）。
+住进去之前，先替你住一遍。轮椅使用者、助行器老人、上肢受限者和步行对照四类数字住户，在 3D 户型里完成入户、去卫生间、取用冰箱、上下床、夜间起夜等日常任务。系统找出过不去、够不着的地方，把每个问题归到具体物体和规范条文，给出改造方案，再重新仿真验证。参赛项目：群核 Aholo 全球 3D AI 黑客松（北京站）。
 
 ## 文档
 
@@ -11,7 +11,7 @@
 | Agent 与后端 | [docs/tech/agent-backend.md](docs/tech/agent-backend.md) | A | Agent A0–A9、MCP 工具、户型识别、商品抓取、布局求解、FastAPI 后端、REST 和 SSE 协议、安全、核心参考工具和论文 |
 | 数据 | [docs/tech/data.md](docs/tech/data.md) | B | 数据集、目录约定、**队友本地准备数据**、SAGE 上游事实 |
 | Lux3D | [docs/tech/aholo-lux3d.md](docs/tech/aholo-lux3d.md) | A | Aholo Lux3D / World 接口与资产工厂 |
-| 竞品调研 | [docs/research/competitive-research.md](docs/research/competitive-research.md) | — | 8 个方向、73 条调研，空白点和可借用做法 |
+| 竞品调研 | [docs/research/competitive-research.md](docs/research/competitive-research.md) | — | 8 个方向、74 条调研，空白点和可借用做法 |
 | 标准 | [docs/standards/standards-check.md](docs/standards/standards-check.md) | B | GB 55019 / GB 50763 / ADA 2010 阈值逐条核对 |
 | 比赛计划 | [plans/hackathon-plan.md](plans/hackathon-plan.md) | 共享 | 赛事规则和评分拆解、提交物、按赛程排的三人分工、待团队决定的事项 |
 | 协作 | [CONTRIBUTING.md](CONTRIBUTING.md) | 共享 | 代码目录和归属、共享文件规则、fork 和 PR、CI、大文件和凭证 |
@@ -48,7 +48,7 @@
 │ A0 编排 Agent（状态机 + LLM 路由）                                                │
 │   ├─ A1 需求理解    ├─ A2 户型识别    ├─ A3 商品库    ├─ A4 资产生成（Lux3D）     │
 │   ├─ A5 布局        ├─ A6 住户决策    ├─ A8 修复      └─ A9 报告与讲解            │
-│ A7 评估器不是 LLM Agent，是确定性服务，所有 Agent 通过工具调用它                   │
+│ A7 评估器是确定性服务，不调用 LLM，所有 Agent 通过工具调用它                       │
 └───────────────┬────────────────────────────────────────────────────────────────┘
                 │ MCP 工具调用（进程内或 stdio）
 ┌───────────────▼──────────── 工具层（MCP servers）───────────────────────────────┐
@@ -73,13 +73,13 @@
                                    IR v1（结构 + 家具 + 模板补全）
                                            │ sim.evaluate（A6 决策 + 运动层 + A7）
                                            ▼
-                    runs/E-demo/<run_id>/{metrics.json, events.jsonl, traj/*.npz, violations.json}
+                    runs/E3/<run_id>/{metrics.json, events.jsonl, traj/*.npz, violations.json}
                                            │ A9
                                            ▼
                                    结论卡、报告 HTML/PDF
 ```
 
-各 Agent 的分工和状态机见 [agent-backend §2–§3](docs/tech/agent-backend.md)，run 目录和 manifest 的约定见 [simulation §2](docs/tech/simulation.md)。
+各 Agent 的分工和状态机见 [agent-backend §2–§3](docs/tech/agent-backend.md)，run 目录和 manifest 的字段由 [src/ha/runlog.py](src/ha/runlog.py) 定义，数据流见 [simulation §2](docs/tech/simulation.md)。
 
 ## 本地环境
 
@@ -89,21 +89,21 @@
 git clone https://github.com/<你的账号>/home-accessibility.git && cd home-accessibility   # 先 fork
 git remote add upstream https://github.com/Amber-December/home-accessibility.git
 python3.12 -m venv .venv && . .venv/bin/activate
-pip install -r env/requirements-lock-20261030.txt pytest==9.2.0 playwright==1.55.0
+pip install -r env/requirements-lock.txt pytest==9.2.0 playwright==1.55.0
 cp .env.example .env        # 填 HA_DATA、HA_REPO、HF_TOKEN 等
 set -a; . ./.env; set +a
 pytest -q tests/
 ```
 
 - 数据下载见 [data.md §3](docs/tech/data.md)，按需下载几套户型即可。演示用哪几套户型由团队一起定，见[比赛计划](plans/hackathon-plan.md)。
-- 不下数据也能开发前端和评估器：用 `tests/fixtures/H1/`。
+- 不下数据也能开发前端和评估器：用 `tests/fixtures/H1/`（一套 WSR 户型 scene000064 的 IR，只作开发样例）。
 - 导入户型：`python scripts/run_import.py <scene_id>`，结果写到 `$HA_OUTPUTS/runs/E1/<run_id>/`。导出 GLB：`python -m ha.ir.export_glb <scene_id> --ir-run <run_id>`。
 - 浏览器录屏和截图要另装 Chromium：`playwright install chromium`。
 
 ## 参与开发
 
 1. fork 本仓库，按[本地环境](#本地环境)装好依赖，`pytest` 通过。
-2. 在团队里认领角色 A、B、C（[比赛计划 §8.1](plans/hackathon-plan.md)），只改本角色负责的文件。
+2. 认领角色 A 或 B（C 由仓库所有者担任，见[比赛计划 §8.1、§10](plans/hackathon-plan.md)），只改本角色负责的文件。
 3. 每个任务开短分支，向本仓库 `main` 发 PR；改共享契约和共享文档前先在群里说。规则见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 4. 用 Codex、Claude Code 等 Agent 写代码时，它会读仓库根目录的 [AGENTS.md](AGENTS.md)（Claude Code 经 `CLAUDE.md` 引入）。开始前告诉它你的角色。
 

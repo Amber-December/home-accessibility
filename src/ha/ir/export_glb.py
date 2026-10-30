@@ -6,7 +6,7 @@ violation points to; walls, ground and windows get their own nodes, and meshes u
 diffuse_texture), else the constant colour, else a per-kind fallback. Meshes are reduced by vertex clustering
 on a GRID metre lattice. Written in glTF Y-up (Scene IR is Z-up); a sidecar <name>.nodes.json lists the nodes.
 
-  python -m ha.ir.export_glb scene000064 [--ir-run 20261030-075249-all-v3] [--grid 0.01] [--ceiling]
+  python -m ha.ir.export_glb scene000064 --ir-run <run_id> [--grid 0.01] [--ceiling]
 """
 from __future__ import annotations
 
@@ -194,7 +194,7 @@ def export(scene_id: str, ir_path: Path, out: Path, grid: float = 0.01, ceiling:
 def main(argv=None) -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("scenes", nargs="+")
-    ap.add_argument("--ir-run", default="20261030-075249-all-v3")
+    ap.add_argument("--ir-run", required=True)
     ap.add_argument("--grid", type=float, default=0.01)
     ap.add_argument("--ceiling", action="store_true")
     a = ap.parse_args(argv)

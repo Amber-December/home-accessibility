@@ -24,11 +24,10 @@ def check(name, fn, results):
     print(f"[{'PASS' if results[name]['ok'] else 'FAIL'}] {name}: {results[name]['detail']}")
 
 
-def llm_check(model):
-    def fn():
-        r = llm.complete("Reply with the single word OK.", model=model, max_tokens=8)
-        return {"model": r["model"], "text": r["text"].strip(), "usage": r["usage"]}
-    return fn
+def llm_check():
+    r = llm.complete("Reply with the single word OK.", max_tokens=8)
+    return {"model": r["model"], "protocol": os.environ.get("HA_LLM_PROTOCOL", "openai"),
+            "text": r["text"].strip(), "usage": r["usage"]}
 
 
 def ffmpeg_check(run_dir):
@@ -82,8 +81,7 @@ def wsr_check():
 def main():
     run_dir = runlog.new_run("E0")
     results = {}
-    check("llm_haiku_4_5", llm_check("claude-haiku-4-5-20251001"), results)
-    check("llm_sonnet_4_6", llm_check("claude-sonnet-4-6"), results)
+    check("llm", llm_check, results)
     check("ffmpeg_imageio", lambda: ffmpeg_check(run_dir), results)
     check("three_r128_vendor", three_check, results)
     check("mujoco_egl", lambda: mujoco_check("egl", run_dir), results)
@@ -91,7 +89,7 @@ def main():
     check("wsr_usd_open", wsr_check, results)
     (run_dir / "results.json").write_text(json.dumps(results, ensure_ascii=False, indent=2))
     runlog.write_manifest(run_dir, experiment="E0", params={"checks": list(results)},
-                          models={"llm_default": llm.DEFAULT_MODEL})
+                          models={"llm": llm.default_model()})
     print(run_dir)
 
 

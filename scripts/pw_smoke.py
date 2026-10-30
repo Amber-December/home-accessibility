@@ -1,6 +1,7 @@
 """E0 smoke: can headless Chromium (Playwright) render WebGL here? Writes a screenshot and a JSON record.
 
-  PLAYWRIGHT_BROWSERS_PATH=$HA_RUNTIME/cache/ms-playwright python scripts/pw_smoke.py
+  playwright install chromium   # once, downloads the headless browser
+  python scripts/pw_smoke.py
 Output: $HA_OUTPUTS/runs/E0/<stamp>-playwright-<host>/{shot.png, result.json, manifest.json}.
 """
 from __future__ import annotations

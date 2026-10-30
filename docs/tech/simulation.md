@@ -64,13 +64,13 @@ M8 可视化：3D 网页、体检报告、视频素材        M9 500 套统计�
 
 | 步骤 | 做法 | 依据（WSR 数据） |
 |---|---|---|
-| 房间 | `/root/ground/ground_<room>_<材质>_<id>` 网格投影到 XY，合并成多边形；材质名映射为地面类型（瓷砖、木地板） | 3 套抽查都有按房间拆分的地面网格 |
+| 房间 | USD 默认 prim `/root` 下的 `ground/ground_<room>_<材质>_<id>` 网格投影到 XY，合并成多边形；材质名映射为地面类型（瓷砖、木地板） | 500 套都有按房间拆分的地面网格，共 4,424 个房间 |
 | 房间类型 | 名字前缀：livingRoom、bathroom、kitchen、masterBedroom、eldersRoom、entranceHall 等 | metadata 和 prim 名一致 |
 | 墙 | `/root/wall` 网格，按高度带切片得到墙体多边形 | 墙带 CollisionAPI |
-| 门 | `/root/door` 下的门；铰链关节 → 平开，取转轴位置和角度范围算开向和扫掠扇形；滑轨关节 → 推拉 | 门 3,687 扇；铰链加把手 2,834，推拉 654 |
-| 门净宽 | 用门扇网格的宽度，减去开启后门扇厚度和挡块；外框包围盒只作参考 | 外框宽度 10% 分位 0.82 m，含门框 |
-| 家具 | metadata 的 `world_aabb`、`transform`、类目；需要精确外形时用网格按高度带切片 | 31,711 个物体，10 个没有包围盒 |
-| 灯 | RectLight、SphereLight 的位置、尺寸、强度 | 每套 50–250 个灯 |
+| 门 | `/root/door` 下的门；铰链关节 → 平开，取转轴位置和角度范围算开向和扫掠扇形；滑轨关节 → 推拉；没有门扇 → 门洞 | 门 3,687 扇，按导入器分类：平开 3,009、推拉 657、门洞 21 |
+| 门净宽 | 用门扇网格的宽度，减去开启后门扇厚度和挡块；外框包围盒只作参考 | 外框包围盒宽度 10% 分位 0.82 m，含门框 |
+| 家具 | metadata 的 `world_aabb`、`transform`、类目；需要精确外形时用网格按高度带切片 | metadata 共 31,711 个 product：门 3,687、窗 5,730，其余 22,294 个是物体；8 个物体没有包围盒 |
+| 灯 | RectLight、SphereLight 的位置、尺寸、强度 | 过滤异常值后每套 17–407 个灯，中位 262 |
 | 缺失引用 | 子 USD 打不开时，按 metadata 包围盒补，并记入报告 | scene000000 缺 1 个（柜内的锅） |
 
 **分层占用栅格**：分辨率 0.05 m。每个物体按高度带切片，得到它在每一层的占用：
@@ -84,11 +84,16 @@ M8 可视化：3D 网页、体检报告、视频素材        M9 500 套统计�
 
 每个格子同时记录占用它的物体 id，用于违规归因。
 
-**展示用 GLB**：用 pxr 读网格和世界变换，用 trimesh 合并后导出，材质取 UsdPreviewSurface 的基础色。纹理导不出时，按类目上色（演示风格反而更清楚）。
+**展示用 GLB**（`src/ha/ir/export_glb.py`）：网页查看器用 three.js，直接加载 glTF/GLB；WSR 的 USDZ 是二进制 USDC，贴图很重，浏览器读不了。GLB 只用于展示，不参与打分。
+
+- 每个 IR 物体和门导出为一个 glTF 节点，节点名就是 IR 的 `id`，网页按违规报告里的 `object_id` 高亮对应节点。墙、地面、窗各自一个节点，不属于任何 IR 实体的网格归到 `other:<顶层 prim>`。
+- 颜色：取绑定贴图的平均色（UsdPreviewSurface 的 `diffuseColor` 或 OmniPBR 的 `diffuse_texture`）；没有贴图时用常量颜色；都没有时按类别（墙、地面、门、物体等）给固定颜色。
+- 网格按顶点聚类减面（默认 0.01 m 网格）。
+- 输出 glTF 的 Y 向上（Scene IR 是 Z 向上），同目录写一份 `<scene>.nodes.json` 列出所有节点。
 
 ### 3.1 Scene IR（`ha.scene_ir` v0.1）
 
-字段以 [src/ha/ir/schema.py](../../src/ha/ir/schema.py) 的文档字符串为准，改动属于共享契约（见[比赛计划 §11](../../plans/hackathon-plan.md)）。单位米，Z 向上，坐标系与源 USD 一致。每套户型一个 JSON 加一个分层占用 npz。
+字段以 [src/ha/ir/schema.py](../../src/ha/ir/schema.py) 的文档字符串为准，改动属于共享契约（见 [CONTRIBUTING 共享文件](../../CONTRIBUTING.md#共享文件)）。单位米，Z 向上，坐标系与源 USD 一致。每套户型一个 JSON 加一个分层占用 npz。
 
 | 键 | 主要字段 |
 |---|---|
@@ -96,9 +101,9 @@ M8 可视化：3D 网页、体检报告、视频素材        M9 500 套统计�
 | `rooms[]` | `id`、`type`、`floor_material`、`floor_kind`、`floor_z`、`area`、`polygons[]` |
 | `walls` | body 层墙体掩码的轮廓多边形 |
 | `doors[]` | `id`、`rooms[]`、`kind`（平开、推拉、门洞）、`opening_width`、`clear_width`、`leaves[]`（见 `ha.ir.doors`） |
-| `objects[]` | `id`、`category`、`room`、`aabb`、`world_matrix`、`mass_kg`、`joints[]`、`footprint`、`z_range`、`layer_cells{toe, body, head}`、`geometry_source`（mesh 或 aabb_fallback）、`label` |
+| `objects[]` | `id`、`category`、`type`、`room`、`prim_path`、`aabb`、`world_matrix`、`mass_kg`、`has_collision`、`joints[]`、`footprint`、`z_range`、`layer_cells{toe, body, head}`、`geometry_source`（mesh 或 aabb_fallback）、`label` |
 | `lights[]` | 通过异常值过滤的灯；其余放 `lights_excluded[]` |
-| `windows[]` | 窗 |
+| `windows[]` | `id`、`rooms[]`、`aabb` |
 | `occupancy` | npz 文件名、栅格参数、各层高度区间、物体标签数 |
 | `report` | `missing_refs[]`、`warnings[]`、计数、耗时 |
 
@@ -113,14 +118,16 @@ M2 补全后再加三类字段：`under_clearance`（台下、桌下净空，轮
 | 质量 | 类目密度 × 包围盒体积 × 填充率；只补 metadata 缺失的项 |
 | 交互区 | 床：长边 1.20 m 宽的通道（GB 55019 3.4.6；至少一侧判定，另一侧只报告）；马桶：从侧墙 1.525 m × 从后墙 1.42 m 的净空（ADA 604.3.1）；冰箱和柜子：正前方 0.76 × 1.22 m 停留区（ADA 305.3）；沙发：正前方 0.90 m（自定） |
 | 够取目标 | 冰箱：冷藏层 0.4–1.5 m；吊柜：下沿高度取自网格；开关：优先用 WSR 里的 `switch` 物体高度，没有时按门把手侧墙上 1.30 m（国内常见安装高度，标为"现状假设"），合规线是 0.85–1.10 m（GB 55019 3.1.6） |
-| 门的开启 | 平开门开启力默认 30 N，推拉门 20 N（标为假设）；门把手默认执手式 |
+| 门的开启 | 平开门开启力默认 30 N，推拉门 20 N（自定假设，没有实测来源）；门把手默认执手式 |
 | 地面防滑 | 卫生间和厨房的瓷砖标"湿滑风险"，只做提示，不计分 |
+
+模板补出的值进入判定时，违规记录带 `source: template`，报告里标"基于模板假设"，与实测或数据集原值的结论分开列。例如平开门默认 30 N 高于上肢受限画像的 22.2 N（ADA 404.2.9）和 25 N（GB 55019 2.5.4），没有实测开启力的平开门对这个画像都会报违规，这些违规都标"基于模板假设"。
 
 ## 5. M3 Lux3D 资产工厂
 
-生成路线、积分和接口细节见 [aholo-lux3d.md](aholo-lux3d.md) §3。仿真这边只关心进入 IR 之前的三件事：
+生成路线和接口细节见 [aholo-lux3d.md](aholo-lux3d.md) §3，积分价格也在那里。仿真这边只关心进入 IR 之前的三件事：
 
-- 规范化：Z 轴朝上、原点落地，按 `assets/catalog.yaml` 的标称尺寸缩放。QA 门：三个轴的缩放比之间差异超过 15% 就判为不合格。
+- 规范化：Z 轴朝上、原点落地，按 `src/ha/assets/catalog.yaml` 的标称尺寸缩放。QA 门：三个轴的缩放比之间差异超过 15% 就判为不合格。
 - 冰箱、柜子的铰接结果给出门扫过的范围；CoACD 凸分解给 MuJoCo 用。
 - 每次 create 都追加到 `$HA_OUTPUTS/assets/<run_id>/ledger.jsonl`，失败的也记。
 
@@ -140,9 +147,9 @@ M2 补全后再加三类字段：`under_clearance`（台下、桌下净空，轮
 | 水平够取距离 | 正面 0.50 m，侧面 0.25 m | 0.45 m | 0.40 m | 0.60 m |
 | 开门 | 推门可以；拉门要求把手侧有 ≥ 0.455 m 余量、垂直深度 1.525 m（ADA 404.2.4.1；GB 墙垛 0.40 m 一起报告） | 开门时要松开助行器，耗时加 6 s | 可用的力 ≤ 22.2 N（ADA 404.2.9），GB 25 N 并列；不能拧圆球把手 | 无限制 |
 | 门槛 | ≤ 0.015 m 且斜面 ≤ 1:10（GB 55019 2.5.3）；ADA 13 mm 并列 | 同左 | 无限制 | 无限制 |
-| 夜间照度需求 | 相对照度 ≥ 中位值的 30% | 同左，且不能低于 50% | 同轮椅 | 不检查 |
+| 夜间照度需求 | 路径上相对照度 ≥ 0.30（以全部开灯时户内中位值为 1，自定） | 相对照度 ≥ 0.50（易跌倒，要求更高，自定） | 同轮椅 | 不检查 |
 
-**担架（T7 专用的运送体，不是住户画像）**：担架本体是 0.60 × 1.90 m 的矩形，前后各有一名救护人员，用 r=0.25 m 的圆表示。三者组合成一个刚体，只占 body 层。允许原地转和倒车，速度 0.6 m/s。结论标注"按平抬担架计算"。实际救护时可以竖起担架或改用楼梯椅，所以抬不出去说明的是风险，不是绝对结论。
+**担架（T7 专用的运送体，与住户画像分开）**：担架本体是 0.60 × 1.90 m 的矩形，前后各有一名救护人员，用 r=0.25 m 的圆表示。三者组合成一个刚体，只占 body 层。允许原地转和倒车，速度 0.6 m/s。结论标注"按平抬担架计算"。实际救护时可以竖起担架或改用楼梯椅，所以抬不出去表示存在风险，结论按风险报告。
 
 ## 7. M5 任务与动作
 
@@ -184,7 +191,7 @@ M2 补全后再加三类字段：`under_clearance`（台下、桌下净空，轮
 2. 决策层（LLM）只能从候选动作里选，并输出 `{choice, reason, monologue}`。它不能编造候选之外的动作或数字。
 3. 运动层执行选中的动作，把真实结果交回决策层，进入下一步。每个任务最多 20 步。
 4. 独白必须引用运动层给出的数字。生成后由程序检查：独白里的数字和事件对不上就重新生成，最多 2 次，仍不一致就改用模板句。
-5. 调用参数固定：temperature 0，缓存键是 `sha256(模型名 + prompt)`。重跑时直接读缓存，保证可复现。
+5. 调用参数固定：temperature 0，缓存键是 JSON 数组 `[模型名, system, prompt]` 的 sha256。重跑时直接读缓存，保证可复现。
 6. 另有一个**规则策略**，接口与 LLM 相同（总是选成功率最高、代价最低的候选）。LLM 不可用时用它，演示不会因此中断。打分时两种策略都跑，报告里分开记录。
 
 ## 8. M6 评估器
@@ -207,15 +214,16 @@ M2 补全后再加三类字段：`under_clearance`（台下、桌下净空，轮
 
 | 字段 | 含义 |
 |---|---|
-| `success`、`fail_stage`、`fail_code` | 是否完成；在 L0–L3 哪层失败；失败编码 |
+| `success`、`fail_stage`、`fail_code` | 是否完成；在 L0–L2 哪层失败；失败编码 |
 | `collisions`、`max_penetration_m` | 软碰撞事件数和最大穿透深度 |
 | `min_clearance_m`、`min_clearance_object` | 全程最小余量和对应物体 |
 | `turn_failures`、`k_point_turns` | 原地转不了的次数；需要几次倒车调整 |
 | `reach_failures` | 够不着的目标数 |
 | `time_s`、`path_m` | 任务耗时（移动加动作）和路径长度 |
-| `violations[]` | `{code, object_id, measured, required, standard, location}` |
+| `violations[]` | `{code, object_id, measured, required, standard, location, source}`；`source` 为 `template` 时报告标"基于模板假设" |
+| `l3_contacts` | 只在做过 L3 回放的记录里出现：接触对、接触力、穿透深度。L3 不改变 `success` 和分数 |
 
-违规编码：DOOR_WIDTH、DOOR_SWING_BLOCK、DOOR_PULL_CLEARANCE、THRESHOLD、CORRIDOR_WIDTH、TURN_SPACE、PARK_SPACE、TRANSFER_ZONE、REACH_HEIGHT、REACH_DIST、LIGHT_DARK、SWITCH_REACH、EVAC_MARGIN、STRETCHER_BLOCK、CLUTTER_MARGIN。提示类（不计分）：SLIP_HINT。
+违规编码：DOOR_WIDTH、DOOR_SWING_BLOCK、DOOR_PULL_CLEARANCE、THRESHOLD、CORRIDOR_WIDTH、TURN_SPACE、PARK_SPACE、TRANSFER_ZONE、REACH_HEIGHT、REACH_DIST、LIGHT_DARK、SWITCH_HEIGHT、SWITCH_REACH、EVAC_MARGIN、STRETCHER_BLOCK、CLUTTER_MARGIN。提示类（不计分）：SLIP_HINT。
 
 户型总分（冻结后不改）：按适用任务等权计算成功率 × 100，每条红色违规扣 5 分、黄色扣 2 分，结果截断在 0–100。红色指导致任务失败的违规，黄色指任务完成但余量低于规范的违规。
 
@@ -224,7 +232,7 @@ M2 补全后再加三类字段：`under_clearance`（台下、桌下净空，轮
 - 地面 0.05 m 高度处建 0.10 m 栅格。每个灯对每个格子的贡献按"强度 × 面积 × 余弦 / 距离²"估算；墙体遮挡用 body 层射线检测。
 - USD 里的灯光强度没有标定成勒克斯，所以只报**相对照度**：以"全部开灯"时户内的中位值为 1。
 - 夜间配置：只开起点卧室、走廊、卫生间的灯。T6 输出路径上最暗一段的相对照度、长度和位置。
-- 开关高度优先取 WSR 的 `switch` 物体；没有时用 M2 模板（门把手侧 1.30 m）并标为"基于假设"。高于 GB 55019 3.1.6 的 1.10 m 报 SWITCH_HEIGHT；高于住户够取上限（轮椅 1.22 m）报 SWITCH_REACH。
+- 开关高度优先取 WSR 的 `switch` 物体；没有时用 M2 模板（门把手侧 1.30 m）并标为"基于模板假设"。高于 GB 55019 3.1.6 的 1.10 m 报 SWITCH_HEIGHT；高于住户够取上限（轮椅 1.22 m）报 SWITCH_REACH。
 
 ### 8.4 烟气疏散（示意）
 
@@ -247,7 +255,7 @@ M2 补全后再加三类字段：`under_clearance`（台下、桌下净空，轮
 
 | 代价 | 编辑 | 约束 |
 |---|---|---|
-| 1 | 平移家具（沿墙或在房间内，步长 0.10 m，最多 1.0 m） | 不穿墙、不和其他物体重叠；原来靠墙的仍然要靠墙；不能挡住其他门、窗 |
+| 1 | 平移家具（沿墙或在房间内，步长 0.10 m，最多 1.0 m） | 不穿墙、不和其他物体重叠；编辑前靠墙的仍然要靠墙；不能挡住其他门、窗 |
 | 1 | 旋转家具 90° 或 180° | 同上 |
 | 2 | 删除非必需物体（装饰、椅子、边几、地毯） | 房间功能不丢：卧室要有床，卫生间要有马桶，厨房要有灶台 |
 | 3 | 换同类商品（从资产库选尺寸更小或台下净空更大的款） | 只能从已入库的资产里选；新物体同样要满足摆放约束 |
@@ -300,7 +308,7 @@ M2 补全后再加三类字段：`under_clearance`（台下、桌下净空，轮
 |---|---|
 | 3D 网页 | 在 `prototypes/indoor-space-interaction/` 基础上改造（原型的定位和可复用部分见 §18）：加 GLB 加载入口，读取 IR、轨迹、违规 JSON。功能包括俯视、第一人称（眼高 1.2 m）、违规高亮、热力图、改造前后分屏 |
 | 俯视动画 | matplotlib 画平面图、住户外形、轨迹、违规，用 imageio-ffmpeg 输出 mp4。网页录屏出问题时用它兜底，规模化统计也用它 |
-| 体检报告 | HTML 模板加 doc-tools 转 PDF |
+| 体检报告 | HTML 模板，用 pandoc 或 LibreOffice 转 PDF |
 | 录制 | 首选在本机浏览器打开网页，用 OBS 等工具录屏（画质最好）。备选：用 playwright 和 chromium 逐帧截图，再用 ffmpeg 合成 |
 | 商品落位 | Lux3D 资产在网页里做"飞入替换"动画 |
 
@@ -325,12 +333,12 @@ M2 补全后再加三类字段：`under_clearance`（台下、桌下净空，轮
 | M8 俯视动画和报告 | `src/ha/viz/`；网页在 `web/` |
 | M9 规模化 | `scripts/run_eval.py`（按户型分片） |
 
-## 13. 技术突破点
+## 13. 技术要点
 
 1. **规范可执行化**：GB 55019、GB 50763 和 ADA 条文变成可计算的检查，每条违规落到物体 id 和差值。
 2. **按真实外形规划**：矩形轮椅外形加非完整约束的 SE(2) 规划，加分层占用（脚踏能进台下）。同一扇门可以直接对比圆盘模型和矩形模型的结论差异。
-3. **软碰撞归因**：没有无碰撞路径时，用最小穿透路径回答"会撞在哪里、撞多深"，而不是只回答"过不去"。
-4. **双层数字住户**：LLM 只在运动层给出的候选里选，独白要和真实数字对得上。既有表现力，分数又可复现。
+3. **软碰撞归因**：没有无碰撞路径时，用最小穿透路径回答"会撞在哪里、撞多深"。
+4. **双层数字住户**：LLM 只在运动层给出的候选里选，独白要和真实数字对得上，分数只来自运动层。
 5. **验证式修复**：按编辑代价搜索，每个方案都对所有住户重新仿真，避免顾此失彼。
 6. **资产按需入库**：商品图经 Lux3D 生成，校准尺寸，加铰接和凸分解后直接进入仿真。
 7. **多风险叠加**：同一套 IR 上叠加夜间照度、烟气疏散的示意分析，再加担架通行（换外形复用规划器）和杂物容错（逐步加障碍测余量）。
@@ -354,9 +362,9 @@ M2 补全后再加三类字段：`under_clearance`（台下、桌下净空，轮
 
 **自检**（对应比赛计划 E2、E3）：
 
-- 缺陷注入：在合格户型里注入已知缺陷（门缩到 0.70 m、转身区放 0.6 × 0.6 m 箱子、吊柜下沿抬到 1.60 m），检查召回率和原因归属，要求召回 ≥ 0.9、归属正确率 ≥ 0.9。
-- 误报抽查：对判失败的原始户型抽 30 套人工看平面图，误报 ≤ 10%。
-- 对照组：步行对照在适用任务上成功率 ≥ 90%，达不到多半是评估器有缺陷。
+- 缺陷注入（E2）：在非演示户型里抽 20 套，注入已知缺陷（门缩到 0.70 m、转身区放 0.6 × 0.6 m 箱子、吊柜下沿抬到 1.60 m），检查召回率和原因归属，要求召回 ≥ 0.9、归属正确率 ≥ 0.9。
+- 误报抽查（P2）：对判失败的原始户型抽 30 套人工看平面图，误报 ≤ 10%。
+- 对照组（E3）：步行对照在适用任务上成功率 ≥ 90%，达不到时先排查评估器。
 - 确定性：同一输入重跑两次，结果 JSON 逐字节一致；不依赖随机人群。
 
 **防作弊**：
@@ -372,7 +380,7 @@ M2 补全后再加三类字段：`under_clearance`（台下、桌下净空，轮
 |---|---|---|
 | 评分 | 不用物理引擎 | L0–L2 是栅格和 SE(2) 几何计算，确定、快，CPU 即可 |
 | 接触复核（L3） | MuJoCo | DeepMind 开源，Apache-2.0，`pip install mujoco`，CPU 运行，笔记本上也能跑。读 IR 生成的 MJCF，按 L1 路径回放，输出接触点和穿透深度（§8.5） |
-| 展示镜头、人形动画（可选） | Isaac Sim | 需要 RTX 显卡（A100、A800 这类数据中心卡没有 RT 核，不适用），有 RTX 算力的队友才跑。WSR 本身是带 PhysX 关节的 USD，可以直接加载；画面和铰接门、柜的效果好于 MuJoCo |
+| 展示镜头、人形动画（可选） | Isaac Sim | 需要 RTX 显卡（A100、H100 这类数据中心卡没有 RT 核，不适用），有 RTX 算力的队友才跑。WSR 本身是带 PhysX 关节的 USD，可以直接加载；画面和铰接门、柜的效果好于 MuJoCo |
 | 展示镜头兜底 | Blender | 读展示用 GLB 和 L1 轨迹，Cycles 或 EEVEE 离线渲染，CPU 可跑，可以多进程批量出帧 |
 
 这些引擎都不参与打分。展示镜头的主线是网页 3D 回放；需要更好的离线画面时，有 RTX 用 Isaac Sim，没有就用 Blender。
@@ -382,8 +390,8 @@ M2 补全后再加三类字段：`under_clearance`（台下、桌下净空，轮
 | 阶段 | 产出 | 通过门 | 算力 |
 |---|---|---|---|
 | P1 评估器 | USD → IR 转换器；L0–L2 评估器；500 套基线报告 | §15 的自检全部通过 | CPU |
-| P2 优化 | 方案演化模块（§9.3）和对照组（随机搜索、模拟退火，同样的评估预算） | holdout 上任务成功提升明显优于对照，约束违反为 0 | CPU + LLM 端点 |
-| P3 物理复核 | MuJoCo / PyBullet 回放 | L1 判通过的路径，物理接触率低于事先定的阈值 | CPU |
+| P2 优化 | 方案演化模块（§9.3）和对照组（随机搜索、§9.2 的规则排序最佳优先搜索，同样的评估预算） | holdout 上任务成功提升明显优于对照，约束违反为 0 | CPU + LLM 端点 |
+| P3 物理复核 | MuJoCo 回放 | L1 判通过的路径，物理接触率低于事先定的阈值 | CPU |
 | P4 生成与资产 | 户型图识别、整屋布局、Lux3D 资产工厂 | 单 SKU 冒烟过尺寸 QA 门；生成的户型过评估器 | GPU（布局 LLM）、Aholo 积分 |
 
 每个阶段开跑前在 `plans/` 写冻结计划：假设、阈值、数据划分、成功门、停止条件。比赛期间的实验 E0–E16 是这几个阶段的缩小版，门写在[比赛计划 §7](../../plans/hackathon-plan.md)。
@@ -393,7 +401,7 @@ M2 补全后再加三类字段：`under_clearance`（台下、桌下净空，轮
 浏览器端原型（Three.js r128，无构建），依赖 `prototypes/js/vendor/three-r128/`，运行方法见仓库 README。原型有两种模式：
 
 - “自由探索”：圆盘人群、栅格 Dijkstra、碰撞热力。
-- “任务驱动数字住户”：4 个画像（轮椅、助行器、视障白杖、上肢受限）和 5 项任务（入户到沙发、卧室到卫生间、取用冰箱、床椅转移、紧急疏散）。位置加 8 个朝向的搜索，平移和转向都检查矩形扫掠，允许倒退；开门检查接近、触达、阻力、门扇扫掠和退让位置。另有规则修复候选（挪家具、换低位把手冰箱、改开门方向），每个候选重跑同一任务集。
+- “任务驱动数字住户”：4 个画像（轮椅、助行器、视障白杖、上肢受限）和 5 项任务（入户到沙发、卧室到卫生间、取用冰箱、床椅转移、紧急疏散）。这组画像是原型自带的，与本方案的画像（§6）不同，原型没有步行对照，本方案没有视障白杖。位置加 8 个朝向的搜索，平移和转向都检查矩形扫掠，允许倒退；开门检查接近、触达、阻力、门扇扫掠和退让位置。另有规则修复候选（挪家具、换低位把手冰箱、改开门方向），每个候选重跑同一任务集。
 
 | 原型部分 | 在本方案中的用法 |
 |---|---|
@@ -408,11 +416,11 @@ M2 补全后再加三类字段：`under_clearance`（台下、桌下净空，轮
 
 | 项 | 内容 |
 |---|---|
-| Python | 3.12 venv；依赖锁在 `env/requirements-lock-20261030.txt` |
+| Python | 3.12 venv；依赖锁在 `env/requirements-lock.txt` |
 | 几何、仿真库 | numpy、scipy、shapely、trimesh、networkx、usd-core（pxr）、coacd、pybullet、mujoco 3.17.0、rtree、opencv |
-| 浏览器 | playwright + Chromium headless，WebGL 2 走 SwiftShader |
+| 浏览器 | playwright + Chromium headless，无 GPU 时 WebGL 2 走 SwiftShader |
 | Aholo SDK | `manycore.aholo_sdk_{core,asset,lux3d,world}` |
-| LLM | `src/ha/llm.py`，读 `HA_LLM_BASE_URL`、`HA_LLM_TOKEN`（OpenAI 兼容接口） |
+| LLM | `src/ha/llm.py`，读 `HA_LLM_BASE_URL`、`HA_LLM_TOKEN`、`HA_LLM_MODEL`、`HA_LLM_PROTOCOL`。默认走 OpenAI 兼容的 Chat Completions；`HA_LLM_PROTOCOL=anthropic` 时走 Anthropic Messages |
 
 ## 20. 核心参考工具和论文
 

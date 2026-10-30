@@ -1,6 +1,6 @@
 # 先住 LiveFirst · Aholo / Lux3D 接口与接入
 
-代码通过 Python SDK 调用 Aholo，包是 `manycore-aholo-sdk-{core,asset,lux3d,world}`，版本锁在 `env/requirements-lock-20261030.txt`。上游源码：[manycoretech/aholo-spatial-sdk](https://github.com/manycoretech/aholo-spatial-sdk)（MIT）。
+代码通过 Python SDK 调用 Aholo，包是 `manycore-aholo-sdk-{core,asset,lux3d,world}`，版本锁在 `env/requirements-lock.txt`。上游源码：[manycoretech/aholo-spatial-sdk](https://github.com/manycoretech/aholo-spatial-sdk)（MIT）。
 
 API key 放在本地 `.env` 的 `AHOLO_API_KEY`（中国区），不进 Git。检查 key 和连通性用两个只读接口：`GET /lux3d/v1/generate/task/list`、`GET /asset/v1/token`。
 
@@ -16,20 +16,21 @@ API key 放在本地 `.env` 的 `AHOLO_API_KEY`（中国区），不进 Git。�
 | `generate/img-to-3d` | 1 张（`img`）或 1–32 张（`imgs`）图生成 3D，版本 `G1` / `G1-Turbo` | **主用**：商品图转家具资产 |
 | 参数 `faceCount` | 10k–300k，默认 200k | 仿真用 10k–30k |
 | 参数 `outputFormat` | zip / glb / ply | 取 glb |
-| 参数 `enablePbr` | 只对 G1-Turbo 生效；false 时出白模 | 只要碰撞体时用白模，更快 |
+| 参数 `enablePbr` | 只对 G1-Turbo 生效；false 时出白模 | 资产工厂取 true，生成的模型要进网页展示 |
 | 参数 `aiPredictSize` | 默认开，AI 估尺寸并缩放 | 我们用商品库的真实尺寸重缩放，这里关掉，避免两次缩放 |
-| `generate/image-to-four-view` | 单图或文字生成四视图（前 3/4、反 3/4、侧、背） | 商品只有一张图时，先补成多视图再走 `imgs` |
-| `generate/text-to-3d` | 文字（加可选参考图）生成 3D | 商品库缺图时兜底，或生成"换品"候选的占位资产 |
-| `part-split` | GLB 拆部件 | 拆出柜门、抽屉 |
-| `articulation-animation` | GLB 加 prompt，生成可动部件和动画 | 柜门、抽屉的开启范围，影响通行和够取 |
-| `humanoid-auto-rig`、`humanoid-animation-retarget` | 人形绑骨、套动作（Walk_Loop、Sitting_Enter、PickUp_Table、Interact 等） | 数字住户的**可视化**；没有轮椅动作，能力建模不靠它 |
+| `generate/image-to-four-view` | 单图或文字生成四视图（前 3/4、反 3/4、侧、背） | 商品只有一张图时，先补成四视图再走 `imgs` |
+| `generate/text-to-3d` | 文字（加可选参考图）生成 3D | 商品没有可用图片时按 prompt 生成外形，或生成"换品"候选的占位资产 |
+| `part-split` | GLB 拆部件 | 资产工厂不调用；铰接直接作用在整件 GLB 上 |
+| `articulation-animation` | GLB 加 prompt，生成可动部件和动画 | 冰箱门的开启范围，影响通行和够取 |
+| `animations/rig`（auto-rig） | 人形角色 GLB 自动绑骨，输出带骨骼和蒙皮的 GLB | 数字住户的人体模型 |
+| `animations/retarget`（animation-retarget） | 给已绑骨的 GLB 套公开动作库里的动作，一次 1–10 个，输出 GLB 或 FBX | 住户动作：`Walk_Loop`（行走）、`Sitting_Idle_Loop`（坐在轮椅上）、`Push_Loop`（推助行器）、`Interact`、`PickUp_Table`（够取）。只用于**可视化**，能力判定按画像外形 |
 | `generate/material-transfer` | 换材质，可指定目标高度（mm） | 同款不同色，次要 |
 | `multi-format-export` | 导出 usdz / obj_zip / fbx_zip / stl / 3mf | USD 给 Isaac Sim，OBJ 给 PyBullet / MuJoCo |
 | `generate/multimodal-to-image` | 文生图或图改图 | 次要 |
 | `/world/v1/reconstructions`、`/world/v1/generations` | 视频或 ≥20 张图重建 3DGS，产物是 PLY / SPZ / SOG，没有 mesh | 可选：把真实住宅拍成 3DGS 做展示底图。不能直接当碰撞几何 |
 
-并发上限各处文档说法不一（免费账户 1–5），资产工厂默认 1 个并发，可配置，首次冒烟时实测（§4）。
-各接口的积分价格见 [simulation §5](simulation.md)。查余额用 MCP 的 `getlux3daccountbalance` 工具。
+并发上限以接口实测为准（§4）。资产工厂按 SKU 逐个串行提交，同一时刻只有 1 个任务。
+各接口的积分价格见 §3 的价格表。查余额用 MCP 的 `getlux3daccountbalance` 工具。
 
 ## 2. 两种接入方式
 
@@ -37,8 +38,8 @@ API key 放在本地 `.env` 的 `AHOLO_API_KEY`（中国区），不进 Git。�
 |---|---|---|
 | 是什么 | Python 包，同步和异步都有，还有 TS、Java 版 | 远程工具服务（streamable-http），`https://api.aholo3d.cn/lux3d-mcp/mcp` |
 | 谁来调 | 我们的流水线代码，命令行批量跑 | 任何支持 MCP 的 Agent，包括我们的 LLM Agent |
-| 优点 | 可批量、可复现、可缓存，参数全（G1 / G1-Turbo、part-split、articulation） | Agent 运行时按需调用；带账户余额、询价（quote）、报告工具 |
-| 缺点 | 要自己写重试、缓存、限流 | 流程较重（plan、quote、create、report）；官方标注公开 MCP 的鉴权还没验证完，成熟度待确认 |
+| 优点 | 可批量、可复现、可缓存，参数全（G1 / G1-Turbo、articulation、rig、retarget） | Agent 运行时按需调用；带账户余额、询价（quote）、报告工具 |
+| 缺点 | 要自己写重试、缓存、限流 | 流程较重（plan、quote、create、report）；公开 MCP 的鉴权以实测为准，结果记入 ledger |
 | 本项目定位 | **主路径**：资产工厂 | 第二阶段：交互式演示时，让 Agent 现场给"换品"生成资产 |
 
 官方另有 Agent skill 套件 [manycore-research/Aholo-Lux3D](https://github.com/manycore-research/Aholo-Lux3D)，适合在对话里手动试单件商品。项目代码不依赖它。
@@ -46,19 +47,28 @@ API key 放在本地 `.env` 的 `AHOLO_API_KEY`（中国区），不进 Git。�
 ## 3. 在"先住"工作流里怎么用
 
 ```text
-商品库（SKU、类目、W×D×H、图片）
-  └─ 资产工厂（SDK，批量）
-       1. 查缓存：key = sha256(SKU + 图片 + 版本 + 参数)，命中就跳过
-       2. 图片数 ≥ 2 → img-to-3d(imgs, G1-Turbo, faceCount=20k, aiPredictSize=false, glb)
-          只有 1 张 → 先 image-to-four-view，再走多图；没有图 → text-to-3d 兜底，并标记"非真实商品"
-       3. 轮询到状态 3 后立即下载 glb 到 `$HA_OUTPUTS/assets/`，记录 taskId 和 bizId
-       4. 规范化：轴向朝上、原点落地，按 SKU 的 W×D×H 缩放
-          QA 门：各轴缩放比之间差异超过 15% 就判为生成形状不可信，转人工或换图重试
-       5. 有门或抽屉的类目（柜、衣柜、橱柜）→ part-split → articulation-animation
-          → 得到开启扫掠范围
-       6. 物理化 Agent：凸分解碰撞体（CoACD），质量和摩擦按类目模板设置，
-          交互区按类目模板设置（床侧转移区、马桶侧方空间、柜前操作区）
-       7. multi-format-export → usdz（给 Isaac）和 obj（给 PyBullet / MuJoCo）
+商品库 src/ha/assets/catalog.yaml（SKU、类目、W×D×H、图片、route、articulate）
+  └─ 资产工厂 src/ha/assets/lux3d_factory.py（SDK，按 SKU 串行）
+       1. 前置检查，任一不满足就停在这个 SKU：
+          缓存 key = sha256(SKU、标称尺寸、route、articulate、prompt、生成参数、导出格式、图片 sha256)，
+            已有成功生成且文件在盘上就跳过；
+          已 create 但没结束的任务续查，不重复 create；
+          远端任务列表里有不在任何 ledger 中的任务，先对账；
+          同一 SKU 的 QA 已失败 2 次，改用包围盒替身；
+          所有 ledger 的累计预估花费加上本 SKU 的花费不超过 BUDGET
+       2. 生成：
+          route = multiview_g1turbo（有商品图）：image-to-four-view 把单张商品图补成四视图
+            → img-to-3d(imgs=四视图, G1-Turbo, faceCount=20k, enablePbr=true, aiPredictSize=false, glb)
+          route = text_to_3d（没有可用图）：text-to-3d(prompt, 同一组生成参数)，模型只代表品类外形
+       3. 每个任务轮询到状态 3 后立即下载产物到运行目录，ledger 记录 taskId、bizId、URL 和本地文件
+       4. articulate = true 的 SKU（冰箱 S1、S2）→ articulation-animation(整件 GLB, prompt)
+          → 门和抽屉的开启扫掠范围
+       5. multi-format-export → usdz（给 Isaac）和 obj_zip（给 PyBullet / MuJoCo）
+       6. 本地规范化（src/ha/assets/normalize.py）：转 Z 朝上、原点落在底面中心，按 SKU 的 W×D×H 逐轴缩放，
+          偏航 0° 和 90° 都试。QA 门：max(缩放比) / min(缩放比) − 1 > 15% 判为形状不可信，换图重试；
+          QA 结果写入 ledger
+       7. 碰撞体：CoACD 凸分解（同在 normalize.py）
+       8. 质量、摩擦和交互区（床侧转移区、马桶侧方空间、柜前操作区）按类目模板 src/ha/enrich/templates.yaml 设置
   └─ 资产库：Scene IR 只引用 asset_id，不直接引用 Lux3D URL
 ```
 
@@ -67,12 +77,38 @@ API key 放在本地 `.env` 的 `AHOLO_API_KEY`（中国区），不进 Git。�
 - 评估和优化循环里**不现场调用** Lux3D。一次生成要几分钟而且扣积分。优化 Agent 只从已经入库的资产里挑。
 - "换品"需要新资产时，进资产工厂的队列。先用 SKU 尺寸的包围盒代替，跑完仿真再补模型。
 - 无障碍判断用的是**商品库标称尺寸**，不用生成模型的尺寸。生成模型只负责外形细节和可视化。
-- 每次 create 都写入 `$HA_OUTPUTS/assets/<run_id>/ledger.jsonl`，记录 taskId、参数、状态和下载结果。失败的也要留。
+- 每次 create 都在轮询前写入 `$HA_OUTPUTS/assets/<run_id>/ledger.jsonl`，记录 taskId、参数和预估积分；任务结束时再追加状态和下载结果。失败的也要留。
+- 付费 create 需要用户在当次对话里同意；dry run（不带 `--create`）只算步骤、花费和缓存，不调用接口。
+
+### 3.1 价格与预算
+
+单价来自 Lux3D quote 接口（未计账户权益），代码里的 `PRICE` 与下表一致：
+
+| 步骤 | 积分/次 |
+|---|---|
+| image-to-four-view | 24 |
+| img-to-3d，G1-Turbo | 1 |
+| img-to-3d，G1（资产工厂不用） | 20 |
+| text-to-3d | 13 |
+| articulation-animation | 28 |
+| multi-format-export | 1 |
+
+单件 SKU 的花费按 route 累加：
+
+| route | 不铰接 | 铰接 |
+|---|---|---|
+| multiview_g1turbo（四视图 + G1-Turbo + 导出） | 26 | 54 |
+| text_to_3d（文生 3D + 导出） | 14 | 42 |
+
+`catalog.yaml` 的 S1–S10 合计 268 积分：S1 54，S2 42，S3、S6、S8 各 14，S4、S5、S7、S9、S10 各 26。
+
+团队积分 3000（比赛计划 §3.2）还要覆盖交互式演示、换图重试和住户的 rig、retarget。资产工厂的 `BUDGET = 600` 是它自己的硬上限：每次 create 前，把所有 ledger 里 create 记录的预估花费加起来，再加上本 SKU 的花费，超过 600 就停。这个上限够 S1–S10 全量跑一遍（268），再给每件留一次重试（合计 536）。
 
 ## 4. 首次冒烟时确认
 
-用 G1-Turbo 白模生成 1 个 SKU 时，顺带确认以下行为，结论写进资产工厂代码的注释和 ledger：
+E7 冒烟用 S1（四视图 + G1-Turbo PBR + 铰接 + 导出，54 积分），顺带确认以下行为，结论写进资产工厂代码的注释和 ledger。各项待 E7 实测：
 
 - `aiPredictSize=false` 时输出模型的单位和朝向。
-- part-split 和 articulation 对柜类商品的成功率。
+- articulation 对冰箱整件 GLB 的成功率，以及产物里开启范围的格式。
+- 实际扣费与 §3.1 预估是否一致。
 - 实际并发上限。

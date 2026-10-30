@@ -16,7 +16,7 @@
 |---|---|---|
 | 本角色的文件 | 目录树里标了本角色的代码和文档 | 直接改 |
 | 别人的文件 | 其他角色的目录和文档 | 不改。在 PR 描述或 issue 里写清楚要对方改什么 |
-| 共享契约 | `src/ha/ir/schema.py`、`src/ha/evaluator/result_schema.py`、`tests/fixtures/H1/`、agent-backend §10.1 和 §11 的 REST/SSE 协议、`personas.yaml` 和 `templates.yaml` 里的阈值 | 先提醒用户到群里说一声；单独开 PR，不和其他改动混在一起；PR 标题以 `[契约]` 开头，要另一人 Approve |
+| 共享契约 | `src/ha/ir/schema.py`、`src/ha/evaluator/result_schema.py`、`src/ha/runlog.py`、`tests/fixtures/H1/`、agent-backend §10.1 和 §11 的 REST/SSE 协议、`personas.yaml` 和 `templates.yaml` 里的阈值 | 先提醒用户到群里说一声；单独开 PR，不和其他改动混在一起；PR 标题以 `[契约]` 开头，要另一人 Approve |
 | 共享文档 | `README.md`、`CONTRIBUTING.md`、`AGENTS.md`、`plans/hackathon-plan.md` | 只改和本次任务直接相关的段落，不顺手重写别的段落 |
 | 进度 | `plans/hackathon-plan.md` §11.1 | 只在本角色的小节（A、B、C）末尾追加，不改别人的条目 |
 

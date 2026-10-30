@@ -4,7 +4,6 @@
 #   GB55019 x.y.z / GB50763 x.y.z / ADA xxx = clause; custom = our own choice, no clause behind it.
 # Scores come only from the deterministic motion layer; the LLM never edits these numbers.
 version: 1
-checked: 2026-10-30
 status: draft  # freeze before E3 baseline; any later change -> new version + note
 
 # Which persona runs which task (docs/product/prd.md §3.3). T7 uses the stretcher carrier below.
@@ -21,10 +20,10 @@ personas:
     footprint:
       shape: rect
       size: [0.70, 1.20]            # width x length
-      src: custom (ADA 305.3 space 0.76x1.22 is the parking box, not the chair)
+      src: custom (chair body; the ADA 305.3 0.76x1.22 parking box is checked separately)
       layers:
         body: {z: [0.30, 1.30]}
-        toe: {z: [0.00, 0.30], front_m: 0.30, src: custom (footrest)}
+        toe: {z: [0.05, 0.30], front_m: 0.30, src: custom (footrest; toe layer of the occupancy grid)}
     kinematics:
       model: nonholonomic
       in_place_turn: true            # only if the swept circle fits
@@ -103,8 +102,7 @@ personas:
     threshold: {same_as: wheelchair}
     corridor: {same_as: wheelchair}
     night_light:
-      min_rel_illum: 0.30
-      hard_floor_rel_illum: 0.50     # never below this on the path
+      min_rel_illum: 0.50            # fall-prone, stricter than wheelchair
       src: custom
 
   - id: upper_limb
@@ -156,8 +154,8 @@ personas:
     threshold: {check: false}
     night_light: {check: false}
 
-# T7 carrier, not a resident: stretcher 0.60x1.90 plus one medic disc r=0.25 at each end, one rigid
-# body on the body layer. Report wording: "按平抬担架计算" (risk, not an absolute verdict).
+# T7 carrier, kept separate from the residents: stretcher 0.60x1.90 plus one medic disc r=0.25 at each end, one rigid
+# body on the body layer. Report wording: "按平抬担架计算"; a blocked route is reported as a risk.
 carriers:
   - id: stretcher
     parts:

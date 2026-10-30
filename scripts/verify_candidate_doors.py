@@ -1,16 +1,19 @@
-"""CP1 door check for the hero homes: an independent raster measurement plus a crop image per door.
+"""Automatic aid for the E1 door check: an independent raster measurement plus a crop image per door.
 
 The importer (ha.ir.doors) measures widths analytically by projecting frame and leaf geometry onto the
 door axis. Here the same USD meshes (walls included) are sliced at three heights, rasterized at 5 mm in
 the door's own (u, n) frame, and the straight-through free strip that contains the door centre is
 intersected over all rows |n| <= ROW_SPAN. Closed state = walls + frame; open state = walls + frame +
-leaves the importer chose to open. Gate (plan E1): |raster - importer| <= 0.03 m.
+leaves the importer chose to open. A door is marked PASS when |raster - importer| <= 0.03 m (plan E1).
+The crop images feed the manual door check, which is also part of E1.
+
+  python scripts/verify_candidate_doors.py scene000064 [scene ...] --ir-run <run_id>
 """
 from __future__ import annotations
 
+import argparse
 import json
 import os
-import sys
 from pathlib import Path
 
 import cv2
@@ -25,7 +28,6 @@ RES = 0.005
 U_SPAN, ROW_SPAN, NEAR = 1.4, 0.6, 1.8
 BANDS = [(0.30, 0.35), (0.90, 0.95), (1.50, 1.55)]
 GATE = 0.03
-HEROES = ["scene000064", "scene000021", "scene000104"]
 
 
 def local(P, origin, u, nrm):
@@ -118,19 +120,25 @@ def check_scene(scene, ir_dir, out_dir):
     return rows
 
 
-def main(ir_run):
-    ir_dir = Path(os.environ["HA_OUTPUTS"]) / "runs/E1" / ir_run / "scenes"
-    params = {"ir_run": ir_run, "res": RES, "bands": BANDS, "gate": GATE, "row_span": ROW_SPAN}
-    run_dir = runlog.new_run("E1", tag="cp1-doors")
+def main(argv=None):
+    ap = argparse.ArgumentParser(description="Raster check of importer door widths (E1 door check aid).")
+    ap.add_argument("scenes", nargs="+", help="scene ids, e.g. scene000064")
+    ap.add_argument("--ir-run", required=True, help="E1 import run id under $HA_OUTPUTS/runs/E1/")
+    a = ap.parse_args(argv)
+    ir_dir = runlog.outputs_root() / "runs/E1" / a.ir_run / "scenes"
+    params = {"ir_run": a.ir_run, "scenes": a.scenes, "res": RES, "bands": BANDS, "gate": GATE,
+              "row_span": ROW_SPAN}
+    run_dir = runlog.new_run("E1", tag="door-check")
     out_dir = run_dir / "doors"
     out_dir.mkdir(parents=True, exist_ok=True)
-    res = {s: check_scene(s, ir_dir, out_dir) for s in HEROES}
+    res = {s: check_scene(s, ir_dir, out_dir) for s in a.scenes}
     n = sum(len(v) for v in res.values())
     ok = sum(r["pass"] for v in res.values() for r in v)
     (run_dir / "door_check.json").write_text(json.dumps({"doors": n, "pass": ok, "scenes": res}, indent=1))
-    runlog.write_manifest(run_dir, experiment="E1", params=params, notes=f"CP1 door check: {ok}/{n} pass")
+    runlog.write_manifest(run_dir, experiment="E1", params=params,
+                          notes=f"door raster check: {ok}/{n} within {GATE} m of the importer")
     print("doors", n, "pass", ok, "->", run_dir)
 
 
 if __name__ == "__main__":
-    main(sys.argv[1] if len(sys.argv) > 1 else "20261030-075249-all-v3")
+    main()

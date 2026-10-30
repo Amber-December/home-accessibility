@@ -1,4 +1,4 @@
-"""Local post-processing of a generated mesh (simulation §5 steps 5 and 7). No network, no credits.
+"""Local post-processing of a generated mesh (docs/tech/aholo-lux3d.md §3 steps 6 and 7). No network, no credits.
 
 Conventions: the asset library works in Z-up metres (same as Scene IR, USD and MuJoCo). GLB files are written in
 glTF's Y-up convention so three.js loads them as-is. Width W runs along +x, depth D along +y, height H along +z;
