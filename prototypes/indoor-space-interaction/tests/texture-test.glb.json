@@ -1,0 +1,88 @@
+{
+  "convertedFrom": "usdz",
+  "converter": "OpenUSD",
+  "sourceFile": "scene000002.usdz",
+  "sourceUpAxis": "Z",
+  "sourceMetersPerUnit": 1.0,
+  "upAxis": "Y",
+  "metersPerUnit": 1.0,
+  "unit": "meter",
+  "worldTransformBaked": true,
+  "meshCount": 1346,
+  "triangleCount": 1513493,
+  "originalTriangleCount": 1513493,
+  "originalFaceCount": 1511605,
+  "simplified": false,
+  "kinds": {
+    "wall": 12,
+    "furniture": 130,
+    "bed": 34,
+    "cabinet": 761,
+    "door": 389,
+    "floor": 4,
+    "sofa": 5,
+    "table": 7,
+    "chair": 1,
+    "window": 3
+  },
+  "skippedMeshes": {
+    "invisible": 15
+  },
+  "bounds": {
+    "min": [
+      -4.937075614929199,
+      -0.003000020980834961,
+      -7.0329976081848145
+    ],
+    "max": [
+      5.218987464904785,
+      2.7700002193450928,
+      4.992014408111572
+    ],
+    "size": [
+      10.156063079833984,
+      2.7730002403259277,
+      12.025012016296387
+    ]
+  },
+  "sourceBounds": {
+    "min": [
+      -4.937075614929199,
+      -4.992014300769059,
+      -0.003000020980834961
+    ],
+    "max": [
+      5.218987703323364,
+      7.0329976081848145,
+      2.7700002193450928
+    ],
+    "size": [
+      10.156063318252563,
+      12.025011908953873,
+      2.7730002403259277
+    ]
+  },
+  "materialStyle": "usd-preview-textures-with-neutral-fallback",
+  "compositionWarnings": [],
+  "sourceMetadataMeshCount": 1344,
+  "metadataProductBounds": {
+    "min": [
+      -4.8171002585440394,
+      -5.00201524611739,
+      -0.0026262261546445287
+    ],
+    "max": [
+      5.163767583799913,
+      7.083223711060828,
+      2.6700001060962664
+    ],
+    "size": [
+      9.980867842343953,
+      12.085238957178218,
+      2.672626332250911
+    ]
+  },
+  "embeddedTextures": 29,
+  "outputBytes": 49003632,
+  "elapsedSeconds": 24.219
+}

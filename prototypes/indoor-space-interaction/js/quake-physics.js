@@ -16,8 +16,10 @@
         document.currentScript?.src||
         [...document.scripts].find(s=>/\/js\/quake-physics\.js(?:\?|$)/.test(s.src))?.src
       );
-      // cannon-es ships with this app; resolve it relative to index.html.
-      const url=new URL('js/vendor/cannon-es/cannon-es.js',location.href).href;
+      // The local server exposes shared browser dependencies at /js/vendor.
+      // Resolve from the script URL when available so delayed calls do not
+      // depend on document.currentScript still being populated.
+      const url=new URL('/js/vendor/cannon-es/cannon-es.js',location.href).href;
       enginePromise=import(url).then(m=>{Engine=m;return m;}).catch(e=>{enginePromise=null;throw e;});
       return enginePromise;
     }

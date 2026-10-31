@@ -1,0 +1,453 @@
+[
+  {
+    "name": "scene000000",
+    "rootFilename": "scene000000.usd",
+    "rootMagic": "PXR-USDC",
+    "rootSize": 4612370,
+    "actualTocOffset": 4612170,
+    "converterTocOffset": 18916,
+    "assetEntries": 524,
+    "expectedMeshCount": 1095,
+    "skippedUsdCount": 100,
+    "layers": [
+      {
+        "name": "SubUSDs/cabinet_001.usda",
+        "orientationOps": 213,
+        "scaleOps": 213,
+        "parsedMeshes": 55,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_002.usda",
+        "orientationOps": 145,
+        "scaleOps": 145,
+        "parsedMeshes": 44,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_003.usda",
+        "orientationOps": 105,
+        "scaleOps": 105,
+        "parsedMeshes": 40,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_004.usda",
+        "orientationOps": 6,
+        "scaleOps": 6,
+        "parsedMeshes": 1,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_005.usda",
+        "orientationOps": 53,
+        "scaleOps": 53,
+        "parsedMeshes": 14,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_006.usda",
+        "orientationOps": 123,
+        "scaleOps": 123,
+        "parsedMeshes": 35,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_007.usda",
+        "orientationOps": 136,
+        "scaleOps": 136,
+        "parsedMeshes": 43,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_008.usda",
+        "orientationOps": 123,
+        "scaleOps": 123,
+        "parsedMeshes": 44,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_009.usda",
+        "orientationOps": 23,
+        "scaleOps": 23,
+        "parsedMeshes": 6,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_010.usda",
+        "orientationOps": 170,
+        "scaleOps": 170,
+        "parsedMeshes": 51,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_011.usda",
+        "orientationOps": 76,
+        "scaleOps": 76,
+        "parsedMeshes": 19,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_012.usda",
+        "orientationOps": 69,
+        "scaleOps": 69,
+        "parsedMeshes": 28,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_013.usda",
+        "orientationOps": 143,
+        "scaleOps": 143,
+        "parsedMeshes": 42,
+        "translationOnly": true
+      }
+    ],
+    "directUSDCError": "Offset is outside the bounds of the DataView",
+    "actualGlbMeshCount": 422,
+    "glbBytes": 997356,
+    "convertedAabbZup": {
+      "min": [
+        -1.4950000047683716,
+        -4.726199626922607,
+        -0.012500000186264515
+      ],
+      "max": [
+        2.9881999492645264,
+        1.4950000047683716,
+        2.3589999675750732
+      ],
+      "size": [
+        4.483199954032898,
+        6.221199631690979,
+        2.3714999677613378
+      ]
+    },
+    "originalProductUnionZup": {
+      "min": [
+        2.0467741641022936,
+        -9.079043408809866,
+        -0.012000054419181378
+      ],
+      "max": [
+        15.121004800681554,
+        -2.5104648221753427,
+        2.8114558706170483
+      ],
+      "size": [
+        13.07423063657926,
+        6.568578586634524,
+        2.8234559250362294
+      ]
+    }
+  },
+  {
+    "name": "scene000001",
+    "rootFilename": "scene000001.usd",
+    "rootMagic": "PXR-USDC",
+    "rootSize": 3345008,
+    "actualTocOffset": 3344808,
+    "converterTocOffset": 26857,
+    "assetEntries": 647,
+    "expectedMeshCount": 1383,
+    "skippedUsdCount": 118,
+    "layers": [
+      {
+        "name": "SubUSDs/bathroom1_corridor1_door_cabinet_003.usda",
+        "orientationOps": 17,
+        "scaleOps": 17,
+        "parsedMeshes": 6,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_005.usda",
+        "orientationOps": 344,
+        "scaleOps": 344,
+        "parsedMeshes": 89,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_006.usda",
+        "orientationOps": 94,
+        "scaleOps": 94,
+        "parsedMeshes": 28,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_007.usda",
+        "orientationOps": 107,
+        "scaleOps": 107,
+        "parsedMeshes": 35,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_008.usda",
+        "orientationOps": 131,
+        "scaleOps": 131,
+        "parsedMeshes": 49,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_009.usda",
+        "orientationOps": 82,
+        "scaleOps": 82,
+        "parsedMeshes": 32,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_010.usda",
+        "orientationOps": 335,
+        "scaleOps": 335,
+        "parsedMeshes": 107,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_011.usda",
+        "orientationOps": 53,
+        "scaleOps": 53,
+        "parsedMeshes": 15,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_012.usda",
+        "orientationOps": 44,
+        "scaleOps": 44,
+        "parsedMeshes": 15,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_013.usda",
+        "orientationOps": 46,
+        "scaleOps": 46,
+        "parsedMeshes": 17,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_014.usda",
+        "orientationOps": 47,
+        "scaleOps": 47,
+        "parsedMeshes": 11,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_015.usda",
+        "orientationOps": 89,
+        "scaleOps": 89,
+        "parsedMeshes": 29,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_016.usda",
+        "orientationOps": 186,
+        "scaleOps": 186,
+        "parsedMeshes": 59,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_017.usda",
+        "orientationOps": 48,
+        "scaleOps": 48,
+        "parsedMeshes": 13,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/corridor1_door_cabinet_002.usda",
+        "orientationOps": 29,
+        "scaleOps": 29,
+        "parsedMeshes": 12,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/guestBedroom1_corridor1_door_cabinet_004.usda",
+        "orientationOps": 29,
+        "scaleOps": 29,
+        "parsedMeshes": 12,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/masterBedroom1_livingRoom1_door_cabinet_001.usda",
+        "orientationOps": 29,
+        "scaleOps": 29,
+        "parsedMeshes": 12,
+        "translationOnly": true
+      }
+    ],
+    "directUSDCError": "Offset is outside the bounds of the DataView",
+    "actualGlbMeshCount": 541,
+    "glbBytes": 2908432,
+    "convertedAabbZup": {
+      "min": [
+        -0.9854999780654907,
+        -4.987400054931641,
+        -1.1862000226974487
+      ],
+      "max": [
+        3.4860000610351562,
+        1.249750018119812,
+        2.178999900817871
+      ],
+      "size": [
+        4.471500039100647,
+        6.237150073051453,
+        3.36519992351532
+      ]
+    },
+    "originalProductUnionZup": {
+      "min": [
+        3.181094184761537,
+        -8.641000631481333,
+        -0.001200000426173219
+      ],
+      "max": [
+        17.650186485645637,
+        -2.378299423995972,
+        2.7987100754807956
+      ],
+      "size": [
+        14.4690923008841,
+        6.262701207485361,
+        2.799910075906969
+      ]
+    }
+  },
+  {
+    "name": "scene000002",
+    "rootFilename": "scene000002.usd",
+    "rootMagic": "PXR-USDC",
+    "rootSize": 2468695,
+    "actualTocOffset": 2468495,
+    "converterTocOffset": 15206,
+    "assetEntries": 270,
+    "expectedMeshCount": 1344,
+    "skippedUsdCount": 74,
+    "layers": [
+      {
+        "name": "SubUSDs/cabinet_001.usda",
+        "orientationOps": 105,
+        "scaleOps": 105,
+        "parsedMeshes": 41,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_002.usda",
+        "orientationOps": 40,
+        "scaleOps": 40,
+        "parsedMeshes": 5,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_003.usda",
+        "orientationOps": 165,
+        "scaleOps": 165,
+        "parsedMeshes": 54,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_004.usda",
+        "orientationOps": 137,
+        "scaleOps": 137,
+        "parsedMeshes": 49,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_005.usda",
+        "orientationOps": 81,
+        "scaleOps": 81,
+        "parsedMeshes": 30,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_006.usda",
+        "orientationOps": 98,
+        "scaleOps": 98,
+        "parsedMeshes": 32,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_007.usda",
+        "orientationOps": 16,
+        "scaleOps": 16,
+        "parsedMeshes": 6,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_008.usda",
+        "orientationOps": 16,
+        "scaleOps": 16,
+        "parsedMeshes": 6,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_009.usda",
+        "orientationOps": 12,
+        "scaleOps": 12,
+        "parsedMeshes": 5,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_010.usda",
+        "orientationOps": 423,
+        "scaleOps": 423,
+        "parsedMeshes": 138,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_011.usda",
+        "orientationOps": 157,
+        "scaleOps": 157,
+        "parsedMeshes": 47,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_012.usda",
+        "orientationOps": 230,
+        "scaleOps": 230,
+        "parsedMeshes": 188,
+        "translationOnly": true
+      },
+      {
+        "name": "SubUSDs/cabinet_013.usda",
+        "orientationOps": 311,
+        "scaleOps": 311,
+        "parsedMeshes": 92,
+        "translationOnly": true
+      }
+    ],
+    "directUSDCError": "USDC: missing required section(s) — file may be corrupt or unsupported version",
+    "actualGlbMeshCount": 693,
+    "glbBytes": 4987800,
+    "convertedAabbZup": {
+      "min": [
+        -1.3200000524520874,
+        -3.0225000381469727,
+        -0.5249999761581421
+      ],
+      "max": [
+        7.048500061035156,
+        3.5280001163482666,
+        2.6549999713897705
+      ],
+      "size": [
+        8.368500113487244,
+        6.550500154495239,
+        3.1799999475479126
+      ]
+    },
+    "originalProductUnionZup": {
+      "min": [
+        -4.8171002585440394,
+        -5.00201524611739,
+        -0.0026262261546445287
+      ],
+      "max": [
+        5.163767583799913,
+        7.083223711060828,
+        2.6700001060962664
+      ],
+      "size": [
+        9.980867842343953,
+        12.085238957178218,
+        2.672626332250911
+      ]
+    }
+  }
+]

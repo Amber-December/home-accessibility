@@ -1,7 +1,7 @@
 /* Local importers. USD composition runs in the loopback OpenUSD service. */
 (() => {
   'use strict'; const L=window.IndoorLab;
-  const formats=['obj','stl','3ds','gltf','glb','fbx','dae','usdz'];
+  const formats=['obj','stl','3dm','3ds','gltf','glb','fbx','dae','usdz'];
   L.modelFormats=formats;
   function parseSTL(buffer){
     const view=new DataView(buffer),decoder=new TextDecoder();let positions=[];
@@ -31,8 +31,8 @@
     group.traverse(mesh=>{
       if(!mesh.isMesh)return;let meta=mesh.userData;
       for(let p=mesh.parent;p&&!meta.kind;p=p.parent)if(p.userData.kind)meta=p.userData;
-      const kind=meta.kind||'furniture';mesh.userData.usdPath=meta.usdPath;mesh.userData.kind=kind;
-      mesh.userData.collisionInfo={name:meta.productName||mesh.name||kind,kind,semanticId:meta.usdPath};
+      const kind=meta.kind||'furniture';mesh.userData.usdPath=meta.usdPath;mesh.userData.sourceProduct=meta.sourceProduct||null;mesh.userData.kind=kind;
+      mesh.userData.collisionInfo={name:meta.productName||mesh.name||kind,kind,semanticId:meta.sourceProduct||meta.usdPath,sourceProduct:meta.sourceProduct||null,usdPath:meta.usdPath||null};
       if(kind==='ceiling'){mesh.visible=false;mesh.userData.ignoreCollision=true;return;}
       if(kind==='wall'){mesh.userData.wall=true;walls.push(mesh);}if(kind==='floor')mesh.userData.floor=true;
       for(const m of Array.isArray(mesh.material)?mesh.material:[mesh.material])if(m){oldMaterials.add(m);for(const value of Object.values(m))if(value?.isTexture)oldTextures.add(value);}
@@ -63,7 +63,7 @@
     if(!caps)capMaterial.dispose();oldTextures.forEach(t=>t.dispose());oldMaterials.forEach(m=>m.dispose());
   }
   L.importModel=async(files,options,progress)=>{
-    files=[...files];const main=files.find(f=>formats.includes(f.name.split('.').pop().toLowerCase()));if(!main)throw new Error('请选择 OBJ / STL / 3DS / GLB / GLTF / FBX / DAE / USDZ 模型。');
+    files=[...files];const main=files.find(f=>formats.includes(f.name.split('.').pop().toLowerCase()));if(!main)throw new Error('请选择 OBJ / STL / 3DM / 3DS / GLB / GLTF / FBX / DAE / USDZ 模型。');
     if(files.filter(f=>formats.includes(f.name.split('.').pop().toLowerCase())).length>1)throw new Error('一次请选择一个主模型，配套贴图、MTL 和 BIN 可一起选择。');
     if(main.size>180*1024*1024)throw new Error('主模型超过 180 MB，请先分层导出或简化网格。');
     const ext=main.name.split('.').pop().toLowerCase(),blobs=[],missing=new Set(),manager=new THREE.LoadingManager(),resourceMap=new Map();
@@ -77,7 +77,7 @@
     const resourceErrors=new Set();manager.onError=url=>resourceErrors.add(url);
     let resourcesPending=false,finishResources,resourceTimer;
     manager.onStart=()=>{resourcesPending=true;};manager.onLoad=()=>{resourcesPending=false;finishResources?.();};
-    let root=null,group=null,complete=false,usd=null;
+    let root=null,rhino=null,group=null,complete=false,usd=null;
     try{
       progress?.(`正在读取 ${main.name}…`);const buffer=await main.arrayBuffer(),text=()=>new TextDecoder().decode(buffer);
       if(ext==='obj'){
@@ -85,7 +85,11 @@
         if(mtl){const materials=new THREE.MTLLoader(manager).parse(await mtl.text(),'');materials.preload();loader.setMaterials(materials);}root=loader.parse(text());
       }else if(ext==='stl')root=parseSTL(buffer);
       else if(ext==='3ds')root=new THREE.TDSLoader(manager).parse(buffer,'');
-      else if(ext==='gltf'||ext==='glb'){
+      else if(ext==='3dm'){
+        if(location.protocol==='file:')throw new Error('3DM 需要本地 HTTP 服务。请运行此文件夹中的「启动室内空间.bat」。');
+        rhino=new THREE.Rhino3dmLoader();rhino.setLibraryPath(new URL('../js/vendor/three-r128/libs/rhino3dm/',location.href).href).setWorkerLimit(2);
+        root=await new Promise((resolve,reject)=>{resourceTimer=setTimeout(()=>reject(new Error('3DM 解码超过 45 秒，请简化模型或另存为 Rhino 7。')),45000);rhino.parse(buffer,resolve,reject);});clearTimeout(resourceTimer);
+      }else if(ext==='gltf'||ext==='glb'){
         const result=await new Promise((resolve,reject)=>new THREE.GLTFLoader(manager).parse(buffer,'',resolve,reject));root=result.scene;
       }else if(ext==='usdz'){
         ({root,usd}=await parseUSDZ(buffer,manager,progress));
@@ -98,10 +102,10 @@
         if(!o.material)o.material=new THREE.MeshStandardMaterial({color:'#b7c3b1',roughness:.7});
         for(const material of Array.isArray(o.material)?o.material:[o.material]){material.side=THREE.DoubleSide;if(material.roughness!==undefined)material.roughness=Math.max(.3,material.roughness);}
       });
-      if(!meshCount||!triangles)throw new Error('模型没有可读取的三角网格。');
+      if(!meshCount||!triangles)throw new Error('模型没有可读取的三角网格。Rhino 曲面需先生成渲染网格并保存。');
       if(triangles>(usd?6000000:2000000))throw new Error(`模型超过 ${usd?'600':'200'} 万三角面，请先简化网格后导入。`);
       group=new THREE.Group();const orient=new THREE.Group();orient.add(root);group.add(orient);
-      const up=options.up==='auto'?(usd?usd.sourceUpAxis.toLowerCase():(['stl','3ds'].includes(ext)?'z':'y')):options.up;
+      const up=options.up==='auto'?(usd?usd.sourceUpAxis.toLowerCase():(['3dm','stl','3ds'].includes(ext)?'z':'y')):options.up;
       // OpenUSD already emits Y-up metres. Manual overrides reinterpret the source,
       // rather than applying the source axis/units for a second time.
       const sourceUp=usd?.sourceUpAxis?.toLowerCase(),rotation=(up==='z'?-Math.PI/2:0)-(usd&&sourceUp==='z'?-Math.PI/2:0);
@@ -119,6 +123,6 @@
       complete=true;
       return{group,bounds,goals:[],name:main.name,demo:false,source:{format:ext,convertedFrom:ext==='usdz'?'usdz':undefined,unit,up,normalizedUp:'y',usd,style:usd?'home-white-blue':undefined,floorAboveBottom:-bounds3.min.y,floorElevationMeters:floor,translationMeters:[-center.x,-floor,-center.z],meshCount,triangles:Math.round(triangles),missing:[...missing],resourceErrors:resourceErrors.size},warnings:missing.size?`缺少 ${[...missing].join('、')}；几何已载入，部分材质可能缺失。`:resourceErrors.size?'几何已加载，但部分配套贴图无法解码。':''};
     }catch(error){throw new Error(/DRACO|Meshopt|KTX2|decoder/i.test(error.message)?'此模型带有压缩网格或纹理，请导出未压缩 GLB / GLTF 再试。':`导入失败：${error.message}`);}
-    finally{clearTimeout(resourceTimer);blobs.forEach(url=>URL.revokeObjectURL(url));if(!complete&&root)L.dispose(group||root);}
+    finally{clearTimeout(resourceTimer);rhino?.dispose();blobs.forEach(url=>URL.revokeObjectURL(url));if(!complete&&root)L.dispose(group||root);}
   };
 })();
