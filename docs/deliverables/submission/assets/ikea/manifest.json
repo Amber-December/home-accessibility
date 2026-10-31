@@ -1,0 +1,54 @@
+{
+  "manifest_type": "submission_asset_manifest",
+  "status": "selected_for_ppt_and_demo_planning",
+  "date": "2026-10-31",
+  "source_root": "/Users/amber/Desktop/Aholo3D-Hackathon/ikea-model",
+  "usage_policy": "Reference images and generated models are registered for presentation planning. Copy only assets with confirmed permission into the final submission package.",
+  "assets": [
+    {
+      "category": "床边与小桌",
+      "model_id": "00354063",
+      "product_name": "BRIMNES 百灵",
+      "relative_path": "床边与小桌/00354063",
+      "dimensions_m": {"width": 0.39, "depth": 0.41, "height": 0.53},
+      "evidence": ["reference.jpg", "model.glb", "model_spec.json", "physics_validation.json", "visual_metadata.json", "source_product.json"],
+      "physics_validation": "passed",
+      "presentation_role": "主资产链路；商品图到可仿真模型"
+    },
+    {
+      "category": "衣物收纳柜",
+      "model_id": "30453764",
+      "product_name": "RAKKESTAD 拉科斯塔德",
+      "relative_path": "衣物收纳柜/30453764",
+      "dimensions_m": {"width": 1.173, "depth": 0.55, "height": 1.757},
+      "evidence": ["reference.jpg", "model.glb", "model_spec.json", "physics_validation.json", "visual_metadata.json", "source_product.json"],
+      "physics_validation": "passed",
+      "presentation_role": "卧室任务障碍候选；门体与通行关系"
+    },
+    {
+      "category": "床边与小桌",
+      "model_id": "10354091",
+      "product_name": "HEMNES 汉尼斯",
+      "relative_path": "床边与小桌/10354091",
+      "dimensions_m": {"width": 0.46, "depth": 0.35, "height": 0.7},
+      "evidence": ["reference.jpg", "model.glb", "model_spec.json", "physics_validation.json", "visual_metadata.json", "source_product.json"],
+      "physics_validation": "passed",
+      "presentation_role": "实验室模式的尺寸对照"
+    },
+    {
+      "category": "床边与小桌",
+      "model_id": "50407361",
+      "product_name": "BJÖRKSNÄS 约纳斯",
+      "relative_path": "床边与小桌/50407361",
+      "dimensions_m": {"width": 0.48, "depth": 0.38, "height": 0.69},
+      "evidence": ["reference.jpg", "model.glb", "model_spec.json", "physics_validation.json", "visual_metadata.json", "source_product.json"],
+      "physics_validation": "passed",
+      "presentation_role": "实验室模式的家具系列缩略图"
+    }
+  ],
+  "review_notes": [
+    "床类模型可做卧室背景或视觉展示；任务判定前需确认其物理验证状态。",
+    "physics_validation.passed 描述资产记录，不等同于整套住宅任务通过。",
+    "source_product.json 中的商品页面仅作为来源记录，成片使用需按实际许可呈现。"
+  ]
+}
