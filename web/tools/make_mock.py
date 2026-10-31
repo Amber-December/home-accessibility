@@ -1,6 +1,7 @@
 """Generate a MOCK sim result for H1 so the web UI can be built before the evaluator exists.
 
-Not evaluator output: disc planning on the body layer, crude goal checks, greedy furniture moves.
+Not evaluator output: disc planning on the body layer, crude goal checks, greedy furniture moves, and a small
+grid of priced candidate plans (furniture x bathroom fittings x door work) built from a SAMPLE price table.
 The file carries "mock": true and the UI shows a watermark. Never use it for video or report numbers.
 
     python web/tools/make_mock.py        # writes web/mock/H1/sim_result.json
@@ -146,7 +147,7 @@ FIXED = {"toilet", "showerhead", "switch", "lightfixture", "bathroomcabinet"}
 KEEP = {"bed", "sofa", "toilet", "refrigerator"}
 
 
-def simulate(grids, p, task):
+def simulate(grids, p, task, door_w=None):
     rec = {"persona": p["id"], "task": task, "name": TASK_NAMES[task], "applicable": True}
     if task == "T3" and FRIDGE is None:
         return {**rec, "applicable": False, "reason": "户型里没有冰箱"}
@@ -179,9 +180,10 @@ def simulate(grids, p, task):
         if not hits:
             continue
         q = hits[0]
-        events.append({"t": q[0], "type": "DOOR_PASS", "object_id": d["id"], "x": q[1], "y": q[2], "clear_width_m": d["clear_width"]})
-        if need and d["clear_width"] < need:
-            viol.append({"code": "DOOR_WIDTH", "object_id": d["id"], "measured": d["clear_width"], "required": need,
+        cw = (door_w or {}).get(d["id"], d["clear_width"])
+        events.append({"t": q[0], "type": "DOOR_PASS", "object_id": d["id"], "x": q[1], "y": q[2], "clear_width_m": cw})
+        if need and cw < need:
+            viol.append({"code": "DOOR_WIDTH", "object_id": d["id"], "measured": cw, "required": need,
                          "standard": "GB55019 2.5.4（改造）", "location": [q[1], q[2]], "source": "wsr", "severity": "yellow"})
     rec_ok, fail_code, fail_stage = stop == len(path) - 1, None, None
     if not rec_ok:
@@ -219,8 +221,8 @@ def simulate(grids, p, task):
             "violations": viol, "monologue": mono}
 
 
-def run_all(grids):
-    return [simulate(grids, p, t) for p in PERSONAS for t in cards["tasks"][p["id"]] if t in TASK_NAMES]
+def run_all(grids, door_w=None):
+    return [simulate(grids, p, t, door_w) for p in PERSONAS for t in cards["tasks"][p["id"]] if t in TASK_NAMES]
 
 
 def score(runs):
@@ -231,10 +233,18 @@ def score(runs):
 
 
 def apply_edit(grids, edit):
+    """Grid after one edit, or None if a move overlaps. Door work changes clear widths only (see door_w)."""
+    if edit["op"].startswith("door_"):
+        return grids
     idx = LABELS.index("obj:" + edit["object_id"])
     out = {}
     for name, g in grids.items():
         g = g.copy()
+        if edit["op"] == "replace":  # a smaller product in the same place: erode the footprint
+            m = g == idx
+            g[m & ~ndimage.binary_erosion(m, iterations=round(edit["shrink_m"] / RES))] = -1
+            out[name] = g
+            continue
         ii, jj = np.nonzero(g == idx)
         g[ii, jj] = -1
         if edit["op"] == "move":
@@ -292,24 +302,109 @@ def repair(base_runs):
     return edits, tried, runs
 
 
+# SAMPLE prices (CNY), not quotes from product pages. The UI and report label them 样例.
+PRICES = {
+    "toilet": ("短款马桶（进深短 20 cm）", 2800),
+    "bathroomcabinet": ("悬挂式洗手台（台下留空，进深短 30 cm）", 1600),
+    "door_sliding": ("推拉门套件（含拆旧门）", 1280),
+    "door_widen": ("门洞加宽到 0.90 m（拆改墙体、换门套）", 3500),
+}
+
+
+def priced(e, rent_ok, wall):
+    name, price = PRICES.get(OBJ[e["object_id"]]["category"] if e["op"] == "replace" else e["op"], (None, 0))
+    return {**e, "cost_cny": price, "rent_ok": rent_ok, "wall": wall,
+            **({"product": {"name": name, "price_cny": price, "price_src": "样例"}} if name else {})}
+
+
+def door_edit(d, op):
+    # sliding: the leaf no longer stands in the opening, so the clear width gains about the leaf thickness and stop
+    w = round(d["clear_width"] + 0.055, 3) if op == "door_sliding" else 0.90
+    return priced({"op": op, "object_id": d["id"], "from_m": d["clear_width"], "clear_width_m": w}, False, op == "door_widen")
+
+
+CN = {"wardrobe": "衣柜", "bed": "床", "sofa": "沙发", "chair": "椅子", "armchair": "扶手椅", "stool": "凳子",
+      "cabinet": "柜子", "sidetable": "边几", "coffeetable": "茶几", "diningtable": "餐桌", "TVStand": "电视柜",
+      "bedsidecabinet": "床头柜", "Nightstand": "床头柜", "floorlamp": "落地灯", "loungechair": "躺椅"}
+
+
+def title(edits):
+    parts, doors = [], {}
+    room = {"livingRoom": "客厅", "masterBedroom": "主卧", "guestBedroom": "次卧", "bathroom": "卫生间", "balcony": "阳台"}
+
+    def cn(o):
+        cat = OBJ[o]["category"]
+        twin = sum(x["category"] == cat for x in ir["objects"]) > 1
+        return (room.get(OBJ[o]["room"].rstrip("0123456789"), "") if twin else "") + CN.get(cat, cat)
+    for e in edits:
+        if e["op"] == "remove":
+            parts.append("移走" + cn(e["object_id"]))
+        elif e["op"] == "move":
+            parts.append("挪" + cn(e["object_id"]))
+        elif e["op"] == "replace":
+            parts.append("换" + PRICES[OBJ[e["object_id"]]["category"]][0].split("（")[0])
+        else:
+            doors[e["op"]] = doors.get(e["op"], 0) + 1
+    parts += [f"{n} 扇门{'改推拉门' if op == 'door_sliding' else '加宽'}" for op, n in doors.items()]
+    return " + ".join(parts)
+
+
+def candidates(base, furniture):
+    """Every combination of furniture edits, compact toilet and door work, each re-run for all residents."""
+    narrow = [d for d in ir["doors"] if any(v["code"] == "DOOR_WIDTH" and v["object_id"] == d["id"]
+                                           for r in base if r["applicable"] for v in r["violations"])]
+    bath = [d for d in narrow if any(r.startswith("bathroom") for r in d["rooms"])]
+    door_opts = [[], [door_edit(d, "door_sliding") for d in bath], [door_edit(d, "door_sliding") for d in narrow],
+                 [door_edit(d, "door_widen") for d in narrow]]
+    toilet = priced({"op": "replace", "object_id": TOILET, "shrink_m": 0.10}, False, False)
+    basin = priced({"op": "replace", "object_id": first("bathroomcabinet", OBJ[TOILET]["room"]), "shrink_m": 0.15}, False, False)
+    toilet_opts = [[], [toilet], [toilet, basin]]
+    furn_opts = [[], [priced(e, True, False) for e in furniture]]
+    out = []
+    for fo in furn_opts:
+        for to in toilet_opts:
+            grids = BASE
+            for e in fo + to:
+                grids = apply_edit(grids, e)
+            for do in door_opts:
+                edits = fo + to + do
+                if not edits or grids is None:
+                    continue
+                runs = run_all(grids, {e["object_id"]: e["clear_width_m"] for e in do})
+                nd = {key(r): r for r in runs}
+                worse = [list(key(r)) for r in base if r["applicable"] and r["success"] and not nd[key(r)]["success"]]
+                out.append({"title": title(edits), "edits": edits, "cost_cny": sum(e["cost_cny"] for e in edits),
+                            "rent_ok": all(e["rent_ok"] for e in edits), "wall": any(e["wall"] for e in edits),
+                            "score": score(runs), "worse": worse, "runs": runs})
+    out.sort(key=lambda c: (c["cost_cny"], -c["score"]))
+    for i, c in enumerate(out):
+        c["id"] = f"P{i + 1:02d}"
+    return out
+
+
 def main():
     base = run_all(BASE)
-    edits, tried, after = repair(base)
+    furniture, tried, _ = repair(base)
+    plans = candidates(base, furniture)
     out = {
         "mock": True,
         "generator": "web/tools/make_mock.py",
-        "note": "前端开发用的样例，不是评估器输出。判定是圆盘近似和粗略的终点检查，数字不能进视频和报告。",
+        "note": "前端开发用的样例，不是评估器输出。判定是圆盘近似和粗略的终点检查，价格是样例价格表，数字不能进视频和报告。",
         "scene_id": ir["scene_id"],
         "personas": [{"id": p["id"], "name": p["name"], "footprint": p["footprint"], "v_mps": p["kinematics"]["v_mps"]} for p in PERSONAS],
         "tasks": TASK_NAMES,
         "baseline": {"score": score(base), "runs": base},
-        "plans": [{"id": "A", "title": "小改：挪家具", "edits": edits, "tried": tried, "score": score(after), "runs": after}],
+        "search": {"tried": tried, "candidates": len(plans)},
+        "plans": [{"id": c["id"], **{k: v for k, v in c.items() if k != "id"}} for c in plans],
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")))
     for r in base:
         print(r["persona"], r["task"], r.get("success"), r.get("fail_code"), r.get("min_clearance_m"), r.get("min_clearance_object"))
-    print("score", out["baseline"]["score"], "->", out["plans"][0]["score"], "edits", edits)
+    print("baseline", out["baseline"]["score"], "furniture", furniture)
+    for c in plans:
+        fails = [f"{r['persona']}/{r['task']}:{r['fail_code']}" for r in c["runs"] if r["applicable"] and not r["success"]]
+        print(c["id"], c["cost_cny"], c["score"], c["title"], "worse", c["worse"], "fails", fails)
     print(OUT, OUT.stat().st_size, "bytes")
 
 

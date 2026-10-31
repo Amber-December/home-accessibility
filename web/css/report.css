@@ -1,0 +1,66 @@
+/* 清先住 · printable report (PRD 5.10.9). A4 portrait, same palette and fonts as the app. */
+@font-face { font-family: "LF Sans"; src: url(../fonts/LFSans.woff2) format("woff2"); font-weight: 400 600; font-display: swap; }
+@font-face { font-family: "LF Heading"; src: url(../fonts/LFHeading.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "Michroma"; src: url(../fonts/Michroma-400.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "Barlow SC"; src: url(../fonts/BarlowSemiCondensed-400.woff2) format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Barlow SC"; src: url(../fonts/BarlowSemiCondensed-600.woff2) format("woff2"); font-weight: 600; font-display: swap; }
+
+:root {
+  --purple: #660874; --ink: #24212A; --muted: #6A6570; --line: rgba(36, 33, 42, .14);
+  --red: #D7263D; --amber: #E8A33D; --teal: #2A9D8F;
+  --f-body: "LF Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --f-head: "LF Heading", var(--f-body);
+  --f-num: "Barlow SC", var(--f-body);
+  font: 13px/1.6 var(--f-body); color: var(--ink);
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: #ECEAE6; }
+header { max-width: 210mm; margin: 0 auto; padding: 14px 0; display: flex; justify-content: space-between; align-items: center; }
+.brand { display: flex; align-items: center; gap: 8px; font-family: var(--f-head); font-size: 18px; }
+.brand .en { font-family: "Michroma", var(--f-body); font-size: 11px; color: var(--muted); letter-spacing: .04em; }
+button { font: inherit; border: 1px solid var(--purple); background: var(--purple); color: #fff; border-radius: 8px; padding: 6px 14px; cursor: pointer; }
+main { max-width: 210mm; margin: 0 auto 32px; padding: 14mm 16mm; background: #fff; box-shadow: 0 8px 28px rgba(36, 33, 42, .12); }
+
+h1 { font-family: var(--f-head); font-weight: 400; font-size: 26px; margin: 0 0 4px; color: var(--purple); }
+h2 { font-family: var(--f-head); font-weight: 400; font-size: 17px; margin: 0 0 8px; padding-bottom: 4px; border-bottom: 2px solid var(--purple); }
+section { margin-top: 20px; break-inside: avoid-page; }
+p { margin: 6px 0; } ol, ul { margin: 6px 0; padding-left: 22px; }
+.meta, .muted { color: var(--muted); font-size: 12px; }
+.mock { padding: 6px 10px; border-left: 4px solid var(--amber); background: rgba(232, 163, 61, .1); font-size: 12px; margin: 0 0 12px; }
+.mock b { margin-right: 8px; }
+.sample { font-size: 10px; font-weight: 600; color: var(--amber); border: 1px solid var(--amber); border-radius: 4px; padding: 0 3px; margin-left: 3px; vertical-align: 1px; }
+
+.big { display: flex; align-items: baseline; gap: 8px; margin: 4px 0 8px; color: var(--muted); }
+.big b { font-family: var(--f-num); font-weight: 600; font-size: 40px; line-height: 1; color: var(--ink); }
+.big b.up { color: var(--purple); }
+
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th, td { text-align: left; padding: 4px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-weight: 600; color: var(--muted); border-bottom-color: var(--ink); }
+tr { break-inside: avoid; }
+tr.red td:first-child { border-left: 4px solid var(--red); }
+tr.yellow td:first-child { border-left: 4px solid var(--amber); }
+tr.up { background: rgba(42, 157, 143, .08); } tr.down { background: rgba(215, 38, 61, .08); }
+tr.sum td { font-weight: 600; border-top: 1px solid var(--ink); border-bottom: none; }
+.num { font-family: var(--f-num); font-variant-numeric: tabular-nums; white-space: nowrap; }
+td.num, th.num { text-align: right; }
+.ok { color: var(--teal); } .fail { color: var(--red); } .na { color: var(--muted); }
+
+.two { display: grid; grid-template-columns: 58% 1fr; gap: 16px; align-items: start; margin-top: 8px; }
+
+svg.scatter { width: 100%; height: auto; display: block; font-family: var(--f-num); }
+.scatter .grid { stroke: var(--line); } .scatter .ax { font-size: 9px; fill: var(--muted); } .scatter .ax.red { fill: var(--red); }
+.scatter .base { stroke: var(--muted); stroke-dasharray: 3 3; } .scatter .budget { stroke: var(--red); stroke-dasharray: 3 3; }
+.scatter .front { fill: none; stroke: var(--purple); stroke-width: 1.5; }
+.scatter circle.ok { fill: var(--purple); fill-opacity: .8; }
+.scatter circle.out { fill: #fff; stroke: #A8A3AD; } .scatter circle.sel { stroke: var(--purple); stroke-width: 3; stroke-opacity: .35; }
+.scatter .tag { font-size: 9px; font-weight: 600; fill: var(--purple); }
+
+@page { size: A4; margin: 12mm; }
+@media print {
+  body { background: #fff; }
+  header { padding: 0 0 6px; } #print { display: none; }
+  main { max-width: none; margin: 0; padding: 0; box-shadow: none; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+@media (max-width: 760px) { main { padding: 16px; } .two { grid-template-columns: 1fr; } }

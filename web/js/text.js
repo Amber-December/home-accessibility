@@ -22,6 +22,7 @@
 
   const m = v => (v == null ? '—' : `${(+v).toFixed(2)} m`);
   const cm = v => `${Math.round(v * 100)} cm`;
+  const cny = v => `¥${Math.round(v).toLocaleString('en-US')}`;
 
   // Six-dot braille cells as Unicode bit masks (dot n = bit n-1). Decorative only, always aria-hidden.
   // 国家通用盲文方案: 先 = x(⠓) + ian(⠩), 住 = zh(⠌) + u(⠥); digits 1-6 are ⠁⠃⠉⠙⠑⠋ (number sign omitted).
@@ -38,7 +39,7 @@
     code: c => CODE[c] || c,
     source: s => SOURCE[s] || s,
     persona: id => SHORT[id] || id,
-    clearColor, SCALE, m, cm, braille, brailleDigit,
+    CAT, clearColor, SCALE, m, cm, cny, braille, brailleDigit,
     roomOf(ir, id) { const r = ir.rooms.find(r => r.id === id); return r ? ROOM[r.type] || r.type : ''; },
     // Human name for an IR object id; falls back to "墙" for walls and the raw id otherwise.
     object(ir, id) {
@@ -55,6 +56,9 @@
       if (e.op === 'move') {
         return `${n}挪动 ${cm(Math.hypot(e.dx || 0, e.dy || 0))}`;
       }
+      if (e.op === 'replace') return `${n}换成${e.product ? e.product.name : '小一号的'}`;
+      if (e.op === 'door_sliding') return `${n}改推拉门，净宽 ${m(e.from_m)} → ${m(e.clear_width_m)}`;
+      if (e.op === 'door_widen') return `${n}加宽，净宽 ${m(e.from_m)} → ${m(e.clear_width_m)}（要动墙）`;
       return `${e.op} ${n}`;
     },
     // One-line problem statement for a violation.

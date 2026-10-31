@@ -79,22 +79,51 @@
       ${S.result.plans.length ? `<button class="primary" data-act="go" data-arg="fix">帮我改</button>` : ''}`;
   }
 
-  function fix(S) {
-    const cards = S.result.plans.map(pl => {
-      const before = Object.fromEntries(S.allRuns('base').map(r => [r.persona + r.task, r]));
-      const fixed = pl.runs.filter(r => r.applicable && r.success && !before[r.persona + r.task].success);
-      const still = pl.runs.filter(r => r.applicable && !r.success);
-      const tried = (pl.tried || []).map(x => `<li><span class="chip">${T().persona(x.target[0])} ${x.target[1]}</span>
-        ${esc(x.op ? T().edit(S.ir, x) : T().object(S.ir, x.object_id))} → <b class="${x.result === '采纳' ? 'ok' : ''}">${esc(x.result)}</b></li>`).join('');
-      return `<div class="card plan ${S.plan === pl.id ? 'on' : ''}" data-act="plan" data-arg="${pl.id}">
-        <div class="ph"><b>方案 ${pl.id} · ${esc(pl.title)}</b><span class="score-mini">${S.score('base')} → <b>${pl.score}</b></span></div>
-        <ol class="edits">${pl.edits.map(e => `<li>${esc(T().edit(S.ir, e))}</li>`).join('') || '<li class="muted">没有找到有效改法</li>'}</ol>
-        ${fixed.length ? `<p>修好：${fixed.map(r => `${T().persona(r.persona)} ${esc(r.name)}`).join('、')}</p>` : ''}
+  // 改造 (PRD 5.10.6): the user's conditions, up to three recommended cards, the cost x score scatter, what was tried.
+  function cons(S) {
+    const c = S.cons;
+    const locks = [...c.locks].map(id => `<button class="small" data-act="unlock" data-arg="${esc(id)}" title="解除锁定">${esc(T().object(S.ir, id))} ×</button>`).join('');
+    return `<div class="cons">
+      <label>预算 <input type="number" min="0" step="500" inputmode="numeric" placeholder="不限" value="${c.budget ?? ''}" data-change="budget" aria-label="预算（元）"> 元</label>
+      <div class="seg" role="group" aria-label="房子"><button data-act="rent" data-arg="0" aria-pressed="${!c.rent}">自有</button><button data-act="rent" data-arg="1" aria-pressed="${c.rent}">租房</button></div>
+      <label><input type="checkbox" data-change="noWall" ${c.noWall || c.rent ? 'checked' : ''} ${c.rent ? 'disabled title="租房不改门和墙"' : ''}>不动墙</label>
+      <div class="locks"><span class="muted">锁定</span>${locks || '<span class="muted">没有。在 3D 里点物体可以锁定</span>'}</div></div>`;
+  }
+
+  function planCard(S, pl, labels) {
+    const on = S.plan === pl.id, base = S.score('base'), out = HA.plans.why(pl, S.cons);
+    const before = Object.fromEntries(S.allRuns('base').map(r => [r.persona + r.task, r]));
+    const fixed = pl.runs.filter(r => r.applicable && r.success && !before[r.persona + r.task].success);
+    const still = pl.runs.filter(r => r.applicable && !r.success);
+    const who = rs => rs.map(r => `${T().persona(r.persona)} ${esc(r.name)}`).join('、');
+    const edits = pl.edits.map(e => `<li>${esc(T().edit(S.ir, e))}${e.cost_cny ? ` <span class="num muted">${T().cny(e.cost_cny)}</span>` : ''}</li>`).join('');
+    return `<div class="card plan ${on ? 'on' : ''} ${out ? 'out' : ''}" data-act="plan" data-arg="${pl.id}">
+      <div class="ph"><b>${(labels || []).map(l => `<span class="tag">${l}</span>`).join('')}方案 ${pl.id}</b><span class="score-mini num">${base} → <b>${pl.score}</b></span></div>
+      <div class="pt">${esc(pl.title)}</div>
+      <div class="cost"><b class="num">${T().cny(pl.cost_cny)}</b> <span class="src est">样例价</span>${out ? ` <span class="red">${out}</span>` : ''}</div>
+      ${on ? `<ol class="edits">${edits}</ol>
+        ${fixed.length ? `<p class="ok">修好：${who(fixed)}</p>` : ''}
         ${still.length ? `<p class="red">仍未修好：${still.map(r => `${T().persona(r.persona)} ${esc(r.name)}（${esc(T().code(r.fail_code))}）`).join('、')}</p>` : ''}
-        <details><summary>试过的改法（${(pl.tried || []).length}）</summary><ul class="tried">${tried}</ul></details></div>`;
-    }).join('');
-    return `<h3>怎么改？</h3><p class="muted">红色半透明是原来的位置。每个方案都由仿真重跑验证，其他住户不能变差。</p>
-      ${cards}<button class="primary" data-act="go" data-arg="compare">看前后对比</button>`;
+        <p class="muted">${pl.worse && pl.worse.length ? `<span class="red">有住户变差</span>` : '其他住户没有变差。'}</p>` : ''}</div>`;
+  }
+
+  function fix(S) {
+    const all = S.result.plans, base = S.score('base'), ps = S.picks();
+    const okN = all.filter(p => !HA.plans.why(p, S.cons)).length;
+    const sel = S.plan && S.planObj(), extra = sel && !ps.some(x => x.plan === sel);
+    const labels = Object.fromEntries(ps.map(x => [x.plan.id, x.labels.join('/')]));
+    const tried = (S.result.search.tried || []).map(x => `<li><span class="chip">${T().persona(x.target[0])} ${x.target[1]}</span>
+      ${esc(x.op ? T().edit(S.ir, x) : T().object(S.ir, x.object_id))} → <b class="${x.result === '采纳' ? 'ok' : ''}">${esc(x.result)}</b></li>`).join('');
+    return `<h3>怎么改？</h3>
+      <p class="muted">从 ${all.length} 个候选里按你的条件挑。每个候选都重跑了全部住户，有住户变差的不要。红色半透明是原来的位置。</p>
+      ${cons(S)}
+      <p class="muted">满足条件 ${okN} / ${all.length} 个。均衡是拿到最安全方案 ${Math.round(HA.plans.BALANCE * 100)}% 提分的最便宜方案。</p>
+      ${ps.map(x => planCard(S, x.plan, x.labels)).join('') || '<p class="red">这些条件下没有能提分的方案。放宽预算或解除锁定再试。</p>'}
+      ${extra ? `<h4>你点开的方案</h4>${planCard(S, sel)}` : ''}
+      <h4>花费和得分</h4>${HA.plans.scatter(all, base, S.cons, S.plan, labels)}
+      <p class="muted">实心点满足条件，空心点不满足；折线连起每档花费下得分最高的方案。点一个点看那个方案。</p>
+      <details><summary>试过的改法（${(S.result.search.tried || []).length}）</summary><ul class="tried">${tried}</ul></details>
+      <button class="primary" data-act="go" data-arg="compare" ${S.plan ? '' : 'disabled'}>看前后对比</button>`;
   }
 
   function compare(S) {
@@ -108,7 +137,7 @@
       <div class="score"><span>改造前</span><b>${S.score('base')}</b><span>→ 方案 ${pl.id}</span><b>${pl.score}</b></div>
       <table class="cmp"><tr><th>住户</th><th>任务</th><th>前</th><th>后</th></tr>${rows}</table>
       <p class="${worse.length ? 'red' : 'muted'}">${worse.length ? '变差：' + worse.map(r => `${T().persona(r.persona)} ${esc(r.name)}`).join('、') : '没有住户变差。'}</p>
-      <button disabled title="现场段之后接入">导出报告</button>`;
+      <button class="primary" data-act="export">导出报告</button>`;
   }
 
   function object(S, id) {
@@ -119,7 +148,9 @@
     const size = o ? (a => `${(a.max[0] - a.min[0]).toFixed(2)} × ${(a.max[1] - a.min[1]).toFixed(2)} × ${(a.max[2] - a.min[2]).toFixed(2)} m`)(o.aabb)
       : `净宽 ${T().m(d.clear_width)}`;
     return `<div class="pickinfo"><b>${esc(T().object(S.ir, id))}</b> ${src('wsr')}<div class="muted">${size}</div>
-      ${rel.length ? `<div class="red">相关问题 ${rel.length} 条：${[...new Set(rel.map(x => T().code(x.v.code)))].join('、')}</div>` : '<div class="muted">没有相关问题</div>'}</div>`;
+      ${rel.length ? `<div class="red">相关问题 ${rel.length} 条：${[...new Set(rel.map(x => T().code(x.v.code)))].join('、')}</div>` : '<div class="muted">没有相关问题</div>'}
+      ${o && S.step === 'fix' ? (S.cons.locks.has(id) ? `<button class="small" data-act="unlock" data-arg="${esc(id)}">解除锁定</button>`
+        : `<button class="small" data-act="lock" data-arg="${esc(id)}">锁定，方案里不许动它</button>`) : ''}</div>`;
   }
 
   HA.panels = { home, pick, stay, report, fix, compare, object, issues, esc };
