@@ -14,6 +14,8 @@ checkpoints/
 *.usdc
 *.usdz
 *.glb
+# 例外：网页演示用的 H1 住宅模型（许可见 web/models/H1/LICENSE.md）
+!web/models/H1/*.glb
 *.ply
 *.spz
 *.pt

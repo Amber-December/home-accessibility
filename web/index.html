@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>清先住 LiveFirst · 试住</title>
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <header>
+    <div class="brand"><b>清先住</b><span>LiveFirst</span></div>
+    <div class="modes">
+      <button class="on">试住 Stay</button>
+      <button disabled title="评测模式在线上段开放">评测 Bench</button>
+    </div>
+    <nav id="steps">
+      <button data-act="go" data-arg="pick">选人</button><i>→</i>
+      <button data-act="go" data-arg="stay">试住</button><i>→</i>
+      <button data-act="go" data-arg="report">体检</button><i>→</i>
+      <button data-act="go" data-arg="fix">改造</button><i>→</i>
+      <button data-act="go" data-arg="compare">对比</button>
+    </nav>
+    <div id="badges"></div>
+  </header>
+  <main>
+    <aside id="chat"></aside>
+    <section id="stage">
+      <div id="view"></div>
+      <div id="tools">
+        <div class="seg" id="views">
+          <button data-act="view" data-arg="top">俯视</button>
+          <button data-act="view" data-arg="follow">跟随</button>
+          <button data-act="view" data-arg="fp">第一人称</button>
+        </div>
+        <div class="seg" id="layers">
+          <label><input type="checkbox" data-act="layer" data-arg="heat">余量热力</label>
+          <label><input type="checkbox" data-act="layer" data-arg="sweep">门扫掠</label>
+          <label><input type="checkbox" data-act="layer" data-arg="fp" checked>判定外形</label>
+        </div>
+      </div>
+      <div id="split-labels" hidden><span>改造前</span><span id="split-right">方案</span></div>
+      <div id="subtitle" hidden></div>
+      <div id="problem" hidden></div>
+      <div id="loading">正在加载户型…</div>
+    </section>
+    <aside id="detail"><div id="panel"></div><div id="pick"></div></aside>
+  </main>
+  <footer id="timeline"></footer>
+
+  <script src="../prototypes/js/vendor/three-r128/build/three.min.js"></script>
+  <script src="../prototypes/js/vendor/three-r128/controls/OrbitControls.js"></script>
+  <script src="../prototypes/js/vendor/three-r128/loaders/GLTFLoader.js"></script>
+  <script src="../prototypes/js/vendor/three-r128/libs/fflate.min.js"></script>
+  <script src="js/text.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/scene-ir.js"></script>
+  <script src="js/viewer.js"></script>
+  <script src="js/resident.js"></script>
+  <script src="js/layers.js"></script>
+  <script src="js/timeline.js"></script>
+  <script src="js/panels.js"></script>
+  <script src="js/chat.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/app-steps.js"></script>
+  <script src="js/app-boot.js"></script>
+</body>
+</html>
