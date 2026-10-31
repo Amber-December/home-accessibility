@@ -20,6 +20,8 @@ checkpoints/
 !web/library/models/*.glb
 # 例外：实验室户型的展示模型（许可见 web/lab/LICENSE.md）
 !web/lab/*/*.glb
+# 例外：住户角色模型（说明见 web/models/people/LICENSE.md）
+!web/models/people/*.glb
 *.ply
 *.spz
 *.pt

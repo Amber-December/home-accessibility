@@ -85,14 +85,14 @@
     if (!ps.length) return S.chat.say('agent', `按你的条件（${esc(cond)}）没有能提分的方案。可以在右侧放宽预算或解除锁定。`);
     S.chat.say('agent', `按你的条件（${esc(cond)}），推荐：`, {
       body: `<ul>${ps.map(x => `<li><b>${x.labels.join('/')}</b> · 方案 ${x.plan.id}（${T.cny(x.plan.cost_cny)}）：${base} → ${x.plan.score} 分</li>`).join('')}</ul>
-        <p class="muted">每个方案都重跑了全部住户，其他住户没有变差。价格是样例参考价。</p>`,
+        <p class="muted">每个方案都重跑了全部住户，其他住户没有变差。价格取自素材库家具的标价。</p>`,
       buttons: [...ps.map(x => ({ label: `看方案 ${x.plan.id}`, act: 'plan', arg: x.plan.id })),
         { label: '看前后对比', act: 'go', arg: 'compare', primary: true }] });
   };
 
   function reportUrl() {
     const q = new URLSearchParams(location.search), u = new URLSearchParams();
-    ['ir', 'result'].forEach(k => q.get(k) && u.set(k, q.get(k)));
+    ['ir', 'occ', 'glb'].forEach(k => q.get(k) && u.set(k, q.get(k)));
     u.set('plan', S.plan);
     if (S.cons.budget != null) u.set('budget', S.cons.budget);
     if (S.cons.rent) u.set('rent', 1);
@@ -100,34 +100,70 @@
     if (S.cons.locks.size) u.set('locks', [...S.cons.locks].join(','));
     return 'report.html?' + u;
   }
+  // The report page reads the engine result the app holds: residents, runs and plans without trajectories.
+  function snapshot() {
+    const R = S.result, slim = rs => rs.map(r => ({ ...r, traj: undefined, monologue: undefined, events: undefined }));
+    const snap = { scene_id: S.ir.scene_id, personas: R.personas, tasks: R.tasks,
+      baseline: { score: R.baseline.score, runs: slim(R.baseline.runs) }, plans: R.plans.map(p => ({ ...p, runs: slim(p.runs) })), search: R.search };
+    try { localStorage.setItem('ha:report', JSON.stringify(snap)); return true; } catch (e) { return false; }
+  }
 
   const repick = id => { if ($('#pick').innerHTML) $('#pick').innerHTML = HA.panels.object(S, id); };
 
-  // 导入户型: homes come from the 素材库 (lab/index.json). H1 opens the default 试住 data, others their own IR and result.
+  // 导入户型: homes come from the 素材库 (lab/index.json). H1 opens the default home, others their own IR; the engine runs every home in the browser.
   let homes = null;
   const homeHref = h => {
     if (h.hero === 'H1') return 'index.html';
-    const u = new URLSearchParams({ ir: h.ir, result: h.result });
+    const u = new URLSearchParams({ ir: h.ir });
     return `index.html?${u}`;
   };
+  const homeName = h => h.name || h.hero || h.id.replace('scene', '#');
+  const kindName = h => (h.kind === 'office' ? '公共建筑' : '住宅');
+  // Demo floor plans in web/plans/, drawn from the two residential homes and the office floor.
+  const DEMO = [['plans/scene000064.png', '住宅 A'], ['plans/scene000021.png', '住宅 B'], ['plans/office01.png', '办公楼层']];
+  const loadHomes = async () => homes || (homes = (await fetch('lab/index.json').then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })).homes);
+
+  // 上传平面图: match the image against every home's wall layout, then offer the best one to open.
+  async function planMatch(src, label) {
+    S.sheet('chat');
+    try { await loadHomes(); } catch (err) { S.chat.say('agent', `户型列表没加载出来：${esc(err.message)}`); return; }
+    S.chat.say('user', `上传平面图：${esc(label)}`);
+    S.chat.say('agent', `正在把平面图的墙线和素材库里 ${homes.length} 套场景逐一比对…`);
+    let res;
+    try { res = await HA.planMatch.match(src, homes); } catch (err) { S.chat.say('agent', `平面图没能识别：${esc(err.message)}`); return; }
+    const top = res.matches.slice(0, 3), best = top[0], pct = v => `${Math.round(v * 100)}%`;
+    const sure = best.score >= .6 && (!top[1] || best.score - top[1].score >= .08);
+    const rows = top.map((m, i) => `<a class="home${i ? '' : ' on'}" href="${esc(homeHref(m.home))}">` +
+      `<img src="${esc(m.home.preview)}" alt="" loading="lazy" width="96" height="96"><b>${esc(homeName(m.home))}</b>` +
+      `<span class="num">${kindName(m.home)} · 相似度 ${pct(m.score)}</span><span class="num">墙线 ${pct(m.walls)} · 长宽比 ${pct(m.shape)}${m.turned ? ' · 旋转 90°' : ''}</span></a>`).join('');
+    S.chat.say('agent', sure
+      ? `最接近的是「${esc(homeName(best.home))}」（${kindName(best.home)}，${best.home.area_m2} m²），相似度 ${pct(best.score)}。打开它会载入对应的 3D 模型，按家具库给每件家具配上尺寸、质量和碰撞体，再让住户在里面走。`
+      : `没有特别接近的场景，最像的是「${esc(homeName(best.home))}」，相似度 ${pct(best.score)}。可以先用它试住，或者换一张墙线更清楚的平面图。`, {
+      title: '平面图匹配结果',
+      body: `<div class="plan-q"><img src="${res.query.url}" alt="上传的平面图"><span class="muted num">${res.query.size.join(' × ')} px，与 ${res.matches.length} 套场景比对</span></div>` +
+        `<div class="homes">${rows}</div><p><a class="btn primary" href="${esc(homeHref(best.home))}">打开「${esc(homeName(best.home))}」并开始仿真</a></p>`,
+    });
+  }
   async function importCard() {
-    try {
-      homes = homes || (await fetch('lab/index.json').then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })).homes;
-    } catch (err) { S.chat.say('agent', `户型列表没加载出来：${esc(err.message)}`); return; }
+    try { await loadHomes(); } catch (err) { S.chat.say('agent', `户型列表没加载出来：${esc(err.message)}`); return; }
     const cur = S.ir.scene_id;
     const grid = homes.map(h => `<a class="home${h.id === cur ? ' on' : ''}" href="${esc(homeHref(h))}"${h.id === cur ? ' aria-current="true"' : ''}>` +
-      `<img src="${esc(h.preview)}" alt="" loading="lazy" width="96" height="96"><b>${esc(h.hero || h.id.replace('scene', '#'))}</b>` +
-      `<span class="num">${h.area_m2} m² · ${h.rooms.length} 间</span></a>`).join('');
+      `<img src="${esc(h.preview)}" alt="" loading="lazy" width="96" height="96"><b>${esc(homeName(h))}</b>` +
+      `<span class="num">${h.kind === 'office' ? '公建 · ' : ''}${h.area_m2} m² · ${h.rooms.length} 间</span></a>`).join('');
+    const upload = `<div class="plan-up"><label class="btn primary">上传平面图<input type="file" accept="image/*" data-change="planFile" hidden></label>` +
+      `<span class="muted">或用示例：${DEMO.map(([u, n]) => `<button class="link" data-act="planDemo" data-arg="${u}">${n}</button>`).join('')}</span></div>`;
     S.sheet('chat');
     S.chat.say('agent', '从素材库里选一套户型。载入后会读出房间、门和家具，先核对再试住。', {
-      title: `户型 ${homes.length} 套`,
-      body: `<div class="homes">${grid}</div><p class="muted">家具模型在 <a href="library.html">素材库</a>；想多套一起比，去 <a href="lab.html">实验室</a>。</p>`,
+      title: `场景 ${homes.length} 套`,
+      body: `${upload}<p class="muted">上传一张平面图（照片、扫描件或 CAD 导出图都行），按墙线布局匹配素材库里最接近的场景；也可以直接点下面的场景。</p><div class="homes">${grid}</div><p class="muted">家具模型在 <a href="library.html">素材库</a>；想多套一起比，去 <a href="lab.html">实验室</a>。</p>`,
     });
   }
 
   // Actions dispatched from app-boot's S.act.
   S.flow = {
     import: () => importCard(),
+    planFile: (v, el) => { const f = el && el.files && el.files[0]; if (f) planMatch(f, f.name); },
+    planDemo: u => planMatch(u, (DEMO.find(d => d[0] === u) || [u, u])[1] + ' 平面图'),
     say: text => S.onSay(text),
     intentOk() {
       const q = S.pending; if (!q) return;
@@ -142,6 +178,10 @@
     lock(id) { S.cons.locks.add(id); refilter(); repick(id); },
     unlock(id) { S.cons.locks.delete(id); refilter(); repick(id); },
     plan(id) { S.plan = id; if (S.step === 'fix') S.showPlan(); else S.enter('fix'); },
-    export() { if (S.plan) window.open(reportUrl(), '_blank', 'noopener'); },
+    export() {
+      if (!S.plan) return;
+      if (!snapshot()) { S.chat.say('agent', '浏览器存储已满，报告没能生成。'); return; }
+      window.open(reportUrl(), '_blank', 'noopener');
+    },
   };
 })();

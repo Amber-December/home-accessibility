@@ -107,11 +107,16 @@
     v.setStyle = name => {
       v.style = name; fx.setStyle(name);
       scene.environmentIntensity = name === 'diag' ? 0.9 : 0.5;
-      hemi.intensity = name === 'diag' ? 1.4 : 0.7; sun.intensity = name === 'diag' ? 1.2 : 2.4;
-      renderer.toneMappingExposure = name === 'diag' ? 1 : 0.85;
+      const dim = v.night ? 0.18 : 1;
+      hemi.intensity = (name === 'diag' ? 1.4 : 0.7) * dim; sun.intensity = (name === 'diag' ? 1.2 : 2.4) * (v.night ? 0.05 : 1);
+      scene.environmentIntensity *= dim;
+      renderer.toneMappingExposure = (name === 'diag' ? 1 : 0.85) * (v.night ? 0.7 : 1);
       if (v.glb) v.glb.traverse(m => { if (m.isMesh && m.userData.realMat) m.material = name === 'diag' ? m.userData.diagMat : m.userData.realMat; });
       v.marks.forEach((kind, id) => paint(id, kind));
     };
+
+    // 夜间 scene: the same style with the lights turned almost off.
+    v.setNight = on => { v.night = !!on; v.setStyle(v.style); };
 
     // GLB on top of the IR model. Top-level node names equal IR ids; IR meshes stay hidden but pickable.
     const topNode = (root, m) => { while (m.parent && m.parent !== root) m = m.parent; return m; };
@@ -154,7 +159,9 @@
       ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
       ray.setFromCamera(ndc, camera);
       const hit = ray.intersectObjects(built.pick, false)[0];
-      v.onPick(hit ? hit.object.userData : null, hit ? [hit.point.x, -hit.point.z] : null);
+      // Misses still report the floor point, so overlay layers (risk cells) can be inspected.
+      const floor = !hit && ray.ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), new THREE.Vector3());
+      v.onPick(hit ? hit.object.userData : null, hit ? [hit.point.x, -hit.point.z] : floor ? [floor.x, -floor.z] : null);
     });
 
     // Walk (步入): keyboard and drag, blocked by solid cells of the body layer (doors are passable).

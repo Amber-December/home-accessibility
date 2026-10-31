@@ -35,7 +35,7 @@
   }
 
   // Label grid after plan edits: remove clears the object's cells, move shifts them,
-  // replace keeps the footprint eroded by shrink_m. Door edits have no object cells and are skipped.
+  // replace keeps the catalog product's footprint or the old one eroded by shrink_m. Door edits have no object cells and are skipped.
   function edited(occ, layer, edits) {
     const src = occ[layer];
     if (!edits || !edits.length) return src;
@@ -45,16 +45,23 @@
       const cells = [];
       for (let k = 0; k < g.length; k++) if (g[k] === idx) { cells.push(k); g[k] = -1; }
       if (e.op === 'move') {
-        const di = Math.round(e.dy / res), dj = Math.round(e.dx / res);
+        const di = Math.round((e.dy || 0) / res), dj = Math.round((e.dx || 0) / res);
         for (const k of cells) {
           const i = Math.floor(k / cols) + di, j = (k % cols) + dj;
           if (i >= 0 && j >= 0 && i < rows && j < cols) g[i * cols + j] = idx;
         }
       }
-      if (e.op === 'replace') {
+      if (e.op === 'replace' && e.place) {
+        // Catalog product: the old cells inside its footprint, back against the old one's back.
+        const [cx, cy] = e.place.center, [fx, fy] = e.place.front, [w, d] = e.product.size_m;
+        for (const k of cells) {
+          const x = occ.x0 + (k % cols + .5) * res - cx, y = occ.y0 + (Math.floor(k / cols) + .5) * res - cy;
+          if (Math.abs(-x * fy + y * fx) <= w / 2 && Math.abs(x * fx + y * fy) <= d / 2) g[k] = idx;
+        }
+      } else if (e.op === 'replace') {
         const on = new Uint8Array(g.length); let cur = cells;
         cur.forEach(k => { on[k] = 1; });
-        for (let n = Math.round(e.shrink_m / res); n > 0; n--) {
+        for (let n = Math.round((e.shrink_m || 0) / res); n > 0; n--) {
           cur = cur.filter(k => on[k - 1] && on[k + 1] && on[k - cols] && on[k + cols]);
           on.fill(0); cur.forEach(k => { on[k] = 1; });
         }
@@ -66,8 +73,10 @@
 
   function halfWidth(p) { const f = p.footprint; return f.shape === 'rect' ? f.size[0] / 2 : f.r; }
 
-  // Clearance (m) per free cell for a resident: distance to the nearest solid minus half its width.
+  // Clearance (m) per free cell: distance to the nearest solid minus half the body width. For several residents
+  // the least clearance at a cell is the widest one's, so `persona` may be an array.
   function clearance(occ, persona, edits) {
+    if (Array.isArray(persona)) persona = persona.reduce((a, b) => (halfWidth(b) > halfWidth(a) ? b : a));
     const { rows, cols, res } = occ, doors = new Set();
     occ.labels.forEach((s, i) => { if (s.startsWith('door:')) doors.add(i); });
     const body = edited(occ, 'body', edits);

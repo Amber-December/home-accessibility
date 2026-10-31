@@ -4,16 +4,22 @@
   'use strict';
   const HA = window.HA = window.HA || {};
   const PERSONA = [
+    [/电动轮椅/, 'electricWheelchair'],
     [/轮椅/, 'wheelchair'],
-    [/助行器|助步器|拐杖|拄拐|走路不稳|腿脚不好/, 'walker_elder'],
-    [/上肢|手臂|胳膊|手抬不|手不方便|够不着|够不到/, 'upper_limb'],
-    [/正常走|走路正常|对照|健全/, 'walking_control'],
+    [/助行器|助步器|拐杖|拄拐|走路不稳|腿脚不好/, 'assisted'],
+    [/视障|盲人|失明|白杖|看不见|看不清/, 'blind'],
+    [/上肢|手臂|胳膊|手抬不|手不方便|够不着|够不到/, 'upper'],
+    [/正常走|走路正常|对照|健全/, 'pedestrian'],
   ];
   const TASK = [
     [/厕所|卫生间|洗手间|如厕|马桶/, 'T2'],
     [/沙发|入户|进门|回家|客厅/, 'T1'],
     [/冰箱|厨房|做饭/, 'T3'],
     [/上床|下床|床|转移/, 'T4'],
+    [/火灾|着火|起火|逃生|疏散/, 'T5'],
+    [/起夜|夜里|夜间|晚上/, 'T6'],
+    [/担架|急救|救护/, 'T7'],
+    [/杂物|堆放|乱放/, 'T8'],
   ];
   const ROOM_WORD = { 主卧: 'masterBedroom', 次卧: 'guestBedroom', 客厅: 'livingRoom', 卫生间: 'bathroom', 厨房: 'kitchen', 阳台: 'balcony', 书房: 'study' };
   const CN = { 零: 0, 一: 1, 二: 2, 两: 2, 三: 3, 四: 4, 五: 5, 六: 6, 七: 7, 八: 8, 九: 9 };

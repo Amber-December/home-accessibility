@@ -1,6 +1,6 @@
 {
  "source": "IKEA 中国官网商品页（商品图、尺寸图、标称尺寸）。静态家具由 Aholo Lux3D 按商品图生成，再按标称尺寸缩放；带门、抽屉、升降等活动部件的家具加了关节骨骼，可开合，并在 MuJoCo 里检查关节行程和穿模",
- "price_note": "价格是按品类填的样例价，不是商品页报价",
+ "price_note": "价格是按品类填的参考价，不是商品页报价",
  "items": [
   {
    "id": "09579973",
@@ -29,7 +29,7 @@
     "实际渲染为统一闭合姿态；全关状态与参考图的外观布局一致，不能体现各机构的中间运动状态。"
    ],
    "price_cny": 399,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/09579973.jpg",
    "ref": "library/img/09579973-ref.jpg",
    "glb": null,
@@ -102,7 +102,7 @@
     "视图0的透视角度与参考图相近，但仍存在一定角度和比例观感差异。"
    ],
    "price_cny": 399,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/10483880.jpg",
    "ref": "library/img/10483880-ref.jpg",
    "glb": null,
@@ -173,7 +173,7 @@
     "视图0采用明显透视角度，未完全复现参考图的正面展示角度。"
    ],
    "price_cny": 399,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/20174216.jpg",
    "ref": "library/img/20174216-ref.jpg",
    "glb": null,
@@ -245,7 +245,7 @@
     "模型采用单一网格和简化材质，未完整呈现参考中的细小结构与装配细节。"
    ],
    "price_cny": 399,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/20178592.jpg",
    "ref": "library/img/20178592-ref.jpg",
    "glb": null,
@@ -320,7 +320,7 @@
     "渲染视角和产品参考图略有差异，比例观感受相机影响。"
    ],
    "price_cny": 399,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/20492775.jpg",
    "ref": "library/img/20492775-ref.jpg",
    "glb": null,
@@ -392,7 +392,7 @@
     "实际模型为单一网格，未体现独立立柱和层板部件拆分。"
    ],
    "price_cny": 399,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/49251346.jpg",
    "ref": "library/img/49251346-ref.jpg",
    "glb": null,
@@ -468,7 +468,7 @@
     "侧板定位孔和层板可调结构未明确表现，但该资产声明为静态且未规划相关机制。"
    ],
    "price_cny": 399,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/70351443.jpg",
    "ref": "library/img/70351443-ref.jpg",
    "glb": null,
@@ -542,7 +542,7 @@
     "未展示桌面内部蜂窝或复合板材结构，但该结构属于不可见内部细节。"
    ],
    "price_cny": 599,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/09241825.jpg",
    "ref": "library/img/09241825-ref.jpg",
    "glb": null,
@@ -613,7 +613,7 @@
     "部分背部结构在视图中不可完全确认，但整体桌架结构与参考一致。"
    ],
    "price_cny": 599,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/20489886.jpg",
    "ref": "library/img/20489886-ref.jpg",
    "glb": null,
@@ -687,7 +687,7 @@
     "渲染视角与参考图略有差异，无法据此精确判断所有尺寸比例。"
    ],
    "price_cny": 599,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/49417752.jpg",
    "ref": "library/img/49417752-ref.jpg",
    "glb": null,
@@ -753,7 +753,7 @@
     "实际渲染中的桌腿倾角和可见遮挡关系与参考图略有差异，但整体支撑布局一致。"
    ],
    "price_cny": 599,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/49439966.jpg",
    "ref": "library/img/49439966-ref.jpg",
    "glb": null,
@@ -819,7 +819,7 @@
     "柜体、桌面和腿部的细节及边缘结构有所简化。"
    ],
    "price_cny": 599,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/49638112.jpg",
    "ref": "library/img/49638112-ref.jpg",
    "glb": null,
@@ -887,7 +887,7 @@
     "金属腿、横向连接杆和桌面边缘的比例与参考存在轻微简化。"
    ],
    "price_cny": 599,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/60278288.jpg",
    "ref": "library/img/60278288-ref.jpg",
    "glb": null,
@@ -955,7 +955,7 @@
     "木纹与边框比例为近似建模，未完全复刻官方细部。"
    ],
    "price_cny": 599,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/90473561.jpg",
    "ref": "library/img/90473561-ref.jpg",
    "glb": null,
@@ -1030,7 +1030,7 @@
     "部分支腿在视图中因透视和遮挡不可见，不能据此判定支腿缺失。"
    ],
    "price_cny": 499,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/00481792.jpg",
    "ref": "library/img/00481792-ref.jpg",
    "glb": null,
@@ -1117,7 +1117,7 @@
     "座椅外形和底座轮廓为合理简化，未完全复现参考图中的细微曲面与金属连接件。"
    ],
    "price_cny": 499,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/09488572.jpg",
    "ref": "library/img/09488572-ref.jpg",
    "glb": null,
@@ -1200,7 +1200,7 @@
     "渲染视角和参考图略有差异，不能完全直接比较比例细节。"
    ],
    "price_cny": 499,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/50564332.jpg",
    "ref": "library/img/50564332-ref.jpg",
    "glb": null,
@@ -1286,7 +1286,7 @@
     "材质整体偏平滑，未充分体现参考图中的织物或塑料细微表面质感。"
    ],
    "price_cny": 499,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/69907467.jpg",
    "ref": "library/img/69907467-ref.jpg",
    "glb": null,
@@ -1364,7 +1364,7 @@
     "部分视角下后腿、支架与座背连接处存在遮挡，细节无法完全确认。"
    ],
    "price_cny": 499,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/89503192.jpg",
    "ref": "library/img/89503192-ref.jpg",
    "glb": null,
@@ -1443,7 +1443,7 @@
     "部分视角下高度调节杆不明显，但全关节展开视图显示了升降结构。"
    ],
    "price_cny": 499,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/90320342.jpg",
    "ref": "library/img/90320342-ref.jpg",
    "glb": null,
@@ -1525,7 +1525,7 @@
     "未能从单一视角完全确认所有底部连接结构，但多视图显示结构完整。"
    ],
    "price_cny": 99,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/00369540.jpg",
    "ref": "library/img/00369540-ref.jpg",
    "glb": null,
@@ -1591,7 +1591,7 @@
     "下层踏板及腿部连接结构进行了简化，未完整表现参考图中的细节和材质区分。"
    ],
    "price_cny": 99,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/00600709.jpg",
    "ref": "library/img/00600709-ref.jpg",
    "glb": null,
@@ -1666,7 +1666,7 @@
     "底部小脚在渲染中不明显，但不影响凳子的主要结构识别。"
    ],
    "price_cny": 99,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/20623719.jpg",
    "ref": "library/img/20623719-ref.jpg",
    "glb": "library/models/20623719.glb",
@@ -1746,7 +1746,7 @@
     "部分结构在当前视角中被遮挡，无法完整核验所有隐藏连接。"
    ],
    "price_cny": 99,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/50225592.jpg",
    "ref": "library/img/50225592-ref.jpg",
    "glb": null,
@@ -1819,7 +1819,7 @@
     "渲染材质呈灰白色，木纹贴面效果不明显，但颜色家族一致。"
    ],
    "price_cny": 99,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/50608133.jpg",
    "ref": "library/img/50608133-ref.jpg",
    "glb": null,
@@ -1897,7 +1897,7 @@
     "渲染中未能验证具体尺寸数值，但整体比例与参考图基本一致。"
    ],
    "price_cny": 99,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/80557071.jpg",
    "ref": "library/img/80557071-ref.jpg",
    "glb": null,
@@ -1972,7 +1972,7 @@
     "闭合视图中的抽屉和柜门处于关闭姿态，需结合全开视图确认运动结构。"
    ],
    "price_cny": 999,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/00553618.jpg",
    "ref": "library/img/00553618-ref.jpg",
    "glb": null,
@@ -2044,7 +2044,7 @@
     "模型支脚和柜体细节较为简化，内部隔板未在闭合视图中体现。"
    ],
    "price_cny": 999,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/09187480.jpg",
    "ref": "library/img/09187480-ref.jpg",
    "glb": null,
@@ -2115,7 +2115,7 @@
     "顶部及部分内侧采用较明显的浅褐色，与参考图的浅色木质内饰相符，但材质纹理较简化。"
    ],
    "price_cny": 999,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/10452299.jpg",
    "ref": "library/img/10452299-ref.jpg",
    "glb": null,
@@ -2183,7 +2183,7 @@
     "实际模型前部间隙和各分区比例与参考图存在一定偏差。"
    ],
    "price_cny": 999,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/10456909.jpg",
    "ref": "library/img/10456909-ref.jpg",
    "glb": null,
@@ -2255,7 +2255,7 @@
     "渲染中接缝描边偏明显，视觉上略显硬朗。"
    ],
    "price_cny": 999,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/30439730.jpg",
    "ref": "library/img/30439730-ref.jpg",
    "glb": null,
@@ -2327,7 +2327,7 @@
     "玻璃门及内部搁板在部分闭合视角中较暗，透明度和层次表现弱于参考图。"
    ],
    "price_cny": 999,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/50520362.jpg",
    "ref": "library/img/50520362-ref.jpg",
    "glb": null,
@@ -2398,7 +2398,7 @@
     "上部玻璃门的透明度和内部搁板可见性较弱。"
    ],
    "price_cny": 999,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/90415161.jpg",
    "ref": "library/img/90415161-ref.jpg",
    "glb": null,
@@ -2470,7 +2470,7 @@
     "床垫被建模为整体白色块体，表面褶皱和更细致的软包特征较少。"
    ],
    "price_cny": 1499,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/09157925.jpg",
    "ref": "library/img/09157925-ref.jpg",
    "glb": null,
@@ -2546,7 +2546,7 @@
     "渲染视图中未能精确验证全部尺寸及床下净空。"
    ],
    "price_cny": 1499,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/20249486.jpg",
    "ref": "library/img/20249486-ref.jpg",
    "glb": null,
@@ -2622,7 +2622,7 @@
     "模型为单一网格和单一材质，螺栓、塑料脚等细节基本未单独呈现。"
    ],
    "price_cny": 1499,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/20458314.jpg",
    "ref": "library/img/20458314-ref.jpg",
    "glb": "library/models/20458314.glb",
@@ -2724,7 +2724,7 @@
     "材质表现偏灰且较均匀，粉末涂层的真实质感和细微反射不足。"
    ],
    "price_cny": 1499,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/30603768.jpg",
    "ref": "library/img/30603768-ref.jpg",
    "glb": null,
@@ -2800,7 +2800,7 @@
     "渲染视角与参考图略有差异，部分结构细节不可直接比较。"
    ],
    "price_cny": 1499,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/40558138.jpg",
    "ref": "library/img/40558138-ref.jpg",
    "glb": null,
@@ -2875,7 +2875,7 @@
     "床架与床垫的尺寸比例及边缘细节进行了简化。"
    ],
    "price_cny": 1499,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/99158020.jpg",
    "ref": "library/img/99158020-ref.jpg",
    "glb": null,
@@ -2948,7 +2948,7 @@
     "各个旋转视图构图基本相同，视角差异不明显。"
    ],
    "price_cny": 199,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/00352988.jpg",
    "ref": "library/img/00352988-ref.jpg",
    "glb": null,
@@ -3021,7 +3021,7 @@
     "材质表现偏灰，且黑色边缘线降低了与白色参考产品的视觉一致性。"
    ],
    "price_cny": 199,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/00354063.jpg",
    "ref": "library/img/00354063-ref.jpg",
    "glb": null,
@@ -3095,7 +3095,7 @@
     "模型比例和局部板件厚度为合理近似，并非精确官方CAD复刻。"
    ],
    "price_cny": 199,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/10354091.jpg",
    "ref": "library/img/10354091-ref.jpg",
    "glb": null,
@@ -3168,7 +3168,7 @@
     "部分螺钉、端盖和结构连接细节未清晰表现。"
    ],
    "price_cny": 199,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/10558229.jpg",
    "ref": "library/img/10558229-ref.jpg",
    "glb": null,
@@ -3239,7 +3239,7 @@
     "腿部、桌面和底层搁板的细节与厚度为简化建模，未完全复刻参考图的连接与边缘细节。"
    ],
    "price_cny": 199,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/20515319.jpg",
    "ref": "library/img/20515319-ref.jpg",
    "glb": null,
@@ -3311,7 +3311,7 @@
     "渲染视角和比例表现与参考图略有差异，但不影响主要结构识别。"
    ],
    "price_cny": 199,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/40386731.jpg",
    "ref": "library/img/40386731-ref.jpg",
    "glb": null,
@@ -3385,7 +3385,7 @@
     "渲染材质偏浅灰白，桦木色和木纹质感不如参考图明显。"
    ],
    "price_cny": 199,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/50407361.jpg",
    "ref": "library/img/50407361-ref.jpg",
    "glb": null,
@@ -3460,7 +3460,7 @@
     "视图0中部分腿部和后部连接结构存在遮挡，但其他视图显示四条固定金属腿基本完整。"
    ],
    "price_cny": 899,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/00454232.jpg",
    "ref": "library/img/00454232-ref.jpg",
    "glb": null,
@@ -3536,7 +3536,7 @@
     "模型整体比例和局部支撑结构与参考图存在轻微简化。"
    ],
    "price_cny": 899,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/39299018.jpg",
    "ref": "library/img/39299018-ref.jpg",
    "glb": null,
@@ -3611,7 +3611,7 @@
     "模型视图与参考图的相机角度不同，无法完全比较比例和背部结构。"
    ],
    "price_cny": 899,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/39390772.jpg",
    "ref": "library/img/39390772-ref.jpg",
    "glb": "library/models/39390772.glb",
@@ -3692,7 +3692,7 @@
     "扶手、靠背和坐垫的圆角及比例进行了简化。"
    ],
    "price_cny": 899,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/40262882.jpg",
    "ref": "library/img/40262882-ref.jpg",
    "glb": null,
@@ -3771,7 +3771,7 @@
     "靠背与座垫的视觉厚度及倾角与参考图存在轻微差异。"
    ],
    "price_cny": 899,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/40624336.jpg",
    "ref": "library/img/40624336-ref.jpg",
    "glb": null,
@@ -3846,7 +3846,7 @@
     "视图0中部分后腿和支撑结构被遮挡，无法完整比较所有结构细节。"
    ],
    "price_cny": 899,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/60425642.jpg",
    "ref": "library/img/60425642-ref.jpg",
    "glb": null,
@@ -3917,7 +3917,7 @@
     "墙面防倾倒固定件未作为外观主体建模，但这不影响四个抽屉的主要功能。"
    ],
    "price_cny": 799,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/10354623.jpg",
    "ref": "library/img/10354623-ref.jpg",
    "glb": null,
@@ -3988,7 +3988,7 @@
     "渲染视图未展示抽屉内部结构，但五个抽屉均有对应独立直线滑动关节。"
    ],
    "price_cny": 799,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/10355731.jpg",
    "ref": "library/img/10355731-ref.jpg",
    "glb": null,
@@ -4059,7 +4059,7 @@
     "模型整体细节和木纹表现较简化，颜色更接近纯黑而非参考中的黑褐色。"
    ],
    "price_cny": 799,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/30355688.jpg",
    "ref": "library/img/30355688-ref.jpg",
    "glb": null,
@@ -4131,7 +4131,7 @@
     "拉手外观与参考图相近，但为简化几何，不作为独立机械关节。"
    ],
    "price_cny": 799,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/50407304.jpg",
    "ref": "library/img/50407304-ref.jpg",
    "glb": null,
@@ -4202,7 +4202,7 @@
     "抽屉内部和滑轨结构进行了合理简化。"
    ],
    "price_cny": 799,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/60433487.jpg",
    "ref": "library/img/60433487-ref.jpg",
    "glb": null,
@@ -4270,7 +4270,7 @@
     "模型视图中的比例和透视略有差异，腿部使整体视觉高度略高。"
    ],
    "price_cny": 799,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/60503296.jpg",
    "ref": "library/img/60503296-ref.jpg",
    "glb": null,
@@ -4341,7 +4341,7 @@
     "参考图中抽屉前板较平整，实际模型的边框和侧向结构表现更突出。"
    ],
    "price_cny": 799,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/70610154.jpg",
    "ref": "library/img/70610154-ref.jpg",
    "glb": null,
@@ -4417,7 +4417,7 @@
     "模型整体偏单一材质表现，皮革纹理、缝线和压花细节弱于参考图。"
    ],
    "price_cny": 1999,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/09270304.jpg",
    "ref": "library/img/09270304-ref.jpg",
    "glb": null,
@@ -4493,7 +4493,7 @@
     "渲染视图分辨率较低，材质纹理与布料质感表现有限。"
    ],
    "price_cny": 1999,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/20619072.jpg",
    "ref": "library/img/20619072-ref.jpg",
    "glb": null,
@@ -4569,7 +4569,7 @@
     "四条金属腿的形状和安装角度为近似表现。"
    ],
    "price_cny": 1999,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/30245044.jpg",
    "ref": "library/img/30245044-ref.jpg",
    "glb": null,
@@ -4647,7 +4647,7 @@
     "部分视角中后侧或内侧支腿被座面与栏杆遮挡，但其他视角显示结构完整。"
    ],
    "price_cny": 1999,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/50436354.jpg",
    "ref": "library/img/50436354-ref.jpg",
    "glb": null,
@@ -4718,7 +4718,7 @@
     "未能仅凭渲染图确认精确尺寸，但整体轮廓和功能形态一致。"
    ],
    "price_cny": 1999,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/60499628.jpg",
    "ref": "library/img/60499628-ref.jpg",
    "glb": null,
@@ -4793,7 +4793,7 @@
     "参考图与模型均为双座垫、双靠垫构成，未体现独立三座垫分割。"
    ],
    "price_cny": 1999,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/80519526.jpg",
    "ref": "library/img/80519526-ref.jpg",
    "glb": null,
@@ -4868,7 +4868,7 @@
     "部分视角下封闭面板的功能和朝向不够明确，但未见明确的活动机构标识。"
    ],
    "price_cny": 599,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/00294516.jpg",
    "ref": "library/img/00294516-ref.jpg",
    "glb": null,
@@ -4943,7 +4943,7 @@
     "渲染分辨率较低，部分缝隙和底座细节不够清晰。"
    ],
    "price_cny": 599,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/00352573.jpg",
    "ref": "library/img/00352573-ref.jpg",
    "glb": null,
@@ -5013,7 +5013,7 @@
     "实际模型与参考图的透视角度及局部比例略有差异。"
    ],
    "price_cny": 599,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/10439774.jpg",
    "ref": "library/img/10439774-ref.jpg",
    "glb": null,
@@ -5085,7 +5085,7 @@
     "视图90和180主要展示背面或非主要比较面，正面视图0与参考产品最具可比性。"
    ],
    "price_cny": 599,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/20415065.jpg",
    "ref": "library/img/20415065-ref.jpg",
    "glb": null,
@@ -5156,7 +5156,7 @@
     "抽屉滑轨内部五金未直接建模，但三个抽屉均有独立直线运动关节。"
    ],
    "price_cny": 599,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/50352900.jpg",
    "ref": "library/img/50352900-ref.jpg",
    "glb": null,
@@ -5227,7 +5227,7 @@
     "模型表面存在轻微斑驳或噪点感，与参考图的均匀白色粉末涂层不完全一致。"
    ],
    "price_cny": 599,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/50483878.jpg",
    "ref": "library/img/50483878-ref.jpg",
    "glb": null,
@@ -5299,7 +5299,7 @@
     "参考图为透视近景，渲染视图较远，因此细节可见度有限。"
    ],
    "price_cny": 599,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/70501310.jpg",
    "ref": "library/img/70501310-ref.jpg",
    "glb": null,
@@ -5371,7 +5371,7 @@
     "渲染视角与参考图略有差异。"
    ],
    "price_cny": 399,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/00487874.jpg",
    "ref": "library/img/00487874-ref.jpg",
    "glb": null,
@@ -5438,7 +5438,7 @@
     "视图中桌腿连接和隐藏结构不可见。"
    ],
    "price_cny": 399,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/10353063.jpg",
    "ref": "library/img/10353063-ref.jpg",
    "glb": null,
@@ -5513,7 +5513,7 @@
     "模型以单一网格表现，未体现实际装配拆分，但未造成可见结构问题。"
    ],
    "price_cny": 399,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/10413496.jpg",
    "ref": "library/img/10413496-ref.jpg",
    "glb": null,
@@ -5584,7 +5584,7 @@
     "渲染视图较小，无法精确核验尺寸比例。"
    ],
    "price_cny": 399,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/10500356.jpg",
    "ref": "library/img/10500356-ref.jpg",
    "glb": null,
@@ -5660,7 +5660,7 @@
     "渲染视图比例较小，难以精确核对尺寸和间隙。"
    ],
    "price_cny": 399,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/20513909.jpg",
    "ref": "library/img/20513909-ref.jpg",
    "glb": null,
@@ -5730,7 +5730,7 @@
     "螺钉、连接件和局部圆角细节有所简化。"
    ],
    "price_cny": 399,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/30340381.jpg",
    "ref": "library/img/30340381-ref.jpg",
    "glb": "library/models/30340381.glb",
@@ -5811,7 +5811,7 @@
     "渲染模型的比例和透视表现略有差异，未提供尺寸标尺，无法仅凭图像确认精确尺寸。"
    ],
    "price_cny": 399,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/50497583.jpg",
    "ref": "library/img/50497583-ref.jpg",
    "glb": null,
@@ -5882,7 +5882,7 @@
     "门板和抽屉缝隙较简化，未完全复现参考图的细节。"
    ],
    "price_cny": 999,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/00556056.jpg",
    "ref": "library/img/00556056-ref.jpg",
    "glb": null,
@@ -5954,7 +5954,7 @@
     "门把手尺寸较小且不够突出，但仍位于两门中部附近。"
    ],
    "price_cny": 999,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/10437237.jpg",
    "ref": "library/img/10437237-ref.jpg",
    "glb": null,
@@ -6021,7 +6021,7 @@
     "渲染视角和参考图略有差异，但视图0同样展示了正面及右侧面，具有可比性。"
    ],
    "price_cny": 999,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/30453759.jpg",
    "ref": "library/img/30453759-ref.jpg",
    "glb": null,
@@ -6089,7 +6089,7 @@
     "内部搁板和挂衣杆在闭合视图中不可见；在全开视图中可见左侧上部搁板及右侧分隔区域的搁板。"
    ],
    "price_cny": 999,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/30453764.jpg",
    "ref": "library/img/30453764-ref.jpg",
    "glb": null,
@@ -6160,7 +6160,7 @@
     "视图中未呈现参考图同等程度的材质、光照和边缘细节。"
    ],
    "price_cny": 999,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/39603679.jpg",
    "ref": "library/img/39603679-ref.jpg",
    "glb": null,
@@ -6227,7 +6227,7 @@
     "模型正面比例和门缝间隙为视觉估计，未达到精确CAD复刻程度。"
    ],
    "price_cny": 999,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/50378684.jpg",
    "ref": "library/img/50378684-ref.jpg",
    "glb": null,
@@ -6296,7 +6296,7 @@
     "模型正面比例和底座细节为简化表现。"
    ],
    "price_cny": 999,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/80441759.jpg",
    "ref": "library/img/80441759-ref.jpg",
    "glb": null,
@@ -6367,7 +6367,7 @@
     "渲染视角和参考图不完全一致，但不影响主要结构判断。"
    ],
    "price_cny": 799,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/09420394.jpg",
    "ref": "library/img/09420394-ref.jpg",
    "glb": null,
@@ -6438,7 +6438,7 @@
     "模型为单一网格，无法从渲染中确认隐藏连接方式。"
    ],
    "price_cny": 799,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/10493539.jpg",
    "ref": "library/img/10493539-ref.jpg",
    "glb": null,
@@ -6513,7 +6513,7 @@
     "桌面圆角和厚度与参考图存在轻微视觉差异。"
    ],
    "price_cny": 799,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/30382451.jpg",
    "ref": "library/img/30382451-ref.jpg",
    "glb": null,
@@ -6584,7 +6584,7 @@
     "材质表现更接近统一的浅橡木与浅色腿部，白色涂层与木质桌面的区分度略弱。"
    ],
    "price_cny": 799,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/30463857.jpg",
    "ref": "library/img/30463857-ref.jpg",
    "glb": null,
@@ -6655,7 +6655,7 @@
     "模型视图中的比例和透视与参考图略有差异。"
    ],
    "price_cny": 799,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/50400576.jpg",
    "ref": "library/img/50400576-ref.jpg",
    "glb": null,
@@ -6724,7 +6724,7 @@
     "渲染视角和参考图不同，无法直接核验所有底部连接细节。"
    ],
    "price_cny": 799,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/60373493.jpg",
    "ref": "library/img/60373493-ref.jpg",
    "glb": "library/models/60373493.glb",
@@ -6806,7 +6806,7 @@
     "渲染模型的视角与参考图略有差异。"
    ],
    "price_cny": 799,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/80491773.jpg",
    "ref": "library/img/80491773-ref.jpg",
    "glb": null,
@@ -6879,7 +6879,7 @@
     "部分视角下椅背和椅腿比例、曲线与参考图存在轻微差异，但不影响整体功能形态。"
    ],
    "price_cny": 299,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/10362487.jpg",
    "ref": "library/img/10362487-ref.jpg",
    "glb": null,
@@ -6953,7 +6953,7 @@
     "渲染视角与参考图略有差异，部分结构比例受透视影响。"
    ],
    "price_cny": 299,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/10457230.jpg",
    "ref": "library/img/10457230-ref.jpg",
    "glb": null,
@@ -7027,7 +7027,7 @@
     "靠背弧度和部分比例与参考产品存在轻微差异。"
    ],
    "price_cny": 299,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/29429204.jpg",
    "ref": "library/img/29429204-ref.jpg",
    "glb": null,
@@ -7104,7 +7104,7 @@
     "模型整体比例和座壳曲面与参考图存在轻微差异，但未影响椅子的主要功能形态。"
    ],
    "price_cny": 299,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/30457314.jpg",
    "ref": "library/img/30457314-ref.jpg",
    "glb": null,
@@ -7178,7 +7178,7 @@
     "靠背曲率和座面轮廓与参考图接近，但并非完全一致。"
    ],
    "price_cny": 299,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/50417633.jpg",
    "ref": "library/img/50417633-ref.jpg",
    "glb": null,
@@ -7256,7 +7256,7 @@
     "金属支架和脚垫细节进行了简化。"
    ],
    "price_cny": 299,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/60161066.jpg",
    "ref": "library/img/60161066-ref.jpg",
    "glb": null,
@@ -7330,7 +7330,7 @@
     "部分视图中座面穿孔因渲染分辨率和角度显得不够清晰。"
    ],
    "price_cny": 299,
-   "price_src": "样例",
+   "price_src": "品类参考价",
    "img": "library/img/70214286.jpg",
    "ref": "library/img/70214286-ref.jpg",
    "glb": null,

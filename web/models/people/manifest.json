@@ -1,0 +1,280 @@
+{
+ "wheelchair": {
+  "glb": "person_09.glb",
+  "height": 1.2,
+  "yaw": 1.5707963267948966,
+  "id": "person_09",
+  "title": "中国成人＋手动轮椅"
+ },
+ "electricWheelchair": {
+  "glb": "person_13.glb",
+  "height": 1.26,
+  "yaw": 1.5707963267948966,
+  "id": "person_13",
+  "title": "中国成人＋操纵杆电动轮椅"
+ },
+ "assisted": {
+  "glb": "person_06.glb",
+  "height": 1.55,
+  "yaw": 1.5707963267948966,
+  "id": "person_06",
+  "title": "中国老人＋框式助行器"
+ },
+ "blind": {
+  "glb": "person_23.glb",
+  "height": 1.68,
+  "yaw": 1.5707963267948966,
+  "id": "person_23",
+  "title": "中国成人＋长白手杖"
+ },
+ "upper": {
+  "glb": "person_19.glb",
+  "height": 1.7,
+  "yaw": 1.5707963267948966,
+  "id": "person_19",
+  "title": "中国成人＋单侧上肢差异（无用具）"
+ },
+ "pedestrian": {
+  "glb": "person_25.glb",
+  "height": 1.76,
+  "yaw": 1.5707963267948966,
+  "id": "person_25",
+  "title": "中国听障成人＋视觉沟通（无特定用具）"
+ },
+ "people": [
+  {
+   "id": "person_09",
+   "type": "wheelchair",
+   "glb": "person_09.glb",
+   "title": "中国成人＋手动轮椅",
+   "child": false,
+   "seated": true,
+   "height": 1.2
+  },
+  {
+   "id": "person_10",
+   "type": "wheelchair",
+   "glb": "person_10.glb",
+   "title": "中国成人女性＋加宽轮椅",
+   "child": false,
+   "seated": true,
+   "height": 1.24
+  },
+  {
+   "id": "person_11",
+   "type": "wheelchair",
+   "glb": "person_11.glb",
+   "title": "儿童＋手动轮椅（已有组合）",
+   "child": false,
+   "seated": false,
+   "height": null
+  },
+  {
+   "id": "person_12",
+   "type": "wheelchair",
+   "glb": "person_12.glb",
+   "title": "中国儿童＋姿势支撑轮椅",
+   "child": true,
+   "seated": true,
+   "height": 1.32
+  },
+  {
+   "id": "person_13",
+   "type": "electricWheelchair",
+   "glb": "person_13.glb",
+   "title": "中国成人＋操纵杆电动轮椅",
+   "child": false,
+   "seated": true,
+   "height": 1.26
+  },
+  {
+   "id": "person_14",
+   "type": "electricWheelchair",
+   "glb": "person_14.glb",
+   "title": "中国成人＋头控电动轮椅",
+   "child": false,
+   "seated": true,
+   "height": 1.25
+  },
+  {
+   "id": "person_15",
+   "type": "electricWheelchair",
+   "glb": "person_15.glb",
+   "title": "中国儿童＋电动轮椅",
+   "child": true,
+   "seated": true,
+   "height": 1.08
+  },
+  {
+   "id": "person_06",
+   "type": "assisted",
+   "glb": "person_06.glb",
+   "title": "中国老人＋框式助行器",
+   "child": false,
+   "seated": false,
+   "height": 1.55
+  },
+  {
+   "id": "person_07",
+   "type": "assisted",
+   "glb": "person_07.glb",
+   "title": "中国老人＋四轮助行车",
+   "child": false,
+   "seated": false,
+   "height": 1.66
+  },
+  {
+   "id": "person_08",
+   "type": "assisted",
+   "glb": "person_08.glb",
+   "title": "中国儿童＋后置助行器",
+   "child": true,
+   "seated": false,
+   "height": 1.18
+  },
+  {
+   "id": "person_01",
+   "type": "assisted",
+   "glb": "person_01.glb",
+   "title": "中国老人＋手杖",
+   "child": false,
+   "seated": false,
+   "height": 1.65
+  },
+  {
+   "id": "person_02",
+   "type": "assisted",
+   "glb": "person_02.glb",
+   "title": "中国老人＋四脚手杖",
+   "child": false,
+   "seated": false,
+   "height": 1.68
+  },
+  {
+   "id": "person_03",
+   "type": "assisted",
+   "glb": "person_03.glb",
+   "title": "中国成人＋踝足矫形器与手杖",
+   "child": false,
+   "seated": false,
+   "height": 1.62
+  },
+  {
+   "id": "person_04",
+   "type": "assisted",
+   "glb": "person_04.glb",
+   "title": "中国成人＋腋拐",
+   "child": false,
+   "seated": false,
+   "height": 1.86
+  },
+  {
+   "id": "person_05",
+   "type": "assisted",
+   "glb": "person_05.glb",
+   "title": "中国儿童＋前臂拐杖",
+   "child": true,
+   "seated": false,
+   "height": 1.36
+  },
+  {
+   "id": "person_23",
+   "type": "blind",
+   "glb": "person_23.glb",
+   "title": "中国成人＋长白手杖",
+   "child": false,
+   "seated": false,
+   "height": 1.68
+  },
+  {
+   "id": "person_24",
+   "type": "blind",
+   "glb": "person_24.glb",
+   "title": "中国低视力成人＋手持放大镜",
+   "child": false,
+   "seated": false,
+   "height": 1.62
+  },
+  {
+   "id": "person_19",
+   "type": "upper",
+   "glb": "person_19.glb",
+   "title": "中国成人＋单侧上肢差异（无用具）",
+   "child": false,
+   "seated": false,
+   "height": 1.7
+  },
+  {
+   "id": "person_20",
+   "type": "upper",
+   "glb": "person_20.glb",
+   "title": "中国儿童＋功能性上肢假肢",
+   "child": true,
+   "seated": false,
+   "height": 1.32
+  },
+  {
+   "id": "person_25",
+   "type": "pedestrian",
+   "glb": "person_25.glb",
+   "title": "中国听障成人＋视觉沟通（无特定用具）",
+   "child": false,
+   "seated": false,
+   "height": 1.76
+  },
+  {
+   "id": "person_16",
+   "type": "pedestrian",
+   "glb": "person_16.glb",
+   "title": "中国成人＋小腿假肢",
+   "child": false,
+   "seated": false,
+   "height": 1.72
+  },
+  {
+   "id": "person_17",
+   "type": "pedestrian",
+   "glb": "person_17.glb",
+   "title": "中国成人＋大腿假肢",
+   "child": false,
+   "seated": false,
+   "height": 1.75
+  },
+  {
+   "id": "person_18",
+   "type": "pedestrian",
+   "glb": "person_18.glb",
+   "title": "中国儿童＋适配下肢假肢",
+   "child": true,
+   "seated": false,
+   "height": 1.28
+  },
+  {
+   "id": "person_21",
+   "type": "pedestrian",
+   "glb": "person_21.glb",
+   "title": "中国比例匀称矮身材成年人（无用具）",
+   "child": false,
+   "seated": false,
+   "height": 1.38
+  },
+  {
+   "id": "person_22",
+   "type": "pedestrian",
+   "glb": "person_22.glb",
+   "title": "短肢型矮身材成年人（原形象·无用具）",
+   "child": false,
+   "seated": false,
+   "height": 1.25
+  },
+  {
+   "id": "person_26",
+   "type": "pedestrian",
+   "glb": "person_26.glb",
+   "title": "中国老人＋助听器",
+   "child": false,
+   "seated": false,
+   "height": 1.63
+  }
+ ]
+}

@@ -261,7 +261,8 @@
           if(dist<safe+.5){const force=Math.max(0,(safe+.5-dist)/(safe+.5))*responseSpeed*1.6;vx-=rx/dist*force;vz-=rz/dist*force;}
           if(predicted<safe&&rx*fx+rz*fz>0){
             const myGoal=a.goal?Math.hypot(a.x-a.goal.x,a.z-a.goal.z):Infinity,otherGoal=other.goal?Math.hypot(other.x-other.goal.x,other.z-other.goal.z):Infinity;
-            const otherHasPriority=other.evacuated||otherGoal<myGoal-.12||(Math.abs(otherGoal-myGoal)<=.12&&other.id<a.id);
+            // Someone standing still (trapped, waiting for help) is walked around, not queued behind.
+            const otherHasPriority=other.evacuated||other.state==='moving'&&(otherGoal<myGoal-.12||(Math.abs(otherGoal-myGoal)<=.12&&other.id<a.id));
             if(otherHasPriority){a.yieldUntil=Math.max(a.yieldUntil||0,this.time+.28);vx*=.2;vz*=.2;}
             else{const urgency=(safe-predicted)/safe,side=a.preferredSide||((a.id&1)?1:-1);vx+=fz*urgency*responseSpeed*.62*side;vz-=fx*urgency*responseSpeed*.62*side;vx*=.96;vz*=.96;}
           }

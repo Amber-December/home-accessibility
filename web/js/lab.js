@@ -1,5 +1,6 @@
-/* 实验室 (PRD 5.9, 5.10.8): the same personas and tasks over many homes. Reads lab/index.json, which holds each
-   home's outcome per persona/task for the baseline and every plan, so changing settings never refetches results. */
+/* 实验室 (PRD 5.9, 5.10.8): the same residents and tasks over many homes. Reads lab/index.json, written by
+   web/tools/make_lab.cjs with B's engine: each home's outcome per resident/task for the home as built and for every
+   plan the search found, so changing settings never reruns anything. */
 (() => {
   'use strict';
   const T = HA.text, $ = s => document.querySelector(s);
@@ -8,6 +9,7 @@
   const LEGEND = [['ok', '通过'], ['fix', '没过，能改好'], ['fail', '没过，改不好'], ['na', '不适用'], ['wait', '待运行']];
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   let D, done = 0, timer = null;
+  const pn = id => (D.personas.find(p => p.id === id) || {}).short || id;
 
   const cond = () => ({ budget: $('#budget').value === '' ? null : +$('#budget').value, rent: $('#rent').checked, noWall: $('#nowall').checked });
   const checked = id => new Set([...document.querySelectorAll(`#${id} input:checked`)].map(i => i.value));
@@ -32,18 +34,18 @@
 
   function link(h, s, j) {
     const p = (s.p.find(p => j.fails.some(k => k.startsWith(p.id + '/'))) || s.p[0] || D.personas[0]).id;
-    const u = new URLSearchParams({ ir: h.ir, result: h.result, step: 'report', persona: p });
+    const u = new URLSearchParams({ ir: h.ir, step: 'report', persona: p });
     return `index.html?${u}`;
   }
 
   function card(h, s, j, shown) {
-    const cells = s.p.map(p => `<span>${esc(T.persona(p.id))}</span>` + s.t.map(t => {
+    const cells = s.p.map(p => `<span>${esc(pn(p.id))}</span>` + s.t.map(t => {
       const k = `${p.id}/${t}`, v = shown ? j.st[k] : 'wait';
-      return `<i class="pat-${v}" title="${esc(`${p.name} · ${t} ${D.tasks[t]} · ${LEGEND.find(l => l[0] === v)[1]}`)}"></i>`;
+      return `<i class="pat-${v}" title="${esc(`${p.name} · ${t} ${(h.tasks || D.tasks)[t]} · ${LEGEND.find(l => l[0] === v)[1]}`)}"></i>`;
     }).join('')).join('');
     return `<a class="home" href="${esc(link(h, s, j))}" aria-label="${esc(`${h.id}，${h.area_m2} 平方米，在试住里打开`)}">` +
       `<img src="${esc(h.preview)}" alt="" loading="lazy" width="150" height="150">` +
-      `<span class="t"><b>${esc(h.hero || h.id.replace('scene', '#'))}</b><span class="num">${h.area_m2} m²</span>` +
+      `<span class="t"><b>${esc(h.name || h.hero || h.id.replace('scene', '#'))}</b><span class="num">${h.area_m2} m²</span>` +
       `<span class="score${shown && j.fails.length ? ' bad' : ''}">${shown ? h.score : '—'}</span></span>` +
       `<span class="cells" style="--n:${s.t.length}"><span></span>${s.t.map(t => `<span>${t}</span>`).join('')}${cells}</span></a>`;
   }
@@ -87,11 +89,11 @@
     $('#bypersona').innerHTML = bars(s.p.map(p => {
       let n = 0, ok = 0;
       J.forEach(x => x.j.live.filter(k => k.startsWith(p.id + '/')).forEach(k => { n++; ok += x.h.runs[k] === 'ok'; }));
-      return [T.persona(p.id), n ? ok / n : 0, n ? `${Math.round((ok / n) * 100)}%` : '—'];
+      return [pn(p.id), n ? ok / n : 0, n ? `${Math.round((ok / n) * 100)}%` : '—'];
     }), 'pat-ok', 1);
     $('#worst').innerHTML = [...J].filter(x => x.j.fails.length)
       .sort((a, b) => b.j.fails.length - a.j.fails.length || a.h.score - b.h.score).slice(0, 5)
-      .map(x => `<li><a href="${esc(link(x.h, s, x.j))}">${esc(x.h.hero || x.h.id)}</a> · ${x.j.fails.length} 处过不去 · <span class="num">${x.h.score}</span> 分</li>`)
+      .map(x => `<li><a href="${esc(link(x.h, s, x.j))}">${esc(x.h.name || x.h.hero || x.h.id)}</a> · ${x.j.fails.length} 处过不去 · <span class="num">${x.h.score}</span> 分</li>`)
       .join('') || '<li class="muted">全部通过</li>';
 
     const rows = [...J].sort((a, b) => b.h.score - a.h.score);
@@ -105,7 +107,7 @@
     const na = {};
     J.forEach(({ h }) => ks.forEach(k => {
       if (h.runs[k] !== 'na') return;
-      const key = `${T.persona(k.split('/')[0])} · ${k.split('/')[1]} ${D.tasks[k.split('/')[1]]}：${h.na_reason[k] || '不适用'}`;
+      const key = `${pn(k.split('/')[0])} · ${k.split('/')[1]} ${D.tasks[k.split('/')[1]]}：${h.na_reason[k] || '不适用'}`;
       (na[key] = na[key] || []).push(h.hero || h.id);
     }));
     $('#na').innerHTML = Object.entries(na).map(([k, ids]) => `<li>${esc(k)}（${ids.length} 套：${esc(ids.join('、'))}）</li>`).join('') ||
@@ -116,7 +118,7 @@
   async function boot() {
     D = await (await fetch('lab/index.json')).json();
     const area = D.homes.map(h => h.area_m2);
-    $('#src-name').textContent = `WSR 户型库（${D.homes.length} 套）`;
+    $('#src-name').textContent = `场景库（${D.homes.length} 套，住宅与公建）`;
     $('#src-info').textContent = `${D.source}。面积 ${Math.min(...area)}–${Math.max(...area)} m²，全部导入成功。`;
     $('#personas').innerHTML = D.personas.map(p => `<label><input type="checkbox" value="${esc(p.id)}" checked> ${esc(p.name)}</label>`).join('');
     $('#tasks').innerHTML = Object.entries(D.tasks).map(([t, n]) => `<label><input type="checkbox" value="${t}" checked> ${t} ${esc(n)}</label>`).join('');

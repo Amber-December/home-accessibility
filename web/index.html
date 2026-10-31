@@ -57,9 +57,11 @@
     </div>
     <div class="seg glass" id="layers" role="group" aria-label="图层">
       <label><input type="checkbox" data-act="layer" data-arg="heat">通行余量</label>
+      <label><input type="checkbox" data-act="layer" data-arg="risk">风险点位</label>
       <label><input type="checkbox" data-act="layer" data-arg="sweep">门扫掠</label>
       <label><input type="checkbox" data-act="layer" data-arg="fp" checked>判定外形</label>
     </div>
+    <div class="glass" id="risk-legend" hidden><span id="risk-mode"></span><i class="ramp" aria-hidden="true"></i><span class="ends"><span>低</span><span>高</span></span></div>
   </div>
   <div id="walk-hint" class="glass" hidden>步入：方向键或 WASD 移动，拖动画面转头，Esc 退出。手动操作不进报告。</div>
   <div id="subtitle" role="status" hidden></div>
