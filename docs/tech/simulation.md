@@ -87,8 +87,8 @@ M8 可视化：3D 网页、体检报告、视频素材        M9 500 套统计�
 **展示用 GLB**（`src/ha/ir/export_glb.py`）：网页查看器用 three.js，直接加载 glTF/GLB；WSR 的 USDZ 是二进制 USDC，贴图很重，浏览器读不了。GLB 只用于展示，不参与打分。
 
 - 每个 IR 物体和门导出为一个 glTF 节点，节点名就是 IR 的 `id`，网页按违规报告里的 `object_id` 高亮对应节点。墙、地面、窗各自一个节点，不属于任何 IR 实体的网格归到 `other:<顶层 prim>`。
-- 颜色：取绑定贴图的平均色（UsdPreviewSurface 的 `diffuseColor` 或 OmniPBR 的 `diffuse_texture`）；没有贴图时用常量颜色；都没有时按类别（墙、地面、门、物体等）给固定颜色。
-- 网格按顶点聚类减面（默认 0.01 m 网格）。
+- 材质：保留绑定的漫反射贴图和网格 UV（UsdPreviewSurface 的 `diffuseColor` 或 OmniPBR 的 `diffuse_texture`，含 `UsdTransform2d` 和 OmniPBR 的 `texture_scale/rotate/translate`），贴图缩到最长边 512 px（`--tex-px`）并存成 JPEG；没有贴图时用常量颜色（线性空间）；都没有时按类别（墙、地面、门、物体等）给固定颜色。`GeomSubset` 上的材质绑定按子集分别导出。透明材质用 BLEND，不透明度最低 0.2。
+- 网格按顶点聚类减面（默认 0.01 m 网格）；单个网格聚类后仍超过 3 万面（`--max-tris`）时网格加倍到 0.02 m。同一格里 UV 不同的角点不合并，贴图接缝不会错位。
 - 输出 glTF 的 Y 向上（Scene IR 是 Z 向上），同目录写一份 `<scene>.nodes.json` 列出所有节点。
 
 ### 3.1 Scene IR（`ha.scene_ir` v0.1）
