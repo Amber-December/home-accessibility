@@ -1,7 +1,7 @@
 const {chromium}=require('playwright');
 const assert=require('node:assert/strict');
 const path=require('node:path');
-const url='http://127.0.0.1:8910/'+'indoor-space-interaction'+'/index.html?quality=balanced';
+const url='http://127.0.0.1:8910/'+encodeURIComponent('室内空间交互')+'/index.html?quality=balanced';
 (async()=>{
  const browser=await chromium.launch({channel:'msedge',headless:true,args:['--enable-webgl','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
  try{

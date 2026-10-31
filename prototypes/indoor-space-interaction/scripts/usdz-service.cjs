@@ -11,7 +11,7 @@ function localRequest(req){
     return ['127.0.0.1','localhost','[::1]'].includes(base.hostname)&&Number(base.port||80)===req.socket.localPort&&origin.origin===base.origin&&origin.protocol==='http:'&&(!req.headers['sec-fetch-site']||req.headers['sec-fetch-site']==='same-origin');
   }catch{return false;}
 }
-function createUsdzService(appRoot,{pythonPath=process.env.ACCESS_USD_PYTHON||path.join(appRoot,'.runtime','python',...(process.platform==='win32'?['Scripts','python.exe']:['bin','python'])),scriptPath=path.join(appRoot,'scripts','convert_usdz.py'),timeoutMs=TIMEOUT_MS}={}){
+function createUsdzService(appRoot,{pythonPath=path.join(appRoot,'.runtime','python','Scripts','python.exe'),scriptPath=path.join(appRoot,'scripts','convert_usdz.py'),timeoutMs=TIMEOUT_MS}={}){
   const cacheRoot=path.join(appRoot,'.cache','usdz');let active=false;
   function ready(){return fs.existsSync(pythonPath)&&fs.existsSync(scriptPath);}
   function convert(input,output,res){return new Promise((resolve,reject)=>{

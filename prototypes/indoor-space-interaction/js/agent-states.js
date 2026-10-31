@@ -11,7 +11,7 @@
       this._width=0;this._height=0;this._last=0;
     }
     setVisible(value){this.visible=!!value;this.root.hidden=!this.visible;}
-    text(agent){return agent?.reaction?.text||({moving:'通行中',arrived:'已到达',waiting:'等待',blocked:'出口受阻',safe:'已安全'}[agent?.state]||'观察空间');}
+    text(agent){if(agent?.furnitureInteraction&& !['smoke','fire','injured'].includes(agent.reaction?.code)){const name=agent.furnitureInteraction.name||'家具';return agent.furnitureInteraction.state==='open'?`已打开${name}`:`正在操作${name}`;}return agent?.reaction?.text||({moving:'通行中',arrived:'已到达',waiting:'等待',blocked:'出口受阻',safe:'已安全'}[agent?.state]||'观察空间');}
     ensure(id){let n=this.nodes.get(id);if(n)return n;n=document.createElement('div');n.className='agent-state-bubble';n.setAttribute('aria-hidden','true');Object.assign(n.style,{position:'absolute',transform:'translate(-50%,-100%)',padding:'4px 8px',borderRadius:'12px',font:'10px/1.2 "Segoe UI","Microsoft YaHei",sans-serif',whiteSpace:'nowrap',boxShadow:'0 3px 10px rgba(14,35,64,.18)',border:'1px solid rgba(255,255,255,.85)',transition:'opacity .12s ease,background .12s ease',willChange:'left,top'});this.root.appendChild(n);this.nodes.set(id,n);return n;}
     update(agents=[]){
       if(!this.visible)return;const cam=this.view.camera,rect=this.view.renderer.domElement.getBoundingClientRect(),box=this.view.container.getBoundingClientRect(),scaleX=box.width?this.view.container.clientWidth/rect.width:1,scaleY=box.height?this.view.container.clientHeight/rect.height:1,active=new Set();
