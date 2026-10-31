@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>清先住 LiveFirst · 试住</title>
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/app.css">
   <script type="importmap">
   {
@@ -25,18 +26,16 @@
   </div>
 
   <header class="glass">
-    <div class="brand"><span class="braille" data-braille="先住" aria-hidden="true"></span><b>清先住</b><span class="en">LiveFirst</span></div>
+    <div class="brand"><img src="logo.svg" alt="" width="30" height="30"><b>清先住</b><span class="en">LiveFirst</span></div>
     <nav id="steps" aria-label="试住步骤"></nav>
-    <div class="seg" id="scenes" role="group" aria-label="场景">
-      <button class="on" aria-pressed="true">白天</button>
-      <button disabled title="夜间场景在后续版本开放">夜间</button>
-      <button disabled title="起火场景在后续版本开放">起火</button>
+    <div class="menu" id="scene">
+      <button class="menu-btn" data-act="sceneMenu" aria-haspopup="menu" aria-expanded="false" aria-controls="scene-list">情景<b id="scene-name"></b><i aria-hidden="true">▾</i></button>
+      <div id="scene-list" class="menu-list glass" role="menu" aria-label="情景" hidden></div>
     </div>
     <div class="seg" id="styles" role="group" aria-label="画面风格">
       <button data-act="style" data-arg="real">实景</button>
       <button data-act="style" data-arg="diag">诊断</button>
     </div>
-    <div id="badges"></div>
   </header>
 
   <aside id="chat" class="glass panel left" aria-label="对话"></aside>
