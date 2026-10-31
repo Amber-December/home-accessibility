@@ -1,6 +1,5 @@
-import sys
 from pxr import Usd, UsdGeom, UsdShade
-stage=Usd.Stage.Open(sys.argv[1])
+stage=Usd.Stage.Open('测试模型/scene000002.usdz')
 n=0
 for p in Usd.PrimRange(stage.GetPseudoRoot(),Usd.TraverseInstanceProxies()):
  if not p.IsA(UsdGeom.Mesh): continue

@@ -257,7 +257,8 @@
 
     hazardAt(cellOrPoint) { const cell = this._cell(cellOrPoint); if (cell < 0) return null; return { cell, temperature: this.temperature[cell], smoke: this.smoke[cell], flame: this.flame[cell], fuel: this.fuel[cell], exposure: this.exposure[cell], risk: this.risk[cell], dangerous: this.isDangerous(cell), blocked: this.isHazardBlocked(cell) }; }
     isDangerous(cellOrPoint) { const i = this._cell(cellOrPoint); return i >= 0 && this.risk[i] >= .5; }
-    isHazardBlocked(cellOrPoint) { const i = this._cell(cellOrPoint); if (i < 0 || this.grid.blocked(i)) return true; const s = this.settings; return this.temperature[i] >= s.heatBlockTemperature || this.smoke[i] >= s.smokeBlock || this.flame[i] >= s.flameBlock; }
+    isHazardBlocked(cellOrPoint) { const i = this._cell(cellOrPoint); if (i < 0 || this.grid.blocked(i)) return true; const s = this.settings; const heatBlock=this.temperature[i] >= s.heatBlockTemperature, flameBlock=this.flame[i] >= s.flameBlock; // Smoke slows and raises exposure; it only seals a cell when paired with significant heat.
+      const smokeSeal=this.smoke[i] >= s.smokeBlock && this.temperature[i] >= s.ambientTemperature+55; return heatBlock || flameBlock || smokeSeal; }
     navigationPenalty(cellOrPoint) { const i = this._cell(cellOrPoint); return i < 0 || this.isHazardBlocked(i) ? Infinity : 1 + this.risk[i] * 4 + this.smoke[i] * 1.5; }
 
     rebuildEscapeDistance(exits = []) {

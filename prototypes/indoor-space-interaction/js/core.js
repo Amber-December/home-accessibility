@@ -6,7 +6,9 @@
   L.PROFILES = {
     pedestrian: { name: '步行者', radius: .25, speed: 1.15, color: '#1ca7a0' },
     wheelchair: { name: '轮椅使用者', radius: .45, speed: .78, color: '#607ce0' },
-    assisted: { name: '辅助器使用者', radius: .38, speed: .65, color: '#d39c53' }
+    assisted: { name: '助行器老人', radius: .38, speed: .58, color: '#d39c53', reactionDelay: .35, preferredSide: -1 },
+    upper: { name: '上肢活动受限者', radius: .27, speed: .92, color: '#9370cc', reactionDelay: .55, preferredSide: 1 },
+    doctor: { name: '救援医生', radius: .30, speed: .95, color: '#f4f7ff', reactionDelay: .05, preferredSide: 1 }
   };
   class Heap {
     constructor() { this.items = []; }
@@ -65,6 +67,26 @@
       }
       for(const[px,pz,d]of [[this.minX,z,x-this.minX],[this.maxX,z,this.maxX-x],[x,this.minZ,z-this.minZ],[x,this.maxZ,this.maxZ-z]])if(d<radius&&(!best||d<best.clearance))best={cellIndex:-1,point:{x:px,z:pz},clearance:Math.max(0,d),requiredRadius:radius,obstacle:this.obstacles[0]};
       return best;
+    }
+    // Signed free space around a body center. Positive values mean the
+    // complete body envelope has that much room before the nearest occupied
+    // cell or model boundary; negative values indicate penetration.
+    clearanceAt(x,z,radius=0){
+      if(x<this.minX||x>this.maxX||z<this.minZ||z>this.maxZ)return -Infinity;
+      const index=this.index(x,z);
+      let best=Math.min(x-this.minX,this.maxX-x,z-this.minZ,this.maxZ-z);
+      if(index>=0&&Number.isFinite(this.distance[index]))best=Math.min(best,this.distance[index]+this.cell*Math.SQRT1_2);
+      const pad=Math.max(this.cell*2,radius+this.cell*2),s=this.cell;
+      const c0=Math.max(0,Math.floor((x-pad-this.minX)/s)),c1=Math.min(this.cols-1,Math.floor((x+pad-this.minX)/s));
+      const r0=Math.max(0,Math.floor((z-pad-this.minZ)/s)),r1=Math.min(this.rows-1,Math.floor((z+pad-this.minZ)/s));
+      for(let r=r0;r<=r1;r++)for(let c=c0;c<=c1;c++){const cell=r*this.cols+c;if(!this.blocked(cell))continue;const x0=this.minX+c*s,x1=x0+s,z0=this.minZ+r*s,z1=z0+s,dx=Math.max(x0-x,0,x-x1),dz=Math.max(z0-z,0,z-z1);best=Math.min(best,Math.hypot(dx,dz));}
+      return best-radius;
+    }
+    nearestObstacle(x,z,radius=0){
+      const collision=this.collisionAt(x,z,Math.max(0,radius));
+      if(collision?.obstacle)return collision.obstacle;
+      const i=this.index(x,z),owner=i>=0?this.owner[i]:0;
+      return this.obstacles[owner||0]||this.obstacles[0]||null;
     }
     lineClear(a, b, radius) { const n = Math.ceil(Math.hypot(b.x - a.x, b.z - a.z) / (this.cell * .4)); for (let j = 0; j <= n; j++) { const t = n ? j / n : 0; if (!this.isClear(a.x + (b.x - a.x) * t, a.z + (b.z - a.z) * t, radius)) return false; } return true; }
     nav(radius) {

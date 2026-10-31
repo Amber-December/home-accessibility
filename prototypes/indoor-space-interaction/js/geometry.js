@@ -26,7 +26,7 @@
   function eachTriangle(group, visit) {
     group.updateMatrixWorld(true); const a = new THREE.Vector3(), b = new THREE.Vector3(), c = new THREE.Vector3();
     group.traverse(mesh => {
-      if (!mesh.isMesh || mesh.userData.ignoreCollision) return;
+      if (!mesh.isMesh || mesh.visible === false || mesh.userData.ignoreCollision) return;
       const geo = mesh.geometry, pos = geo.attributes.position, idx = geo.index; if (!pos) return;
       const count = idx ? idx.count : pos.count, transforms = mesh.isInstancedMesh ? mesh.count : 1, inst = new THREE.Matrix4(), world = new THREE.Matrix4();
       for (let n = 0; n < transforms; n++) {

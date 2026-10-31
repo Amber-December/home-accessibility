@@ -1,0 +1,81 @@
+{
+  "convertedFrom": "usdz",
+  "converter": "OpenUSD",
+  "sourceFile": "scene000001.usdz",
+  "sourceUpAxis": "Z",
+  "sourceMetersPerUnit": 1.0,
+  "upAxis": "Y",
+  "metersPerUnit": 1.0,
+  "unit": "meter",
+  "worldTransformBaked": true,
+  "meshCount": 1413,
+  "triangleCount": 2974212,
+  "originalTriangleCount": 2974212,
+  "originalFaceCount": 2972612,
+  "simplified": false,
+  "kinds": {
+    "window": 9,
+    "furniture": 1134,
+    "door": 217,
+    "wall": 38,
+    "floor": 15
+  },
+  "skippedMeshes": {
+    "invisible": 17
+  },
+  "bounds": {
+    "min": [
+      3.1212000846862793,
+      -0.14900004863739014,
+      2.140080213546753
+    ],
+    "max": [
+      17.710081100463867,
+      2.8030002117156982,
+      8.880000114440918
+    ],
+    "size": [
+      14.588881015777588,
+      2.9520002603530884,
+      6.739919900894165
+    ]
+  },
+  "sourceBounds": {
+    "min": [
+      3.1212000846862793,
+      -8.880000114440918,
+      -0.14900004863739014
+    ],
+    "max": [
+      17.710081100463867,
+      -2.140080213546753,
+      2.8030002117156982
+    ],
+    "size": [
+      14.588881015777588,
+      6.739919900894165,
+      2.9520002603530884
+    ]
+  },
+  "materialStyle": "neutral-blue-white",
+  "sourceMetadataMeshCount": 1383,
+  "metadataProductBounds": {
+    "min": [
+      3.181094184761537,
+      -8.641000631481333,
+      -0.001200000426173219
+    ],
+    "max": [
+      17.650186485645637,
+      -2.378299423995972,
+      2.7987100754807956
+    ],
+    "size": [
+      14.4690923008841,
+      6.262701207485361,
+      2.799910075906969
+    ]
+  },
+  "outputBytes": 68333224,
+  "elapsedSeconds": 3.0
+}
