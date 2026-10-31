@@ -63,7 +63,8 @@
     };
   }
 
-  // Adapted result: { mock, note, personas[], tasks{}, baseline:{score, runs[]}, plans[] }.
+  // Adapted result: { mock, note, personas[], tasks{}, baseline:{score, runs[]}, plans[], search:{tried[], candidates} }.
+  // plan: { id, title, edits[], cost_cny, rent_ok, wall, score, worse[], runs[] }; edit: { op, object_id, cost_cny, rent_ok, wall, product? }.
   // run: { persona, task, name, applicable, reason, success, fail_code, fail_stage, min_clearance_m,
   //        min_clearance_object, time_s, path_m, traj:[[t,x,y,yaw]], events[], violations[], monologue[] }
   function adaptResult(raw) {
@@ -77,6 +78,7 @@
       personas: raw.personas || [], tasks: raw.tasks || {},
       baseline: { score: raw.baseline.score, runs: runs(raw.baseline.runs) },
       plans: (raw.plans || []).map(p => ({ ...p, runs: runs(p.runs) })),
+      search: raw.search || { tried: [], candidates: (raw.plans || []).length },
     };
   }
 

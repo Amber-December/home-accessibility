@@ -17,7 +17,7 @@ HA.reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
 // text.js is a deferred classic script in index.html so the loading braille shows before the libraries arrive.
 const MODULES = ['api', 'scene-ir', 'fx', 'viewer', 'resident', 'layers', 'timeline', 'panels', 'chat',
-  'app', 'app-steps', 'app-boot'];
+  'plans', 'intent', 'app', 'app-steps', 'app-flow', 'app-boot'];
 
 function load(name) {
   return new Promise((ok, bad) => {

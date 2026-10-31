@@ -65,6 +65,7 @@
 
   // Enter a step: set 3D view, layers, timeline, right panel and chat card.
   S.enter = step => {
+    if (step === 'compare' && !S.ensurePlan()) step = 'fix';
     const idx = STEPS.indexOf(step);
     if (idx < 0 || ((step === 'fix' || step === 'compare') && !S.result.plans.length)) return;
     S.step = step; S.reached = Math.max(S.reached, idx); S.pause(); S.hideProblem(); S.v.split = null; $('#split-labels').hidden = true;
@@ -81,23 +82,24 @@
       S.setupPlayback(['base']); setView('top'); setLayer('heat', true); showTimeline(true);
       const items = HA.panels.issues(S, 'base');
       items.filter(x => x.v.severity === 'red').forEach(x => S.v.mark(x.v.object_id, 'red'));
-      const red = items.filter(x => x.v.severity === 'red');
-      S.chat.say('agent', `体检结果 ${S.score('base')} 分。`, { title: `红色问题 ${red.length} 个，黄色 ${items.length - red.length} 个`,
-        body: `<ul>${red.map(x => `<li>${T.persona(x.r.persona)} ${esc(x.r.name)}：${esc(T.violation(S.ir, x.v).title)}</li>`).join('')}</ul>`,
-        buttons: [{ label: '看第一个问题', act: 'look', arg: items.indexOf(red[0]) }, { label: '帮我改', act: 'go', arg: 'fix', primary: true }] });
+      // 结论卡 (PRD 5.3): how many places fail, the score, one 看现场 per red item, then 小改 / 整屋重新布置.
+      const red = items.filter(x => x.v.severity === 'red'), score = S.score('base');
+      S.chat.say('agent', '体检完成。', {
+        title: red.length ? `有 ${red.length} 处过不去，总分 ${score}` : `没有过不去的地方，总分 ${score}`,
+        body: `<ul class="look">${red.map(x => `<li><span>${T.persona(x.r.persona)} ${esc(x.r.name)}：${esc(T.violation(S.ir, x.v).title)}</span>
+          <button class="small" data-act="look" data-arg="${items.indexOf(x)}">看现场</button></li>`).join('')}</ul>
+          ${items.length > red.length ? `<p class="muted">另有黄色提醒 ${items.length - red.length} 条，见右侧。</p>` : ''}`,
+        buttons: [{ label: '小改', act: 'go', arg: 'fix', primary: true, disabled: !S.result.plans.length },
+          { label: '整屋重新布置', act: 'go', arg: 'relayout', disabled: true, title: '后续开放' }] });
     } else if (step === 'fix') {
-      S.plan = S.plan || S.result.plans[0].id; S.variant = S.plan;
-      const pl = S.planObj();
-      HA.resident.applyPlan(S.v, pl.edits, 'preview'); pl.edits.forEach(e => S.v.mark(e.object_id, 'blue'));
-      S.setupPlayback([S.plan]); setView('top'); setLayer('heat', true); showTimeline(false);
-      S.sides.forEach(s => { s.marker.visible = false; });
-      if (pl.edits[0]) { const o = S.ir.objects.find(o => o.id === pl.edits[0].object_id); if (o) S.v.flyTo((o.aabb.min[0] + o.aabb.max[0]) / 2, (o.aabb.min[1] + o.aabb.max[1]) / 2, 6); }
-      S.chat.say('agent', `方案 ${pl.id}：${esc(pl.title)}，${S.score('base')} → ${pl.score} 分。`, {
-        body: `<ul>${pl.edits.map(e => `<li>${esc(T.edit(S.ir, e))}</li>`).join('')}</ul>`,
-        buttons: [{ label: '看前后对比', act: 'go', arg: 'compare', primary: true }] });
+      S.ensurePlan(); setView('top'); setLayer('heat', true); showTimeline(false);
+      S.showPlan(); S.fixCard();
+      const pl = S.plan && S.planObj(), e = pl && pl.edits.find(e => S.ir.objects.some(o => o.id === e.object_id));
+      if (e) { const o = S.ir.objects.find(o => o.id === e.object_id); S.v.flyTo((o.aabb.min[0] + o.aabb.max[0]) / 2, (o.aabb.min[1] + o.aabb.max[1]) / 2, 9); }
     } else if (step === 'compare') {
-      S.plan = S.plan || S.result.plans[0].id;
-      const pl = S.planObj();
+      const pl = S.planObj(), worse = S.allRuns('base').filter(r => r.applicable && r.success && !S.run(pl.id, r.persona, r.task).success);
+      S.chat.say('agent', `方案 ${pl.id} 改完：${S.score('base')} → ${pl.score} 分，${worse.length ? `变差 ${worse.length} 项` : '没有住户变差'}。`, {
+        buttons: [{ label: '导出报告', act: 'export', primary: true }] });
       S.setupPlayback(['base', S.plan]); setView('top'); setLayer('heat', false); showTimeline(true);
       $('#split-labels').hidden = false; $('#split-right').textContent = `方案 ${pl.id}`;
       S.v.split = S.sides.map((side, i) => ({ apply() {

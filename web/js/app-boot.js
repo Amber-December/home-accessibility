@@ -12,8 +12,10 @@
     shot6: { step: 'report', persona: 'wheelchair' },
     shot7: { step: 'fix', persona: 'wheelchair' },
     shot8: { step: 'compare', persona: 'wheelchair', autoplay: true },
+    shot2: { step: 'home', persona: 'wheelchair', say: '我坐手动轮椅，想看看能不能自己上厕所，预算 5000 以内，衣柜不要动' },
   };
 
+  S.selectPersona = selectPersona;
   function selectPersona(id, tasks) {
     S.persona = id;
     const runs = S.runs('base', id).filter(r => r.applicable);
@@ -39,6 +41,7 @@
   }
 
   S.act = (name, arg, el) => {
+    if (S.flow[name]) return S.flow[name](arg, el);
     if (name === 'go') return S.enter(arg);
     if (name === 'confirm') {
       const p = S.personaObj(), on = S.runs('base').filter(r => S.tasks.has(r.task));
@@ -71,7 +74,6 @@
       if (items[+arg]) lookAt(items[+arg]);
       return;
     }
-    if (name === 'plan') { S.plan = arg; return S.enter('fix'); }
     if (name === 'resume' || name === 'next') {
       S.hideProblem(); S.v.keepRed = null;
       if (name === 'next') { const at = S.tl.at(S.t); S.t = at.seg.t0 + at.seg.dur; }
@@ -163,6 +165,11 @@
       if (b) { e.preventDefault(); b.click(); }
     }
   });
+  // Form controls in the panels report through data-change (value, or checked for checkboxes).
+  document.addEventListener('change', e => {
+    const el = e.target.closest('[data-change]');
+    if (el) S.act(el.dataset.change, el.type === 'checkbox' ? el.checked : el.value, el);
+  });
   document.addEventListener('visibilitychange', () => { if (document.hidden) S.pause(); });
 
   async function boot() {
@@ -187,13 +194,15 @@
       S.preset = pr || null;
       selectPersona(pr ? pr.persona : result.personas[0].id, pr && pr.tasks);
       $('#loading').remove();
-      S.chat.say('agent', `已载入户型 ${HA.panels.esc(ir.scene_id)}：${ir.rooms.length} 个房间、${ir.doors.length} 扇门、${ir.objects.length} 件物体。先核对户型，再选谁来住。`);
+      S.chat.say('agent', `已载入户型 ${HA.panels.esc(ir.scene_id)}：${ir.rooms.length} 个房间、${ir.doors.length} 扇门、${ir.objects.length} 件物体。先核对户型，再选谁来住；也可以直接在下面说。`);
+      S.examples(); S.chat.enable();
       if (pr) {
         S.enter(pr.step);
         if (pr.at === 'fail') {
           const seg = S.tl.seg(0), run = seg.runs[0];
           S.seek(seg.t0 + run.duration - 1e-3); S.stopped = run; S.showProblem(run);
         }
+        if (pr.say) S.onSay(pr.say);
       } else {
         S.enter('home');
       }
@@ -204,6 +213,6 @@
     }
   }
 
-  S.chat = HA.chat.create($('#chat'));
+  S.chat = HA.chat.create($('#chat'), text => S.onSay(text));
   boot();
 })();

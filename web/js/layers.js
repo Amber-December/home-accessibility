@@ -34,7 +34,8 @@
     return g;
   }
 
-  // Label grid after plan edits (remove clears the object's cells, move shifts them).
+  // Label grid after plan edits: remove clears the object's cells, move shifts them,
+  // replace keeps the footprint eroded by shrink_m. Door edits have no object cells and are skipped.
   function edited(occ, layer, edits) {
     const src = occ[layer];
     if (!edits || !edits.length) return src;
@@ -49,6 +50,15 @@
           const i = Math.floor(k / cols) + di, j = (k % cols) + dj;
           if (i >= 0 && j >= 0 && i < rows && j < cols) g[i * cols + j] = idx;
         }
+      }
+      if (e.op === 'replace') {
+        const on = new Uint8Array(g.length); let cur = cells;
+        cur.forEach(k => { on[k] = 1; });
+        for (let n = Math.round(e.shrink_m / res); n > 0; n--) {
+          cur = cur.filter(k => on[k - 1] && on[k + 1] && on[k - cols] && on[k + cols]);
+          on.fill(0); cur.forEach(k => { on[k] = 1; });
+        }
+        cur.forEach(k => { g[k] = idx; });
       }
     }
     return g;
