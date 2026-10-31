@@ -116,7 +116,7 @@ node prototypes/indoor-space-interaction/server.cjs --no-open
 # 打开 http://127.0.0.1:8910/indoor-space-interaction/index.html
 ```
 
-## 许可
+## 数据来源
 
-- World-SimReady-Home：CC BY-NC-SA 4.0，只用于内部非商用演示，展示时注明出处。
-- SAGE（代码和 SAGE-10k）：Apache-2.0，借鉴设计，不复制代码。
+- World-SimReady-Home：户型和场景，只用于比赛演示。
+- SAGE（代码和 SAGE-10k）：借鉴设计，不复制代码。
