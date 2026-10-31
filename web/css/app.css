@@ -78,7 +78,7 @@ nav.modes a[aria-current="page"] { background: var(--purple); color: #fff; }
 .seg button { border: none; background: none; padding: 4px 10px; border-radius: 7px; }
 .seg button { white-space: nowrap; }
 .seg button.on, .seg button[aria-pressed="true"] { background: var(--purple); color: #fff; }
-.seg label { display: flex; align-items: center; gap: 4px; padding: 2px 8px; font-size: 13px; cursor: pointer; }
+.seg label { display: flex; align-items: center; gap: 4px; padding: 2px 8px; font-size: 13px; cursor: pointer; white-space: nowrap; }
 .seg input { accent-color: var(--purple); }
 
 /* ---- braille cells (decorative, aria-hidden) ---- */

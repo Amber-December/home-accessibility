@@ -7,13 +7,18 @@
   const RED = new THREE.Color('#D7263D'), PURPLE = new THREE.Color('#660874');
   const DIAG = { wall: '#FBFAF8', ground: '#E4E1DA', door: '#E2DED6', object: '#F3F1EC' };
   const VIEWS = ['plan', 'bird', 'follow', 'fp', 'walk'];
+  // camera-controls keeps ACTION internal in the bundled ESM build.
+  const ACTION = { ROTATE: 1, TRUCK: 2, DOLLY: 16, TOUCH_TRUCK: 128, TOUCH_DOLLY: 1024 };
 
   function create(el, ir, occ) {
     const { CameraControls, RoomEnvironment } = HA.lib;
     const renderer = new THREE.WebGLRenderer({ antialias: false, stencil: false, powerPreference: 'high-performance', preserveDrawingBuffer: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, HA.config.quality === 'high' ? 2 : 1.5));
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFShadowMap; renderer.shadowMap.autoUpdate = false;
-    renderer.toneMapping = THREE.AgXToneMapping; renderer.localClippingEnabled = true;
+    // Tone mapping is handled once by the post-processing pass. Applying AgX here
+    // as well makes the real material pass look flat and grey.
+    renderer.toneMapping = THREE.NoToneMapping; renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.localClippingEnabled = true;
     el.appendChild(renderer.domElement);
     const scene = new THREE.Scene(); scene.background = new THREE.Color('#ECEAE6');
     const pmrem = new THREE.PMREMGenerator(renderer);
@@ -56,14 +61,29 @@
       for (const id of cutHide) if (v.glbById[id]) v.glbById[id].visible = !cut;
     };
     v.home = (anim = true, bird = false) => {
-      const p = V(cx, cy - span * 0.55, span * 1.15), t = V(cx, cy, 0);
-      const q = bird ? p : V(cx, cy, span * 1.35);
+      const p = V(cx, cy - v.span * 0.55, v.span * 1.15), t = V(cx, cy, 0);
+      const q = bird ? p : V(cx, cy, v.span * 1.35);
       controls.setLookAt(q.x, q.y, q.z, t.x, t.y, t.z, anim && smooth());
+    };
+    const setControlsFor = name => {
+      controls.enabled = name === 'plan' || name === 'bird';
+      if (name === 'plan') {
+        controls.mouseButtons.left = ACTION.TRUCK;
+        controls.mouseButtons.right = ACTION.TRUCK;
+        controls.mouseButtons.middle = ACTION.DOLLY;
+      } else if (name === 'bird') {
+        controls.mouseButtons.left = ACTION.ROTATE;
+        controls.mouseButtons.right = ACTION.TRUCK;
+        controls.mouseButtons.middle = ACTION.DOLLY;
+      }
+      controls.touches.one = ACTION.TOUCH_TRUCK;
+      controls.touches.two = ACTION.TOUCH_DOLLY;
+      controls.touches.three = ACTION.TOUCH_TRUCK;
     };
     v.setView = name => {
       if (!VIEWS.includes(name)) return;
       if (name === 'walk' && v.view !== 'walk') { v.prevView = v.view; startWalk(); }
-      v.view = name; controls.enabled = name === 'bird';
+      v.view = name; setControlsFor(name);
       controls.maxPolarAngle = name === 'plan' || name === 'bird' ? Math.PI * 0.49 : Math.PI;
       v.setWallCut(name === 'plan' || name === 'bird' || name === 'follow');
       built.labels.visible = name === 'plan' || name === 'bird';
@@ -111,7 +131,7 @@
       v.style = name; fx.setStyle(name);
       scene.environmentIntensity = name === 'diag' ? 0.9 : 0.5;
       hemi.intensity = name === 'diag' ? 1.4 : 0.7; sun.intensity = name === 'diag' ? 1.2 : 2.4;
-      renderer.toneMappingExposure = name === 'diag' ? 1 : 0.85;
+      renderer.toneMappingExposure = name === 'diag' ? 1 : 1.05;
       if (v.glb) v.glb.traverse(m => { if (m.isMesh && m.userData.realMat) m.material = name === 'diag' ? m.userData.diagMat : m.userData.realMat; });
       v.marks.forEach((kind, id) => paint(id, kind));
     };
@@ -135,14 +155,23 @@
         if (cut) real.side = diag.side = THREE.DoubleSide;
         Object.assign(m.userData, { realMat: real, diagMat: diag });
       });
+      root.updateMatrixWorld(true);
       const box = new THREE.Box3().setFromObject(root), center = box.getCenter(new THREE.Vector3());
       const target = V(cx, cy, 0);
       root.position.x += target.x - center.x;
       root.position.z += target.z - center.z;
       root.position.y += -box.min.y;
+      root.updateMatrixWorld(true);
+      // Use the actual imported bounds for framing. Product scenes often include
+      // a larger footprint than the IR preview, so the fixed IR span can crop them.
+      const size = box.getSize(new THREE.Vector3());
+      v.span = Math.max(v.span, size.x, size.z);
+      controls.maxDistance = v.span * 3;
       scene.add(root);
       for (const k of ['objects', 'walls', 'floors', 'doors', 'windows']) built[k].visible = false;
-      v.glb = root; v.setStyle(v.style); v.setWallCut(cutPlane.constant < 1e2); v.shadowsDirty();
+      v.glb = root; v.setStyle(v.style); v.setWallCut(cutPlane.constant < 1e2);
+      if (v.view === 'plan' || v.view === 'bird') v.home(false, v.view === 'bird');
+      v.shadowsDirty();
       ok(root);
     }, undefined, bad));
 
@@ -182,6 +211,16 @@
       if (MOVE.includes(e.code)) { keys.add(e.code); e.preventDefault(); e.stopPropagation(); }
     }, true);
     window.addEventListener('keyup', e => keys.delete(e.code));
+    window.addEventListener('keydown', e => {
+      if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
+        if (v.view === 'bird') controls.mouseButtons.left = ACTION.TRUCK;
+      }
+    });
+    window.addEventListener('keyup', e => {
+      if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
+        if (v.view === 'bird') controls.mouseButtons.left = ACTION.ROTATE;
+      }
+    });
     function stepWalk(dt) {
       const w = v.walk, k = c => (keys.has(c) ? 1 : 0);
       w.yaw += (k('ArrowLeft') + k('KeyA') - k('ArrowRight') - k('KeyD')) * 1.6 * dt;
@@ -193,13 +232,13 @@
 
     function placeCamera(pose, anim, viewName = v.view, force = false) {
       if (viewName === 'plan') {
-        const q = V(cx, cy, span * 1.35), t = V(cx, cy, 0);
+        const q = V(cx, cy, v.span * 1.35), t = V(cx, cy, 0);
         controls.setLookAt(q.x, q.y, q.z, t.x, t.y, t.z, anim && smooth());
         return;
       }
       if (viewName === 'bird' && !force) return;
       if (viewName === 'bird') {
-        const q = V(cx, cy - span * 0.55, span * 1.15), t = V(cx, cy, 0);
+        const q = V(cx, cy - v.span * 0.55, v.span * 1.15), t = V(cx, cy, 0);
         controls.setLookAt(q.x, q.y, q.z, t.x, t.y, t.z, anim && smooth());
         return;
       }

@@ -46,7 +46,8 @@
     const ink = inkEffect(PP, THREE);
     const passes = {
       real: new PP.EffectPass(camera,
-        new PP.BloomEffect({ intensity: 0.35, luminanceThreshold: 0.85, mipmapBlur: true }),
+        // Keep daylight highlights while preserving wood, fabric and wall contrast.
+        new PP.BloomEffect({ intensity: 0.12, luminanceThreshold: 0.95, mipmapBlur: true }),
         new PP.ToneMappingEffect({ mode: PP.ToneMappingMode.AGX }),
         new PP.SMAAEffect()),
       diag: new PP.EffectPass(camera,
