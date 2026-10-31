@@ -1,12 +1,16 @@
 {
  "scene": "scene000064",
  "grid_m": 0.01,
+ "tex_px": 512,
+ "max_tris": 30000,
  "ceiling": false,
  "tris_in": 4275133,
- "tris_out": 1385807,
- "meshes": 601,
- "fallback_colour_meshes": 190,
- "bytes": 23333764,
+ "tris_out": 884493,
+ "meshes": 873,
+ "textured_meshes": 807,
+ "textures": 254,
+ "fallback_colour_meshes": 40,
+ "bytes": 34920184,
  "up": "Y (glTF); Scene IR z -> glTF y, IR y -> glTF -z",
  "nodes": {
   "wall": {
@@ -14,70 +18,70 @@
    "category": null,
    "room": null,
    "meshes": 34,
-   "tris": 5775
+   "tris": 5785
   },
   "windows": {
    "kind": "windows",
    "category": null,
    "room": null,
-   "meshes": 17,
-   "tris": 2529
+   "meshes": 31,
+   "tris": 2536
   },
   "livingRoom1_loungechair_1472146_yflib011": {
    "kind": "object",
    "category": "loungechair",
    "room": "livingRoom1",
-   "meshes": 1,
-   "tris": 3523
+   "meshes": 4,
+   "tris": 3524
   },
   "livingRoom1_TVStand_1587806_yflib010": {
    "kind": "object",
    "category": "TVStand",
    "room": "livingRoom1",
-   "meshes": 11,
-   "tris": 9675
+   "meshes": 28,
+   "tris": 9745
   },
   "livingRoom1_sidetable_1518649_yflib009": {
    "kind": "object",
    "category": "sidetable",
    "room": "livingRoom1",
-   "meshes": 4,
-   "tris": 1650
+   "meshes": 6,
+   "tris": 1651
   },
   "livingRoom1_sofa_1587804_yflib008": {
    "kind": "object",
    "category": "sofa",
    "room": "livingRoom1",
-   "meshes": 5,
-   "tris": 123789
+   "meshes": 10,
+   "tris": 77179
   },
   "livingRoom1_sidetable_1515702_yflib007": {
    "kind": "object",
    "category": "sidetable",
    "room": "livingRoom1",
-   "meshes": 5,
+   "meshes": 13,
    "tris": 3422
   },
   "livingRoom1_coffeetable_1466368_yflib014": {
    "kind": "object",
    "category": "coffeetable",
    "room": "livingRoom1",
-   "meshes": 9,
-   "tris": 2541
+   "meshes": 23,
+   "tris": 2611
   },
   "livingRoom1_loungechair_1514692_yflib013": {
    "kind": "object",
    "category": "loungechair",
    "room": "livingRoom1",
-   "meshes": 1,
-   "tris": 12226
+   "meshes": 4,
+   "tris": 12246
   },
   "livingRoom1_diningtable_1587793_yflib012": {
    "kind": "object",
    "category": "diningtable",
    "room": "livingRoom1",
-   "meshes": 30,
-   "tris": 43317
+   "meshes": 65,
+   "tris": 43615
   },
   "ground": {
    "kind": "ground",
@@ -91,56 +95,56 @@
    "category": "book",
    "room": "guestBedroom1",
    "meshes": 1,
-   "tris": 392
+   "tris": 398
   },
   "guestBedroom1_vase_1577812_yflib038": {
    "kind": "object",
    "category": "vase",
    "room": "guestBedroom1",
-   "meshes": 1,
-   "tris": 15878
+   "meshes": 16,
+   "tris": 16344
   },
   "guestBedroom1_floorlamp_1511721_yflib031": {
    "kind": "object",
    "category": "floorlamp",
    "room": "guestBedroom1",
-   "meshes": 1,
-   "tris": 5037
+   "meshes": 4,
+   "tris": 5038
   },
   "guestBedroom1_TVStand_337719_yflib030": {
    "kind": "object",
    "category": "TVStand",
    "room": "guestBedroom1",
    "meshes": 6,
-   "tris": 3910
+   "tris": 3914
   },
   "guestBedroom1_Nightstand_1406810_yflib029": {
    "kind": "object",
    "category": "Nightstand",
    "room": "guestBedroom1",
-   "meshes": 10,
-   "tris": 2327
+   "meshes": 21,
+   "tris": 2347
   },
   "guestBedroom1_bed_1587819_yflib028": {
    "kind": "object",
    "category": "bed",
    "room": "guestBedroom1",
-   "meshes": 4,
-   "tris": 330283
+   "meshes": 8,
+   "tris": 130301
   },
   "guestBedroom1_stool_1495062_yflib027": {
    "kind": "object",
    "category": "stool",
    "room": "guestBedroom1",
-   "meshes": 1,
-   "tris": 5900
+   "meshes": 3,
+   "tris": 5905
   },
   "guestBedroom1_wardrobe_1514486_yflib026": {
    "kind": "object",
    "category": "wardrobe",
    "room": "guestBedroom1",
-   "meshes": 23,
-   "tris": 82131
+   "meshes": 41,
+   "tris": 82863
   },
   "guestBedroom1_lightfixture_1472816_yflib025": {
    "kind": "object",
@@ -154,14 +158,14 @@
    "category": "lightfixture",
    "room": "guestBedroom1",
    "meshes": 1,
-   "tris": 439
+   "tris": 446
   },
   "guestBedroom1_switch_1576719_yflib023": {
    "kind": "object",
    "category": "switch",
    "room": "guestBedroom1",
    "meshes": 1,
-   "tris": 54
+   "tris": 56
   },
   "guestBedroom1_lightfixture_1472816_yflib022": {
    "kind": "object",
@@ -174,21 +178,21 @@
    "kind": "object",
    "category": "stool",
    "room": "guestBedroom1",
-   "meshes": 1,
-   "tris": 7445
+   "meshes": 3,
+   "tris": 7454
   },
   "guestBedroom1_cosmeticbottle_1504627_yflib041": {
    "kind": "object",
    "category": "cosmeticbottle",
    "room": "guestBedroom1",
-   "meshes": 3,
-   "tris": 1686
+   "meshes": 12,
+   "tris": 1807
   },
   "guestBedroom1_Mirror_1476611_yflib040": {
    "kind": "object",
    "category": "Mirror",
    "room": "guestBedroom1",
-   "meshes": 1,
+   "meshes": 3,
    "tris": 1284
   },
   "cabinet_007": {
@@ -196,21 +200,21 @@
    "category": "cabinet",
    "room": "guestBedroom1",
    "meshes": 31,
-   "tris": 1130
+   "tris": 1139
   },
   "masterBedroom1_floorlamp_1431899_yflib021": {
    "kind": "object",
    "category": "floorlamp",
    "room": "masterBedroom1",
-   "meshes": 1,
-   "tris": 969
+   "meshes": 4,
+   "tris": 982
   },
   "masterBedroom1_armchair_1514727_yflib020": {
    "kind": "object",
    "category": "armchair",
    "room": "masterBedroom1",
-   "meshes": 1,
-   "tris": 18925
+   "meshes": 3,
+   "tris": 18980
   },
   "masterBedroom1_TVStand_337719_yflib019": {
    "kind": "object",
@@ -223,64 +227,64 @@
    "kind": "object",
    "category": "bedsidecabinet",
    "room": "masterBedroom1",
-   "meshes": 8,
-   "tris": 35209
+   "meshes": 17,
+   "tris": 35225
   },
   "masterBedroom1_bed_1587819_yflib017": {
    "kind": "object",
    "category": "bed",
    "room": "masterBedroom1",
-   "meshes": 4,
-   "tris": 330372
+   "meshes": 8,
+   "tris": 130463
   },
   "masterBedroom1_bedsidecabinet_1504310_yflib016": {
    "kind": "object",
    "category": "bedsidecabinet",
    "room": "masterBedroom1",
-   "meshes": 8,
-   "tris": 35209
+   "meshes": 17,
+   "tris": 35225
   },
   "masterBedroom1_wardrobe_1462761_yflib015": {
    "kind": "object",
    "category": "wardrobe",
    "room": "masterBedroom1",
-   "meshes": 25,
-   "tris": 161864
+   "meshes": 45,
+   "tris": 96248
   },
   "cabinet_009": {
    "kind": "object",
    "category": "cabinet",
    "room": "kitchen1",
-   "meshes": 69,
+   "meshes": 72,
    "tris": 3055
   },
   "cabinet_008": {
    "kind": "object",
    "category": "cabinet",
    "room": "kitchen1",
-   "meshes": 123,
-   "tris": 5813
+   "meshes": 125,
+   "tris": 5820
   },
   "corridor1_door_cabinet_006": {
    "kind": "door",
    "category": "hinged",
    "room": null,
    "meshes": 16,
-   "tris": 879
+   "tris": 882
   },
   "bathroom1_corridor1_door_cabinet_005": {
    "kind": "door",
    "category": "hinged",
    "room": null,
    "meshes": 16,
-   "tris": 825
+   "tris": 833
   },
   "masterBedroom1_livingRoom1_door_cabinet_004": {
    "kind": "door",
    "category": "hinged",
    "room": null,
    "meshes": 16,
-   "tris": 842
+   "tris": 850
   },
   "balcony1_guestBedroom1_door_cabinet_003": {
    "kind": "door",
@@ -294,7 +298,7 @@
    "category": "hinged",
    "room": null,
    "meshes": 19,
-   "tris": 838
+   "tris": 844
   },
   "kitchen1_corridor1_door_cabinet_001": {
    "kind": "door",
@@ -314,36 +318,36 @@
    "kind": "object",
    "category": "bathroomcabinet",
    "room": "bathroom1",
-   "meshes": 7,
-   "tris": 60141
+   "meshes": 16,
+   "tris": 68267
   },
   "bathroom1_toilet_1405627_yflib035": {
    "kind": "object",
    "category": "toilet",
    "room": "bathroom1",
-   "meshes": 3,
-   "tris": 7663
+   "meshes": 6,
+   "tris": 7664
   },
   "balcony1_sidetable_1515730_yflib034": {
    "kind": "object",
    "category": "sidetable",
    "room": "balcony1",
-   "meshes": 4,
-   "tris": 3833
+   "meshes": 16,
+   "tris": 3926
   },
   "balcony1_armchair_1514727_yflib033": {
    "kind": "object",
    "category": "armchair",
    "room": "balcony1",
-   "meshes": 1,
-   "tris": 18868
+   "meshes": 3,
+   "tris": 18908
   },
   "balcony1_bathroomcabinet_1481004_yflib032": {
    "kind": "object",
    "category": "bathroomcabinet",
    "room": "balcony1",
-   "meshes": 16,
-   "tris": 27444
+   "meshes": 43,
+   "tris": 27996
   }
  }
 }

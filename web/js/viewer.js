@@ -106,8 +106,9 @@
     // Styles change materials and post-processing only, never geometry or picking.
     v.setStyle = name => {
       v.style = name; fx.setStyle(name);
-      scene.environmentIntensity = name === 'diag' ? 0.9 : 0.6;
-      hemi.intensity = name === 'diag' ? 1.4 : 1.0; sun.intensity = name === 'diag' ? 1.2 : 2.4;
+      scene.environmentIntensity = name === 'diag' ? 0.9 : 0.5;
+      hemi.intensity = name === 'diag' ? 1.4 : 0.7; sun.intensity = name === 'diag' ? 1.2 : 2.4;
+      renderer.toneMappingExposure = name === 'diag' ? 1 : 0.85;
       if (v.glb) v.glb.traverse(m => { if (m.isMesh && m.userData.realMat) m.material = name === 'diag' ? m.userData.diagMat : m.userData.realMat; });
       v.marks.forEach((kind, id) => paint(id, kind));
     };
