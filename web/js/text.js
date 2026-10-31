@@ -1,4 +1,4 @@
-/* Display strings and the shared clearance colour scale (PRD 5.4). */
+/* Display strings, the shared clearance colour scale (PRD 5.4) and braille cells (PRD 5.10.11). */
 (() => {
   'use strict';
   const HA = window.HA = window.HA || {};
@@ -16,12 +16,21 @@
   const SOURCE = { wsr: '数据集', template: '模板估计', catalog: '商品页', lux3d: '模型量取', user: '用户修正' };
   const SHORT = { wheelchair: '轮椅', walker_elder: '助行器', upper_limb: '上肢受限', walking_control: '步行对照', stretcher: '担架' };
 
-  // Clearance colour scale: red < 0, orange 0-5 cm, yellow 5-10 cm, green > 10 cm.
-  const SCALE = [[0, '#e5484d'], [0.05, '#f2994a'], [0.10, '#f2c94c'], [Infinity, '#3fb68b']];
+  // Clearance bands (PRD 5.10.5): 朱红 < 0, 琥珀 0-5 cm, 柠檬黄 5-10 cm, 青绿 > 10 cm.
+  const SCALE = [[0, '#D7263D'], [0.05, '#E8A33D'], [0.10, '#D9C836'], [Infinity, '#2A9D8F']];
   const clearColor = c => SCALE.find(([lim]) => c < lim)[1];
 
   const m = v => (v == null ? '—' : `${(+v).toFixed(2)} m`);
   const cm = v => `${Math.round(v * 100)} cm`;
+
+  // Six-dot braille cells as Unicode bit masks (dot n = bit n-1). Decorative only, always aria-hidden.
+  // 国家通用盲文方案: 先 = x(⠓) + ian(⠩), 住 = zh(⠌) + u(⠥); digits 1-6 are ⠁⠃⠉⠙⠑⠋ (number sign omitted).
+  const BRAILLE = { 先: [0x13, 0x29], 住: [0x0C, 0x25] }, DIGIT = [0x01, 0x03, 0x09, 0x19, 0x11, 0x0B];
+  let dotIdx = 0;
+  const cell = bits => `<span class="cell">${[0, 3, 1, 4, 2, 5].map(b =>
+    (bits >> b & 1 ? `<i class="on" style="--i:${dotIdx++}"></i>` : '<i></i>')).join('')}</span>`;
+  const braille = text => { dotIdx = 0; return [...text].flatMap(ch => BRAILLE[ch] || []).map(cell).join(''); };
+  const brailleDigit = n => cell(DIGIT[n - 1]);
 
   HA.text = {
     room: t => ROOM[t] || t,
@@ -29,7 +38,7 @@
     code: c => CODE[c] || c,
     source: s => SOURCE[s] || s,
     persona: id => SHORT[id] || id,
-    clearColor, SCALE, m, cm,
+    clearColor, SCALE, m, cm, braille, brailleDigit,
     roomOf(ir, id) { const r = ir.rooms.find(r => r.id === id); return r ? ROOM[r.type] || r.type : ''; },
     // Human name for an IR object id; falls back to "墙" for walls and the raw id otherwise.
     object(ir, id) {
@@ -56,4 +65,5 @@
         std: v.standard, source: v.source };
     },
   };
+  document.querySelectorAll('[data-braille]').forEach(el => { el.innerHTML = braille(el.dataset.braille); });
 })();

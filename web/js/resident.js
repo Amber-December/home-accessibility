@@ -10,9 +10,9 @@
     const plate = f.shape === 'rect'
       ? new THREE.BoxGeometry(f.size[1], 0.02, f.size[0])
       : new THREE.CylinderGeometry(f.r, f.r, 0.02, 40);
-    const fp = new THREE.Mesh(plate, new THREE.MeshBasicMaterial({ color: '#2f7cf6', transparent: true, opacity: 0.28, depthWrite: false }));
+    const fp = new THREE.Mesh(plate, new THREE.MeshBasicMaterial({ color: '#660874', transparent: true, opacity: 0.28, depthWrite: false }));
     fp.position.y = 0.03; g.add(fp);
-    const edge = new THREE.LineSegments(new THREE.EdgesGeometry(plate), new THREE.LineBasicMaterial({ color: '#2f7cf6' }));
+    const edge = new THREE.LineSegments(new THREE.EdgesGeometry(plate), new THREE.LineBasicMaterial({ color: '#660874' }));
     edge.position.y = 0.03; g.add(edge);
     const skin = mat('#f4f6f9'), dark = mat('#4b5b70');
     if (seated) {
@@ -33,17 +33,16 @@
         const frame = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.85, 0.55), dark); frame.position.set(0.28, 0.43, 0); g.add(frame);
       }
     }
-    const nose = new THREE.Mesh(new THREE.ConeGeometry(0.06, 0.16, 12), mat('#2f7cf6'));
+    const nose = new THREE.Mesh(new THREE.ConeGeometry(0.06, 0.16, 12), mat('#660874'));
     nose.rotation.z = -Math.PI / 2; nose.position.set((f.size ? f.size[1] / 2 : f.r) + 0.06, 0.05, 0); g.add(nose);
-    g.traverse(m => { if (m.isMesh) m.castShadow = true; });
     g.userData = { fp, edge };
     g.setPose = (x, y, yaw) => { g.position.copy(V(x, y, 0)); g.rotation.y = yaw; };
-    g.setState = s => { const c = s === 'fail' ? '#e5484d' : '#2f7cf6'; fp.material.color.set(c); edge.material.color.set(c); };
+    g.setState = s => { const c = s === 'fail' ? '#D7263D' : '#660874'; fp.material.color.set(c); edge.material.color.set(c); };
     return g;
   }
 
   // Trajectory as a line; drawn up to the current sample.
-  function trail(traj, color = '#2f7cf6') {
+  function trail(traj, color = '#660874') {
     const pos = new Float32Array(Math.max(1, traj.length) * 3);
     traj.forEach((q, i) => { const p = V(q[1], q[2], 0.06); pos.set([p.x, p.y, p.z], i * 3); });
     const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
@@ -76,7 +75,7 @@
     for (const e of edits || []) {
       const m = v.built.byId[e.object_id]; if (!m) continue;
       if (mode === 'preview') {
-        const g = new THREE.Mesh(m.geometry, new THREE.MeshBasicMaterial({ color: '#e5484d', transparent: true, opacity: 0.25, depthWrite: false }));
+        const g = new THREE.Mesh(m.geometry, new THREE.MeshBasicMaterial({ color: '#D7263D', transparent: true, opacity: 0.25, depthWrite: false }));
         v.ghosts.add(g);
       }
       if (e.op === 'remove') m.visible = false;

@@ -4,7 +4,7 @@
   const HA = window.HA;
   const $ = s => document.querySelector(s);
   const S = HA.app = {
-    step: 'pick', persona: null, tasks: new Set(), plan: null, variant: 'base', t: 0, view: 'top',
+    step: 'home', persona: null, tasks: new Set(), plan: null, variant: 'base', t: 0, view: 'top',
     layers: { heat: false, sweep: false, fp: true }, preset: null, sides: [], announced: new Set(),
   };
 
@@ -54,14 +54,14 @@
     const at = S.tl.at(S.t); if (!at) return;
     S.sides.forEach((side, i) => {
       const run = at.seg.runs[i], m = side.marker;
-      m.visible = !!(run && run.applicable && run.traj.length) && S.step !== 'pick' && S.step !== 'fix';
+      m.visible = !!(run && run.applicable && run.traj.length) && !['home', 'pick', 'fix'].includes(S.step);
       m.userData.fp.visible = m.userData.edge.visible = S.layers.fp;
       if (!m.visible) { side.pose = null; return; }
       const local = Math.min(at.local, run.duration), p = HA.resident.poseAt(run.traj, local);
       m.setPose(p.x, p.y, p.yaw); m.setState(local >= run.duration && !run.success ? 'fail' : 'ok');
       if (side.trailRun !== run) {
         if (side.trail) S.v.scene.remove(side.trail);
-        side.trail = HA.resident.trail(run.traj, run.success ? '#2f7cf6' : '#e5484d'); side.trailRun = run; S.v.scene.add(side.trail);
+        side.trail = HA.resident.trail(run.traj, run.success ? '#660874' : '#D7263D'); side.trailRun = run; S.v.scene.add(side.trail);
       }
       side.trail.upTo(p.i + 1);
       side.pose = [p.x, p.y, p.yaw];

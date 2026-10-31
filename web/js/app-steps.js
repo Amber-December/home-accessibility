@@ -1,19 +1,37 @@
-/* Step machine (选人 → 试住 → 体检 → 改造 → 对比), actions, chat cards, recording presets, boot. */
+/* Step machine (户型 → 住户 → 试住 → 体检 → 改造 → 对比), step bar, chat cards. */
 (() => {
   'use strict';
   const HA = window.HA, S = HA.app, T = HA.text;
   const $ = s => document.querySelector(s), esc = s => HA.panels.esc(s);
-  const STEPS = ['pick', 'stay', 'report', 'fix', 'compare'];
+  const STEPS = ['home', 'pick', 'stay', 'report', 'fix', 'compare'];
+  const NAMES = ['户型', '住户', '试住', '体检', '改造', '对比'];
+  S.reached = 0;
+
+  // Step bar: braille numeral before each name; visited steps have filled dots; later steps unlock in order.
+  S.renderSteps = () => {
+    const plans = S.result && S.result.plans.length;
+    $('#steps').innerHTML = STEPS.map((id, i) => {
+      const locked = i > S.reached || (i >= 4 && !plans);
+      const why = i >= 4 && !plans ? '没有可用的改造方案' : `先完成「${NAMES[i - 1]}」`;
+      return `${i ? '<span class="sep" aria-hidden="true"></span>' : ''}<button data-act="go" data-arg="${id}"
+        class="${id === S.step ? 'on' : ''} ${i <= S.reached ? 'done' : ''}" ${locked ? `disabled title="${why}"` : ''}
+        ${id === S.step ? 'aria-current="step"' : ''}><span aria-hidden="true">${T.brailleDigit(i + 1)}</span>${NAMES[i]}</button>`;
+    }).join('');
+  };
 
   S.renderPanel = () => {
     const at = S.tl.at(S.t);
     $('#panel').innerHTML = S.step === 'stay' ? HA.panels.stay(S, at && at.seg.runs[0]) : HA.panels[S.step](S);
   };
 
-  function setView(name) {
-    S.view = name; S.v.setView(name);
+  // Button state, walk hint and S.view follow the viewer, which also changes view on its own (Esc leaves walk).
+  S.onView = name => {
+    S.view = name;
     document.querySelectorAll('#views button').forEach(b => b.classList.toggle('on', b.dataset.arg === name));
-  }
+    $('#walk-hint').hidden = name !== 'walk';
+  };
+  const setView = name => S.v.setView(name);
+  S.setView = setView;
   function setLayer(name, on) {
     S.layers[name] = on;
     const box = document.querySelector(`#layers input[data-arg="${name}"]`); if (box) box.checked = on;
@@ -21,7 +39,7 @@
     if (name === 'sweep') S.v.built.sweeps.visible = on;
     if (name === 'fp') S.update();
   }
-  function showTimeline(on) { S.tl.show(on); $('main').classList.toggle('notl', !on); }
+  function showTimeline(on) { S.tl.show(on); document.body.classList.toggle('tl', on); }
 
   S.intentCard = function () {
     const p = S.personaObj(), runs = S.runs('base');
@@ -47,13 +65,14 @@
 
   // Enter a step: set 3D view, layers, timeline, right panel and chat card.
   S.enter = step => {
-    if ((step === 'fix' || step === 'compare') && !S.result.plans.length) return;
-    S.step = step; S.pause(); S.hideProblem(); S.v.split = null; $('#split-labels').hidden = true;
+    const idx = STEPS.indexOf(step);
+    if (idx < 0 || ((step === 'fix' || step === 'compare') && !S.result.plans.length)) return;
+    S.step = step; S.reached = Math.max(S.reached, idx); S.pause(); S.hideProblem(); S.v.split = null; $('#split-labels').hidden = true;
     S.v.clearMarks(); S.v.keepRed = null; S.variant = 'base';
     HA.resident.applyPlan(S.v, null, null);
-    document.querySelectorAll('#steps button').forEach(b => b.classList.toggle('on', b.dataset.arg === step));
-    if (step === 'pick') {
-      S.setupPlayback(['base']); setView('top'); setLayer('heat', true); showTimeline(false);
+    S.renderSteps();
+    if (step === 'home' || step === 'pick') {
+      S.setupPlayback(['base']); setView('top'); setLayer('heat', step === 'pick'); showTimeline(false);
       S.sides.forEach(s => { s.marker.visible = false; if (s.trail) s.trail.visible = false; });
     } else if (step === 'stay') {
       S.setupPlayback(['base']); setLayer('heat', false); showTimeline(true); setView(S.preset && S.preset.view || 'follow');

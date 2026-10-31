@@ -53,8 +53,9 @@
       if (el.checked) S.tasks.add(arg); else if (S.tasks.size > 1) S.tasks.delete(arg); else el.checked = true;
       S.renderPanel(); return;
     }
-    if (name === 'view') return S.v.split ? null : (S.view = arg, S.v.setView(arg),
-      document.querySelectorAll('#views button').forEach(b => b.classList.toggle('on', b.dataset.arg === arg)));
+    if (name === 'view') return S.v.split ? null : S.setView(arg);
+    if (name === 'style') return S.setStyle(arg);
+    if (name === 'fold') return S.fold(arg);
     if (name === 'layer') {
       S.layers[arg] = el.checked;
       if (arg === 'heat') S.refreshHeat(); else if (arg === 'sweep') S.v.built.sweeps.visible = el.checked; else S.update();
@@ -76,12 +77,63 @@
     }
   };
 
+  S.setStyle = name => {
+    S.v.setStyle(name);
+    document.querySelectorAll('#styles button').forEach(b => {
+      const on = b.dataset.arg === name; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on);
+    });
+  };
+
+  // Folding a panel slides it out (CSS) and recentres the 3D view on the remaining free area.
+  const PANEL = { left: '#chat', right: '#detail' };
+  S.syncInsets = () => {
+    if (!S.v) return;
+    const b = document.body.classList, edge = side => (b.contains('fold-' + side) ? 0 : $(PANEL[side]).offsetWidth + 12);
+    S.v.setInsets(edge('left'), edge('right'));
+  };
+  S.fold = side => {
+    const folded = document.body.classList.toggle('fold-' + side), btn = $(`.fold.${side}`);
+    btn.setAttribute('aria-expanded', !folded);
+    btn.setAttribute('aria-label', `${folded ? '展开' : '收起'}${side === 'left' ? '对话' : '详情'}面板`);
+    btn.textContent = (side === 'left') === folded ? '›' : '‹';
+    S.syncInsets();
+  };
+  window.addEventListener('resize', () => S.syncInsets());
+
+  // Absolute times of every event on the current timeline, for ←/→ stepping.
+  function eventTimes() {
+    const out = [];
+    for (let k = 0, seg; (seg = S.tl.seg(k)); k++) {
+      out.push(seg.t0);
+      const run = seg.runs[0];
+      if (run && run.applicable) run.events.forEach(e => out.push(seg.t0 + e.t));
+    }
+    return out.sort((a, b) => a - b);
+  }
+
   document.addEventListener('click', e => {
     const el = e.target.closest('[data-act]');
     if (el && !el.disabled) S.act(el.dataset.act, el.dataset.arg, el);
   });
+  // Keyboard (PRD 5.10.3): 1-4 views, Space play, ←/→ events, Enter confirms the panel, Esc closes the problem card.
+  // Walk mode captures arrows and Esc itself in viewer.js.
   document.addEventListener('keydown', e => {
-    if (e.code === 'Space' && e.target.tagName !== 'INPUT' && S.tl && !$('#timeline').hidden) { e.preventDefault(); S.playing ? S.pause() : S.play(); }
+    if (!S.v || /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName) || e.ctrlKey || e.metaKey || e.altKey) return;
+    const tl = S.tl && !$('#timeline').hidden;
+    const view = { Digit1: 'top', Digit2: 'follow', Digit3: 'fp', Digit4: 'walk' }[e.code];
+    if (view) { if (!S.v.split) S.setView(view); return; }
+    if (e.code === 'Space' && tl) { e.preventDefault(); S.playing ? S.pause() : S.play(); return; }
+    if ((e.code === 'ArrowLeft' || e.code === 'ArrowRight') && tl) {
+      e.preventDefault();
+      const ts = eventTimes(), next = e.code === 'ArrowRight' ? ts.find(t => t > S.t + 1e-3) : ts.reverse().find(t => t < S.t - 1e-3);
+      if (next != null) { S.pause(); S.seek(next); }
+      return;
+    }
+    if (e.code === 'Escape' && !$('#problem').hidden) { S.hideProblem(); return; }
+    if (e.code === 'Enter' && e.target === document.body) {
+      const b = $('#problem:not([hidden]) button.primary') || $('#panel button.primary:not(:disabled)');
+      if (b) { e.preventDefault(); b.click(); }
+    }
   });
   document.addEventListener('visibilitychange', () => { if (document.hidden) S.pause(); });
 
@@ -94,6 +146,8 @@
       if (result.baseline.runs.some(r => (r.monologue || []).some(m => m.source === 'template'))) badges.push('<span class="badge">规则模式</span>');
       $('#badges').innerHTML = badges.join('');
       S.v = HA.viewer.create($('#view'), ir, occ);
+      S.v.onView = S.onView; S.onView(S.v.view);
+      S.setStyle(HA.config.style); S.syncInsets();
       S.v.onFrame.push(dt => S.tick(dt));
       S.v.onPick = (ud, p) => {
         S.v.marks.forEach((k, id) => { if (k === 'blue') S.v.mark(id, null); });
@@ -107,7 +161,7 @@
       S.preset = pr || null;
       selectPersona(pr ? pr.persona : result.personas[0].id, pr && pr.tasks);
       $('#loading').remove();
-      S.chat.say('agent', `已载入户型 ${HA.panels.esc(ir.scene_id)}：${ir.rooms.length} 个房间、${ir.doors.length} 扇门、${ir.objects.length} 件物体。先选谁来住。`);
+      S.chat.say('agent', `已载入户型 ${HA.panels.esc(ir.scene_id)}：${ir.rooms.length} 个房间、${ir.doors.length} 扇门、${ir.objects.length} 件物体。先核对户型，再选谁来住。`);
       if (pr) {
         S.enter(pr.step);
         if (pr.at === 'fail') {
@@ -115,11 +169,12 @@
           S.seek(seg.t0 + run.duration - 1e-3); S.stopped = run; S.showProblem(run);
         }
       } else {
-        S.enter('pick');
+        S.enter('home');
       }
       window.HA_READY = true;
     } catch (err) {
-      $('#loading').textContent = '加载失败：' + err.message; console.error(err);
+      const l = $('#loading'); if (l) l.lastElementChild.textContent = '加载失败：' + err.message;
+      console.error(err);
     }
   }
 
