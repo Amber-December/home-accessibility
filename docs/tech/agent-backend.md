@@ -71,6 +71,7 @@ LLM 只在两处做路由：把用户的自由输入分类成意图（A1），�
 |---|---|---|---|
 | scene | `floorplan_parse(image, known_dim?)` | 户型图 → 墙线、门、窗、房间候选（带置信度） | `ir/floorplan.py`（§7） |
 | | `floorplan_to_ir(parse, corrections)` | 合并用户修正，生成结构 IR | `ir/floorplan.py` |
+| | `floorplan_generate(distribution, n, seed)` | 按户型分布批量生成结构 IR（评测模式） | `layout/floorplan_gen.py`（§9.1） |
 | | `import_wsr(scene_id)` | WSR 导入（真值和兜底） | `ir/wsr_import.py` |
 | | `get_summary(ir_ver)` / `get_object(id)` | 查询房间、门、物体 | `ir/schema.py` |
 | | `export_glb(ir_ver)` | 展示用 GLB | `ir/export_glb.py`；结构 IR 的墙和门由 `ir/structure_mesh.py` 挤出 |
@@ -104,7 +105,7 @@ LLM 只在两处做路由：把用户的自由输入分类成意图（A1），�
 
 | 字段 | 说明 |
 |---|---|
-| `source` | 每个房间、墙、门、物体、数值的来源：floorplan / user / catalog / template / wsr / lux3d |
+| `source` | 每个房间、墙、门、物体、数值的来源：floorplan / generated / user / catalog / template / wsr / lux3d |
 | `confidence` | 户型识别的置信度，< 0.7 的元素在前端标黄 |
 | `sku` | 物体对应的商品，指向 catalog 记录 |
 | `nominal_m` | 商品标称尺寸。评估器用它，不用网格 |
@@ -197,6 +198,16 @@ for room in 按优先级排序的房间（卫生间、主卧、厨房、客厅�
 5. **无障碍预留**：放大件前，先给住户需要的空间占位（例如床的长边一侧 1.20 m、卫生间 1.50 m 转身圆），其他家具不能占。这是"按住户布置"和普通 AI 布局的主要区别。
 
 求解器只用几何和规则，结果确定；LLM 改变的只是约束和清单。
+
+### 9.1 户型生成（评测模式）
+
+评测模式批量生成住宅：生成平面 → 转三维 → 摆家具（prd §2.3）。批处理不调 LLM，结果只由实验配置和种子决定。
+
+1. **统计分布**：从 WSR 500 套统计几室几厅、总面积段、各房间面积占比、房间邻接关系，写成分布文件。实验配置可以固定其中几项，例如只要两室一厅、60–90 m²。
+2. **采样和切分**：按分布和种子采样一张房间邻接图，在矩形或 L 形外轮廓里递归切分出房间多边形。按邻接关系在公共墙上开门，入户门开在玄关外墙。门净宽、走廊宽按实验配置取值。输出和户型图识别（§7）同格式的结构 IR，元素标 `source: generated`。
+3. **几何检查**：房间连通，每个房间能从入户门走到，面积在分布范围内，门和门的扫掠不冲突。没过的按固定的种子序列重采，每套最多 5 次，失败记录写进 manifest。
+4. **转三维**：`export_glb` 用 `ir/structure_mesh.py` 挤出墙和门，墙高 2.7 m、门高 2.1 m、窗台 0.9 m。
+5. **摆家具**：用 §9 的求解器摆必需家具，清单和约束用规则版。默认不做第 5 步的无障碍预留，按普通家庭的布置摆；预留作为实验变量。家具系列评测时，同一套平面分别摆基线商品和待测系列，其余家具位置不变。
 
 ## 10. 后端
 

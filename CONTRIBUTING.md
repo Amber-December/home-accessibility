@@ -14,7 +14,7 @@ src/ha/
   enrich/     templates.yaml  enrich.py                                          M2          B
   assets/     catalog.yaml  lux3d_factory.py  normalize.py                       M3          A
   catalog/    crawl.py  parse_sites.py  store.py                                 F2 商品库    A
-  layout/     solver.py  rules.py                                                F3 布局      A
+  layout/     solver.py  rules.py  floorplan_gen.py                              F3、住宅生成  A
   resident/   personas.yaml  motion.py  decision_llm.py  decision_rule.py        M4、M5      B
   evaluator/  result_schema.py  l0_disc.py  l1_se2.py  l2_local.py  metrics.py   M6          B
               lighting.py  smoke.py  mujoco_replay.py
