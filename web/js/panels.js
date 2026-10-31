@@ -25,7 +25,19 @@
 
   function legend() {
     const L = ['< 0', '0–5 cm', '5–10 cm', '> 10 cm'];
-    return `<div class="legend">余量：${HA.text.SCALE.map(([, c], i) => `<span><i style="background:${c}"></i>${L[i]}</span>`).join('')}</div>`;
+    return `<div class="legend">余量：${L.map((l, i) => `<span><i class="band b${i}"></i>${l}</span>`).join('')}</div>`;
+  }
+
+  // 户型: what was recognised. Doors narrower than 0.80 m are highlighted for the user to check.
+  function home(S) {
+    const ir = S.ir, rooms = ir.rooms.map(r => `<li><span>${esc(T().room(r.type))}</span><span class="num">${(+r.area).toFixed(1)} m²</span></li>`).join('');
+    const doors = ir.doors.map(d => `<li class="${d.clear_width < 0.8 ? 'warn' : ''}"><span>${esc(T().object(ir, d.id))}</span>
+      <span class="num">净宽 ${T().m(d.clear_width)}</span></li>`).join('');
+    return `<h3>这套房识别对了吗？</h3><p class="muted">户型 ${esc(ir.scene_id)}。核对房间和门，确认后选谁来住。</p>
+      <h4>房间 ${ir.rooms.length}</h4><ul class="list">${rooms}</ul>
+      <h4>门 ${ir.doors.length}</h4><ul class="list">${doors}</ul>
+      <h4>家具 ${ir.objects.length} 件</h4><p class="muted">点 3D 视图里的物体看尺寸。</p>
+      <button class="primary" data-act="go" data-arg="pick">确认户型</button>`;
   }
 
   function stay(S, run) {
@@ -110,5 +122,5 @@
       ${rel.length ? `<div class="red">相关问题 ${rel.length} 条：${[...new Set(rel.map(x => T().code(x.v.code)))].join('、')}</div>` : '<div class="muted">没有相关问题</div>'}</div>`;
   }
 
-  HA.panels = { pick, stay, report, fix, compare, object, issues, esc };
+  HA.panels = { home, pick, stay, report, fix, compare, object, issues, esc };
 })();

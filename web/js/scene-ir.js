@@ -29,12 +29,13 @@
     return geo;
   }
 
-  function textSprite(text, color = '#41505f', size = 0.55) {
+  function textSprite(text, color = '#24212A', size = 0.55) {
     const c = document.createElement('canvas'); c.width = 512; c.height = 128;
     const g = c.getContext('2d');
     g.font = '600 56px "PingFang SC","Microsoft YaHei",sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
     g.fillStyle = color; g.fillText(text, 256, 64);
-    const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), depthTest: false, transparent: true }));
+    const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace;
+    const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, depthTest: false, transparent: true, toneMapped: false }));
     s.scale.set(size * 4, size, 1); s.renderOrder = 10;
     return s;
   }
@@ -67,16 +68,16 @@
   function buildScene(ir, occ) {
     const root = new THREE.Group(), pick = [], byId = {};
     const floors = new THREE.Group(), labels = new THREE.Group(), objects = new THREE.Group(), doors = new THREE.Group(), sweeps = new THREE.Group();
+    const windows = new THREE.Group();
     for (const r of ir.rooms) {
       for (const poly of r.polygons) {
         const m = new THREE.Mesh(flat(poly, 0.002), mat(ROOM_COLOR[r.type] || '#f0f2f4'));
         m.receiveShadow = true; m.userData = { kind: 'room', id: r.id }; floors.add(m);
       }
       const p = r.polygons[0], cx = p.reduce((s, q) => s + q[0], 0) / p.length, cy = p.reduce((s, q) => s + q[1], 0) / p.length;
-      const s = textSprite(HA.text.room(r.type), '#41505f', 0.42); s.position.copy(V(cx, cy, 0.05)); s.userData.roomId = r.id; labels.add(s);
+      const s = textSprite(HA.text.room(r.type), '#24212A', 0.42); s.position.copy(V(cx, cy, 0.05)); s.userData.roomId = r.id; labels.add(s);
     }
     const walls = wallMesh(occ);
-    walls.scale.y = 1;
     for (const o of ir.objects) {
       if (SKIP.has(o.category) || !o.footprint || o.footprint.length < 3) continue;
       const [z0, z1] = o.z_range || [o.aabb.min[2], o.aabb.max[2]];
@@ -95,7 +96,7 @@
           g.add(m); pick.push(m);
         }
         if (leaf.sweep) {
-          const s = new THREE.Mesh(flat(leaf.sweep, 0.012), new THREE.MeshBasicMaterial({ color: '#f2a33a', transparent: true, opacity: 0.35, depthWrite: false }));
+          const s = new THREE.Mesh(flat(leaf.sweep, 0.012), new THREE.MeshBasicMaterial({ color: '#E8A33D', transparent: true, opacity: 0.35, depthWrite: false }));
           sweeps.add(s);
         }
       }
@@ -106,11 +107,11 @@
       const m = new THREE.Mesh(new THREE.BoxGeometry(a.max[0] - a.min[0], a.max[2] - a.min[2], a.max[1] - a.min[1]),
         mat('#9cc6e6', { transparent: true, opacity: 0.45 }));
       m.position.copy(V((a.min[0] + a.max[0]) / 2, (a.min[1] + a.max[1]) / 2, (a.min[2] + a.max[2]) / 2));
-      root.add(m);
+      windows.add(m);
     }
     sweeps.visible = false;
-    root.add(floors, walls, objects, doors, sweeps, labels);
-    return { root, pick, byId, walls, labels, sweeps, objects };
+    root.add(floors, walls, objects, doors, windows, sweeps, labels);
+    return { root, pick, byId, walls, labels, sweeps, objects, floors, doors, windows };
   }
 
   HA.sceneBuild = { buildScene, V, textSprite, mat, flat, WALL_H, CUT_H };

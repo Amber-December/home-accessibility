@@ -9,7 +9,9 @@
     ir: q.get('ir') || FIX + 'scene_ir.json',
     occupancy: q.get('occ') || FIX + 'occupancy.npz',
     result: q.get('result') || 'mock/H1/sim_result.json',
-    glb: q.get('glb') || '',
+    // H1 ships its GLB; ?glb=none falls back to the IR white model.
+    glb: q.get('glb') === 'none' ? '' : q.get('glb') || (q.get('ir') ? '' : 'models/H1/scene000064.glb'),
+    style: q.get('style') === 'diag' ? 'diag' : 'real',
     preset: q.get('preset') || '',
     quality: q.get('quality') || 'normal',
   };

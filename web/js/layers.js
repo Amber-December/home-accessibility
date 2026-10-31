@@ -86,9 +86,9 @@
       px.set([r, g, b, c[k] < 0.10 ? 200 : 110], k * 4);
     }
     const tex = new THREE.DataTexture(px, cols, rows, THREE.RGBAFormat);
-    tex.magFilter = THREE.NearestFilter; tex.needsUpdate = true;
+    tex.magFilter = THREE.NearestFilter; tex.colorSpace = THREE.SRGBColorSpace; tex.needsUpdate = true;
     const mesh = new THREE.Mesh(new THREE.PlaneGeometry(cols * res, rows * res),
-      new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false }));
+      new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false, toneMapped: false }));
     mesh.rotation.x = -Math.PI / 2;
     mesh.position.copy(HA.sceneBuild.V(x0 + cols * res / 2, y0 + rows * res / 2, 0.015));
     mesh.renderOrder = 2;
