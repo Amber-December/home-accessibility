@@ -90,7 +90,7 @@ git push origin sim/evaluator-l0                 # 推到自己的 fork，再在
 
 ## 不进 Git 的东西
 
-- 数据（WSR、SAGE-10k）、运行产物、GLB、USDZ、mp4、PPT 原件。`.gitignore` 已排除。
+- 数据（WSR、SAGE-10k）、运行产物、GLB、USDZ、mp4、PPT 原件。`.gitignore` 已排除。唯一的例外是网页演示用的 H1 住宅模型 `web/models/H1/`（WSR 改编，CC BY-NC-SA 4.0，署名和改动写在同目录的 `LICENSE.md`）。
 - 需要互相传的大文件（减面 GLB、视频素材）：发 GitHub Release 附件，或者用团队网盘，在 PR 或群里贴链接。
 - 凭证放 `.env`（模板 `.env.example`），不提交、不贴进 issue 和日志。HF token 每人用自己的。
 - Lux3D 付费 create 先在群里确认，每次都写 ledger。
