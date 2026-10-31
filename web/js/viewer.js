@@ -132,6 +132,11 @@
         if (cut) real.side = diag.side = THREE.DoubleSide;
         Object.assign(m.userData, { realMat: real, diagMat: diag });
       });
+      const box = new THREE.Box3().setFromObject(root), center = box.getCenter(new THREE.Vector3());
+      const target = V(cx, cy, 0);
+      root.position.x += target.x - center.x;
+      root.position.z += target.z - center.z;
+      root.position.y += -box.min.y;
       scene.add(root);
       for (const k of ['objects', 'walls', 'floors', 'doors', 'windows']) built[k].visible = false;
       v.glb = root; v.setStyle(v.style); v.setWallCut(cutPlane.constant < 1e2); v.shadowsDirty();
@@ -207,7 +212,7 @@
       const dx = (v.insets.left - v.insets.right) / 2;
       dxNow = smooth() ? dxNow + (dx - dxNow) * Math.min(1, dt * 10) : dx;
       if (Math.abs(dxNow - dx) < 0.5) dxNow = dx;
-      if (dxNow) camera.setViewOffset(w, h, -dxNow, 0, w, h); else camera.clearViewOffset();
+      if (dxNow) camera.setViewOffset(w, h, dxNow, 0, w, h); else camera.clearViewOffset();
     }
 
     function resize() { fx.setSize(el.clientWidth, el.clientHeight); }

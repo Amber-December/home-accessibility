@@ -10,6 +10,10 @@ const GLB = { scene000064: 'models/H1/scene000064.glb' };
 const AREA = [['all', '全部'], ['s', '60 m² 以下', a => a < 60], ['m', '60–90 m²', a => a >= 60 && a <= 90], ['l', '90 m² 以上', a => a > 90]];
 const st = { tab: q.get('tab') === 'home' ? 'home' : 'furn', q: '', cat: 'all', motion: 'all', used: false, area: 'all', id: q.get('id') };
 let C, L, stop = null;
+const CUSTOM_KEY = 'livefirst-custom-furniture-v1';
+const customItems = () => { try { return JSON.parse(localStorage.getItem(CUSTOM_KEY) || '[]'); } catch { return []; } };
+const saveCustom = items => localStorage.setItem(CUSTOM_KEY, JSON.stringify(items));
+const readDataUrl = file => new Promise((ok, bad) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = bad; r.readAsDataURL(file); });
 
 const cm = size => size.map(v => Math.round(v * 100)).join('×') + ' cm';
 const homeName = id => { const h = L.homes.find(h => h.id === id); return h && h.hero ? h.hero : id === 'H1' ? 'H1' : id.replace('scene', '#'); };
@@ -52,7 +56,7 @@ function furnCard(i) {
   return `<button class="card${i.id === st.id ? ' on' : ''}" data-id="${esc(i.id)}" aria-pressed="${i.id === st.id}">` +
     `<span class="pic"><img src="${esc(i.img)}" alt="" loading="lazy" width="240" height="240"><img class="ref" src="${esc(i.ref)}" alt="" loading="lazy" width="240" height="240"></span>` +
     `<b>${esc(i.name)}</b><span class="v">${esc(i.variant)}</span>` +
-    `<span class="meta"><span class="num">${cm(i.size_m)}</span><span class="num">${T.cny(i.price_cny)}</span></span>` +
+    `<span class="meta"><span class="num">${cm(i.size_m)}</span><span class="num">${i.price_cny ? T.cny(i.price_cny) : '价格待定'}</span></span>` +
     `${i.harness.joints ? '<span class="tag">可开合</span>' : ''}</button>`;
 }
 function homeCard(h) {
@@ -93,7 +97,7 @@ function furnDetail(i) {
   i.used_in.forEach(u => { const n = homeName(u.home); if (!used.some(x => x.n === n)) used.push({ n, u }); });
   return `<button class="close" data-close aria-label="关闭详情">×</button>` +
     `<h2>${esc(i.name)}</h2><p class="muted">${esc(i.variant)} · ${esc(i.category)}</p>` +
-    `<dl class="facts"><dt>尺寸</dt><dd class="num">${cm(i.size_m)}</dd><dt>价格</dt><dd><span class="num">${T.cny(i.price_cny)}</span> <span class="muted">${esc(i.price_src)}</span></dd>` +
+    `<dl class="facts"><dt>尺寸</dt><dd class="num">${cm(i.size_m)}</dd><dt>价格</dt><dd><span class="num">${i.price_cny ? T.cny(i.price_cny) : '待定'}</span> <span class="muted">${esc(i.price_src || '')}</span></dd>` +
     `<dt>商品页</dt><dd><a href="${esc(i.url)}" target="_blank" rel="noopener">宜家官网 ↗</a></dd></dl>` +
     `<h3>从商品图到可试住的模型</h3><ol class="chain">` +
     `<li><h4><span class="k">1</span>宜家商品图</h4><div class="figs"><figure class="main"><img src="${esc(i.ref)}" alt="宜家官网商品图"><figcaption>主图</figcaption></figure>` +
@@ -151,6 +155,7 @@ async function boot() {
     if (!r.ok) throw new Error(`${u}: HTTP ${r.status}`);
     return r.json();
   })));
+  C.items = [...C.items, ...customItems()];
   $('#n-furn').textContent = C.items.length; $('#n-home').textContent = L.homes.length;
   $('#note').textContent = `${C.items.length} 件家具 · ${L.homes.length} 套户型`;
   if (st.id) {
@@ -173,6 +178,21 @@ async function boot() {
   });
   $('#cards').addEventListener('click', e => { const c = e.target.closest('.card'); if (c) select(c.dataset.id); });
   $('#item').addEventListener('click', e => { if (e.target.closest('[data-close]')) close(); });
+  const dialog = $('#furniture-dialog'), form = $('#furniture-form'), progress = $('#furniture-progress');
+  $('#add-furniture').addEventListener('click', () => { form.reset(); progress.hidden = true; dialog.showModal(); });
+  form.addEventListener('submit', async e => {
+    if (e.submitter?.value === 'cancel') return;
+    e.preventDefault();
+    const fd = new FormData(form), ref = fd.get('reference'), drawing = fd.get('drawing');
+    if (!(ref instanceof File) || !(drawing instanceof File)) return;
+    const refUrl = await readDataUrl(ref);
+    progress.hidden = false; progress.textContent = '准备上传…';
+    await HA.lux3d.run({ reference: ref, drawing }, s => { progress.textContent = `${s.index + 1} / ${s.total} · ${s.label}`; });
+    const id = `custom-${Date.now()}`;
+    const item = { id, name: fd.get('name'), variant: '我的家具', category: fd.get('category'), size_m: [+fd.get('width') / 100, +fd.get('depth') / 100, +fd.get('height') / 100], price_cny: 0, price_src: '用户上传', url: '', img: refUrl, ref: refUrl, glb: '', lux3d: true, inputs: [], used_in: [], limitations: ['模型由 Agent + Lux3D 生成，当前为本地演示资产'], harness: { dims_src: { width: ['user', '参数图纸'], depth: ['user', '参数图纸'], height: ['user', '参数图纸'] }, mechanisms: fd.get('joints') ? { '活动部件': 1 } : {}, joints: fd.get('joints') ? { n: 1, configs: 1, penetration_m: 0, passed: true } : null, rescale: null, review: null } };
+    const customs = customItems(); customs.push(item); saveCustom(customs); C.items.push(item);
+    dialog.close(); st.tab = 'furn'; st.id = id; render();
+  });
   document.addEventListener('click', e => { if (document.body.classList.contains('sheet') && !e.target.closest('#item, .card')) close(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.body.classList.contains('sheet')) close(); });
   render();

@@ -117,15 +117,25 @@
 
   async function boot() {
     D = await (await fetch('lab/index.json')).json();
-    const area = D.homes.map(h => h.area_m2);
-    $('#src-name').textContent = `WSR 户型库（${D.homes.length} 套）`;
-    $('#src-info').textContent = `${D.source}。面积 ${Math.min(...area)}–${Math.max(...area)} m²，全部导入成功。`;
+    $('#src-name').textContent = `项目户型库（${D.homes.length} 套）`;
+    $('#src-info').textContent = `已准备 ${D.homes.length} 套演示户型，可按住户、任务和改造条件建立实验。`;
     $('#personas').innerHTML = D.personas.map(p => `<label><input type="checkbox" value="${esc(p.id)}" checked> ${esc(p.name)}</label>`).join('');
     $('#tasks').innerHTML = Object.entries(D.tasks).map(([t, n]) => `<label><input type="checkbox" value="${t}" checked> ${t} ${esc(n)}</label>`).join('');
     $('#legend').innerHTML = LEGEND.map(([k, n]) => `<span><i class="sw pat-${k}"></i>${n}</span>`).join('');
     document.querySelectorAll('.side input').forEach(el => el.addEventListener('change', () => { if (done) renderGrid(); }));
     $('#budget').addEventListener('input', () => { if (done) renderGrid(); });
     $('#run').addEventListener('click', run);
+    document.querySelectorAll('input[name="src"]').forEach(el => el.addEventListener('change', () => {
+      if (el.value === 'catalog') $('#src-info').textContent = `已准备 ${D.homes.length} 套演示户型，可按住户、任务和改造条件建立实验。`;
+      if (el.value === 'upload') $('#src-info').textContent = '选择本地户型图或参数表，识别完成后会加入我的户型库。';
+      if (el.value === 'furniture') $('#src-info').textContent = '选择素材库中的家具系列，与项目户型和住户任务进行成对评测。';
+    }));
+    $('#lab-file').addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      document.querySelector('input[name="src"][value="upload"]').checked = true;
+      $('#src-info').textContent = `已选择「${file.name}」，识别完成后将加入我的户型库。当前演示沿用项目户型结果。`;
+    });
     if (q.get('run')) { done = D.homes.length; } renderGrid();
     window.HA_READY = true;
   }

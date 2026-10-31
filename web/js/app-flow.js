@@ -127,7 +127,7 @@
 
   // Actions dispatched from app-boot's S.act.
   S.flow = {
-    import: () => importCard(),
+    import: () => $('#floorplan-file')?.click(),
     say: text => S.onSay(text),
     intentOk() {
       const q = S.pending; if (!q) return;

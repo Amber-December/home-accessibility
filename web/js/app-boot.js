@@ -206,7 +206,7 @@
       const want = HA.config.persona, persona = pr ? pr.persona : result.personas.some(p => p.id === want) ? want : result.personas[0].id;
       selectPersona(persona, pr && pr.tasks);
       $('#loading').remove();
-      S.chat.say('agent', `已载入户型 ${HA.panels.esc(ir.scene_id)}：${ir.rooms.length} 个房间、${ir.doors.length} 扇门、${ir.objects.length} 件物体。先核对户型，再选谁来住；也可以直接在下面说。`);
+      S.chat.say('agent', '户型已准备。请先在右侧确认空间，再选择住户和生活任务。');
       S.examples(); S.chat.enable();
       if (pr) {
         S.enter(pr.step);
@@ -227,5 +227,15 @@
   }
 
   S.chat = HA.chat.create($('#chat'), text => S.onSay(text));
+  $('#floorplan-file').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    S.chat.say('user', `已上传户型文件：${HA.panels.esc(file.name)}`);
+    S.chat.say('agent', '正在识别房间、门和家具。识别完成后会先进入户型核对，再开始试住。', {
+      title: '户型识别', body: '<p class="muted">当前演示保留已加载户型作为预览结果。</p>',
+      buttons: [{ label: '核对当前户型', act: 'go', arg: 'home', primary: true }],
+    });
+    e.target.value = '';
+  });
   boot();
 })();

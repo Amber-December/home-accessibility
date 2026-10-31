@@ -26,7 +26,7 @@
         <button role="tab" id="tab-furn" data-tab="furn" aria-selected="true">家具 <span class="num" id="n-furn"></span></button>
         <button role="tab" id="tab-home" data-tab="home" aria-selected="false">户型 <span class="num" id="n-home"></span></button>
       </div>
-      <input type="search" id="q" placeholder="搜索名称、系列" aria-label="搜索">
+      <div class="library-actions"><input type="search" id="q" placeholder="搜索名称、系列" aria-label="搜索"><button class="btn primary" id="add-furniture">导入家具</button></div>
       <div id="filters"></div>
     </aside>
 
@@ -38,7 +38,24 @@
     <aside class="glass item" id="item" aria-live="polite" aria-label="详情"></aside>
   </main>
 
+  <dialog id="furniture-dialog">
+    <form method="dialog" id="furniture-form" class="upload-form">
+      <button class="close" value="cancel" aria-label="关闭">×</button>
+      <h2>导入家具素材</h2>
+      <p class="muted">上传商品主图和参数图纸，Agent 会提取尺寸与活动部件，再调用 Lux3D 生成可仿真模型。</p>
+      <label>商品名称<input name="name" required placeholder="例如：窄款衣柜"></label>
+      <label>品类<input name="category" required placeholder="例如：衣物收纳柜"></label>
+      <div class="upload-grid"><label>宽（cm）<input name="width" type="number" min="1" required></label><label>深（cm）<input name="depth" type="number" min="1" required></label><label>高（cm）<input name="height" type="number" min="1" required></label></div>
+      <label>商品主图<input name="reference" type="file" accept="image/png,image/jpeg" required></label>
+      <label>参数图纸<input name="drawing" type="file" accept="image/png,image/jpeg,application/pdf" required></label>
+      <label class="check"><input name="joints" type="checkbox"> 包含门、抽屉等活动部件</label>
+      <div id="furniture-progress" class="upload-progress" hidden></div>
+      <div class="btns"><button value="cancel">取消</button><button class="primary" id="submit-furniture" value="default">开始生成</button></div>
+    </form>
+  </dialog>
+
   <script src="js/text.js"></script>
+  <script src="js/lux3d-agent.js"></script>
   <script type="module" src="js/library.js"></script>
 </body>
 </html>

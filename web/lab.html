@@ -22,9 +22,11 @@
       <section class="glass" aria-labelledby="h-src">
         <h2 class="steps-h" id="h-src"><span class="k">1</span>数据源</h2>
         <div class="opts">
-          <label><input type="radio" name="src" checked> <span id="src-name">WSR 户型库</span></label>
-          <label class="off"><input type="radio" name="src" disabled> 上传户型库（后续开放）</label>
-          <label class="off"><input type="radio" name="src" disabled> 生成户型（后续开放）</label>
+          <label><input type="radio" name="src" value="catalog" checked> <span id="src-name">项目户型库</span></label>
+          <label><input type="radio" name="src" value="upload"> 我的户型库</label>
+          <label><input type="radio" name="src" value="furniture"> 家具系列</label>
+          <label class="upload-source" for="lab-file">上传户型图或参数表</label>
+          <input id="lab-file" type="file" accept="image/png,image/jpeg,application/pdf,.json" hidden>
         </div>
         <p class="muted" id="src-info"></p>
       </section>
@@ -35,6 +37,8 @@
         <h3>任务</h3><div class="opts" id="tasks"></div>
         <h3>改造条件</h3>
         <div class="opts">
+          <label>实验名称 <input id="experiment-name" type="text" value="无障碍空间验证" aria-label="实验名称"></label>
+          <label>固定种子 <input id="seed" type="text" value="livefirst-demo-01" aria-label="固定种子"></label>
           <label>预算 <input type="number" id="budget" min="0" step="500" inputmode="numeric" placeholder="不限" aria-label="预算（元）"> 元</label>
           <label><input type="checkbox" id="rent"> 租房（不做租房不能做的改动）</label>
           <label><input type="checkbox" id="nowall"> 不动墙</label>
