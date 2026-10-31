@@ -114,9 +114,11 @@
     const all = edits => runAll(result.personas, TASKS, edits);
     const tasks = TASKS.filter(t => t !== 'T8' && runs.some(r => r.task === t && r.applicable));
     const done = res => {
-      result.plans = res.plans; result.search = { tried: res.tried, candidates: res.candidates, method: res.method, running: false };
+      result.plans = res.plans; result.search = { tried: res.tried, candidates: res.candidates, method: res.method, running: false, none: res.method === 'none' };
       onPlans(result);
     };
+    // Public buildings are checked, not renovated: no plan search.
+    if (ir.kind === 'office') { result.search.none = true; result.ready = Promise.resolve().then(() => done({ plans: [], tried: [], candidates: 0, method: 'none' })); return result; }
     const hit = cached(ir) || await seeded(ir);
     result.ready = (hit
       ? Promise.all(hit.plans.map(async p => ({ ...p, runs: await all(p.edits) }))).then(plans => done({ ...hit, plans }))

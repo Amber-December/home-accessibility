@@ -74,10 +74,11 @@ async function one(scene) {
   const ids = ORDER.filter(id => L.RESIDENT_PROFILES[id]);
   const run = (edits, tasks) => ids.flatMap(id => A.runSuite(sc, id, L.RESIDENT_PROFILES[id], tasks, edits));
   const t0 = Date.now(), base = run([], TASKS), tasks = TASKS.filter(t => t !== 'T8' && base.some(r => r.task === t && r.applicable));
-  const res = await HA.bsimPlan.search(sc, base, { evaluate: e => Promise.resolve(run(e, tasks)), evaluateAll: e => Promise.resolve(run(e, TASKS)),
+  // Public buildings are checked, not renovated (same rule as web/js/bsim.js).
+  const res = ir.kind === 'office' ? { plans: [], tried: [], candidates: 0, method: 'none' } : await HA.bsimPlan.search(sc, base, { evaluate: e => Promise.resolve(run(e, tasks)), evaluateAll: e => Promise.resolve(run(e, TASKS)),
     score: A.score, tasks, items, onProgress: () => {} });
   // The same search result the browser would cache, so opening the home re-runs only the plans instead of searching.
-  fs.writeFileSync(path.join(d, 'plans.json'), JSON.stringify(HA.bsim.seedOf(ir, res)));
+  if (ir.kind !== 'office') fs.writeFileSync(path.join(d, 'plans.json'), JSON.stringify(HA.bsim.seedOf(ir, res)));
   return { scene, ms: Date.now() - t0, score: A.score(base), runs: outcome(base),
     na_reason: Object.fromEntries(base.filter(r => !r.applicable).map(r => [`${r.persona}/${r.task}`, r.reason])),
     plans: res.plans.map(p => ({ id: p.id, title: p.title, cost_cny: p.cost_cny, rent_ok: p.rent_ok, wall: p.wall, score: p.score,

@@ -41,7 +41,7 @@
   function card(h, s, j, shown) {
     const cells = s.p.map(p => `<span>${esc(pn(p.id))}</span>` + s.t.map(t => {
       const k = `${p.id}/${t}`, v = shown ? j.st[k] : 'wait';
-      return `<i class="pat-${v}" title="${esc(`${p.name} · ${t} ${(h.tasks || D.tasks)[t]} · ${LEGEND.find(l => l[0] === v)[1]}`)}"></i>`;
+      return `<i class="pat-${v}" title="${esc(`${p.name} · ${t} ${(h.tasks || D.tasks)[t]} · ${h.kind === 'office' && v === 'fail' ? '没过' : LEGEND.find(l => l[0] === v)[1]}`)}"></i>`;
     }).join('')).join('');
     return `<a class="home" href="${esc(link(h, s, j))}" aria-label="${esc(`${h.id}，${h.area_m2} 平方米，在试住里打开`)}">` +
       `<img src="${esc(h.preview)}" alt="" loading="lazy" width="150" height="150">` +
@@ -74,11 +74,13 @@
   function renderResults(s, ks, c) {
     const J = D.homes.map(h => ({ h, j: judge(h, ks, c) }));
     const live = J.reduce((n, x) => n + x.j.live.length, 0), pass = J.reduce((n, x) => n + x.j.live.length - x.j.fails.length, 0);
-    const clean = J.filter(x => !x.j.fails.length), fixed = J.filter(x => x.j.fix), stuck = J.filter(x => x.j.fails.length && !x.j.fix);
+    // Renovation counts are over homes only: public buildings are checked, not renovated.
+    const H = J.filter(x => x.h.kind !== 'office');
+    const clean = H.filter(x => !x.j.fails.length), fixed = H.filter(x => x.j.fix), stuck = H.filter(x => x.j.fails.length && !x.j.fix);
     const avg = fixed.length ? fixed.reduce((n, x) => n + x.j.fix.cost_cny, 0) / fixed.length : null;
     $('#stats').innerHTML = [
       [`${pass} / ${live}`, '次试住通过'],
-      [`${clean.length} / ${J.length}`, '套户型全部通过'],
+      [`${clean.length} / ${H.length}`, '套住宅全部通过'],
       [avg == null ? '—' : T.cny(avg), `让全部住户都通过，平均要花（${fixed.length} 套需要改）`],
       [`${stuck.length}`, '套在当前条件下无法全部通过，见下方排行'],
     ].map(([b, t]) => `<div class="stat"><b class="num">${esc(b)}</b><span>${esc(t)}</span></div>`).join('');
@@ -101,7 +103,7 @@
       rows.map(({ h, j }) => `<tr${h.hero ? ` class="hero"` : ''}><td${h.hero ? ` data-hero="${h.hero}"` : ''}><a href="${esc(link(h, s, j))}">${h.id}</a></td>` +
         `<td class="num">${h.area_m2} m²</td><td>${esc([...new Set(h.rooms.map(roomName))].join('、'))}</td><td class="num">${h.score}</td>` +
         `<td class="num">${j.live.length - j.fails.length} / ${j.live.length}</td>` +
-        `<td>${!j.fails.length ? '<span class="muted">不用改</span>' : j.fix ? `${j.fix.id} · ${esc(j.fix.title)}` : '<span class="muted">当前条件下没有</span>'}</td>` +
+        `<td>${!j.fails.length ? '<span class="muted">不用改</span>' : h.kind === 'office' ? '<span class="muted">公共建筑只体检</span>' : j.fix ? `${j.fix.id} · ${esc(j.fix.title)}` : '<span class="muted">当前条件下没有</span>'}</td>` +
         `<td class="num">${j.fix ? T.cny(j.fix.cost_cny) : '—'}</td></tr>`).join('') + '</tbody>';
 
     const na = {};

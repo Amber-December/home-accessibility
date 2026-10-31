@@ -11,7 +11,8 @@
   S.renderSteps = () => {
     const plans = S.result && S.result.plans.length, busy = S.result && S.result.search.running, sr = S.search || {};
     const prog = busy ? `方案搜索中 ${sr.done || 0}/${sr.total || '…'}` : '';
-    $('#steps').innerHTML = STEPS.map((id, i) => {
+    const n = S.ir && S.ir.kind === 'office' ? 4 : STEPS.length;
+    $('#steps').innerHTML = STEPS.slice(0, n).map((id, i) => {
       const locked = i > S.reached || (i >= 4 && !plans);
       const why = i >= 4 && busy ? prog : i >= 4 && !plans ? '没有可用的改造方案' : `先完成「${NAMES[i - 1]}」`;
       return `${i ? '<span class="sep" aria-hidden="true"></span>' : ''}<button data-act="go" data-arg="${id}"
@@ -106,7 +107,7 @@
         body: `<ul class="look">${red.map(x => `<li><span>${T.persona(x.r.persona, S)} ${esc(x.r.name)}：${esc(T.violation(S.ir, x.v).title)}</span>
           <button class="small" data-act="look" data-arg="${items.indexOf(x)}">看现场</button></li>`).join('')}</ul>
           ${items.length > red.length ? `<p class="muted">另有黄色提醒 ${items.length - red.length} 条，见右侧。</p>` : ''}`,
-        buttons: [{ label: '小改', act: 'go', arg: 'fix', primary: true, disabled: !S.result.plans.length },
+        buttons: S.ir.kind === 'office' ? [] : [{ label: '小改', act: 'go', arg: 'fix', primary: true, disabled: !S.result.plans.length },
           { label: '整屋重新布置', act: 'relayout', disabled: !S.result.plans.length }] });
     } else if (step === 'fix') {
       S.ensurePlan(); setView('top'); setLayer('heat', true); showTimeline(false);

@@ -177,6 +177,7 @@
   }
   function onPlans(res) {
     S.renderSteps();
+    if (res.search.none) return;
     const n = res.plans.length, tried = res.search.tried.length;
     const costs = res.plans.map(p => p.cost_cny);
     say('agent', n ? `改造方案搜索完成：仿真引擎试了 ${tried} 种改法组合，每种都让全部住户重跑一遍。按得分、花费、施工程度三个目标比较，
@@ -227,7 +228,7 @@
       const runs = S.result.baseline.runs, ok = runs.filter(r => r.applicable && r.success).length, app = runs.filter(r => r.applicable).length;
       say('agent', `已载入${ir.kind === 'office' ? '场景' : '户型'} ${HA.panels.esc(ir.name || ir.scene_id)}：${ir.rooms.length} 个房间、${ir.doors.length} 扇门、${ir.objects.length} 件物体。
         仿真引擎已让 ${S.result.personas.length} 位住户把 ${HA.bsim.TASKS.length} 项生活任务各走一遍：${app} 项适用，${ok} 项走通，现状 ${S.score('base')} 分。
-        改造方案在后台搜索。先核对户型，再选谁来住；也可以直接在下面说。`);
+        ${ir.kind === 'office' ? '公共建筑只做体检，不出改造方案。先核对场景' : '改造方案在后台搜索。先核对户型'}，再选谁来住；也可以直接在下面说。`);
       S.examples(); S.chat.enable();
       const go = step => {
         if ((step === 'fix' || step === 'compare') && S.result.search.running) { S.afterPlans = () => go(step); S.enter('report'); return; }
@@ -242,7 +243,7 @@
         if (pr.say) S.onSay(pr.say);
       } else {
         S.result.ready.then(() => { if (S.result.plans.some(p => p.id === HA.config.plan)) S.plan = HA.config.plan; });
-        go(['pick', 'stay', 'report', 'fix', 'compare'].includes(HA.config.step) ? HA.config.step : 'home');
+        go((ir.kind === 'office' ? ['pick', 'stay', 'report'] : ['pick', 'stay', 'report', 'fix', 'compare']).includes(HA.config.step) ? HA.config.step : 'home');
       }
       window.HA_READY = true;
     } catch (err) {
