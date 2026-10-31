@@ -27,7 +27,7 @@ API key 放在本地 `.env` 的 `AHOLO_API_KEY`（中国区），不进 Git。�
 | `generate/material-transfer` | 换材质，可指定目标高度（mm） | 同款不同色，次要 |
 | `multi-format-export` | 导出 usdz / obj_zip / fbx_zip / stl / 3mf | USD 给 Isaac Sim，OBJ 给 PyBullet / MuJoCo |
 | `generate/multimodal-to-image` | 文生图或图改图 | 次要 |
-| `/world/v1/reconstructions`、`/world/v1/generations` | 视频或 ≥20 张图重建 3DGS，产物是 PLY / SPZ / SOG，没有 mesh | 可选：把真实住宅拍成 3DGS 做展示底图。不能直接当碰撞几何 |
+| `/world/v1/reconstructions`、`/world/v1/generations` | 视频或 ≥20 张图重建 3DGS，产物是 PLY / SPZ / SOG，没有 mesh | 不用：比赛聚焦资产生成，3DGS 没有网格，不能当碰撞几何 |
 
 并发上限以接口实测为准（§4）。资产工厂按 SKU 逐个串行提交，同一时刻只有 1 个任务。
 各接口的积分价格见 §3 的价格表。查余额用 MCP 的 `getlux3daccountbalance` 工具。
@@ -67,8 +67,12 @@ API key 放在本地 `.env` 的 `AHOLO_API_KEY`（中国区），不进 Git。�
        6. 本地规范化（src/ha/assets/normalize.py）：转 Z 朝上、原点落在底面中心，按 SKU 的 W×D×H 逐轴缩放，
           偏航 0° 和 90° 都试。QA 门：max(缩放比) / min(缩放比) − 1 > 15% 判为形状不可信，换图重试；
           QA 结果写入 ledger
-       7. 碰撞体：CoACD 凸分解（同在 normalize.py）
-       8. 质量、摩擦和交互区（床侧转移区、马桶侧方空间、柜前操作区）按类目模板 src/ha/enrich/templates.yaml 设置
+       7. 细节尺寸量取（src/ha/assets/measure.py）：在规范化后的网格上量台下净空（高度、深度）、
+          把手和操作面板高度、离地高度、桌腿间距；铰接结果给出门扇半径和开启角度。
+          验证门：商品页或规格书写了该项尺寸的 SKU 上，量取值与标称值误差 ≤ 2 cm（自定），
+          每个量取项至少核对 2 件才放开；结果和误差写入 ledger 和商品库，标 source: lux3d
+       8. 碰撞体：CoACD 凸分解（同在 normalize.py）
+       9. 质量、摩擦和交互区（床侧转移区、马桶侧方空间、柜前操作区）按类目模板 src/ha/enrich/templates.yaml 设置
   └─ 资产库：Scene IR 只引用 asset_id，不直接引用 Lux3D URL
 ```
 
@@ -76,7 +80,7 @@ API key 放在本地 `.env` 的 `AHOLO_API_KEY`（中国区），不进 Git。�
 
 - 评估和优化循环里**不现场调用** Lux3D。一次生成要几分钟而且扣积分。优化 Agent 只从已经入库的资产里挑。
 - "换品"需要新资产时，进资产工厂的队列。先用 SKU 尺寸的包围盒代替，跑完仿真再补模型。
-- 无障碍判断用的是**商品库标称尺寸**，不用生成模型的尺寸。生成模型只负责外形细节和可视化。
+- 尺寸取用顺序（prd §2.4）：商品页或规格书写了的用**商品库标称尺寸**；没写的细节尺寸用通过验证门的模型量取值（`source: lux3d`）；量取项没过验证门时用类目模板。外包尺寸永远以商品页为准，模型按它校准。
 - 每次 create 都在轮询前写入 `$HA_OUTPUTS/assets/<run_id>/ledger.jsonl`，记录 taskId、参数和预估积分；任务结束时再追加状态和下载结果。失败的也要留。
 - 付费 create 需要用户在当次对话里同意；dry run（不带 `--create`）只算步骤、花费和缓存，不调用接口。
 

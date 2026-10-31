@@ -29,7 +29,7 @@ SAGE 的做法：一个 LLM Agent 作为 MCP 客户端，循环调用一组 MCP 
 |---|---|---|
 | 编排 | 单个 LLM Agent 调全部工具 | 一个编排 Agent 加若干专职 Agent，每个 Agent 只看到自己的工具（§3）。工具数量少，提示更短，也更容易兜底 |
 | 场景入口 | LLM 从文字描述生成房间 | 户型图识别（§7）；WSR 导入（simulation M1）作为真值和兜底 |
-| 物体来源 | TRELLIS 文本生成 3D，VLM 估尺寸 | 真实商品参数（§8），尺寸用商品页标称值；Lux3D 只生成外形 |
+| 物体来源 | TRELLIS 文本生成 3D，VLM 估尺寸 | 真实商品参数（§8），外包尺寸用商品页标称值；Lux3D 生成外形，并量取商品页没写的细节尺寸（台下净空、把手高度、门扇扫掠），过验证门后进判定 |
 | 摆放求解 | DFS 无碰撞摆放 | 同样的思路：LLM 给约束（靠哪面墙、挨着谁），求解器在栅格上找可行位置。多一组约束：不压门扫掠、不占交互区（§9） |
 | 物理检查 | Isaac Sim 稳定性（需要 RTX GPU） | 主检查是人体可达性；接触回放用 MuJoCo（CPU），见 simulation §16 |
 | 可行性检查 | 机器人（机械臂、移动底盘）的够取和路径 | 人体画像（轮椅、助行器、上肢受限、步行对照）的 SE(2) 路径、转身、停留、够取、转移，按 GB 55019 / GB 50763 / ADA 判定 |
@@ -52,7 +52,7 @@ LLM 只在两处做路由：把用户的自由输入分类成意图（A1），�
 | A1 需求理解 | 把一句话变成结构化请求（PRD §5.2） | 文本、当前选中物体 → `{residents, focus, budget, forbid, edit, what_if, explain}` | `scene.get_summary` | 抽取和指代消解，输出受 JSON schema 约束 | 关键词规则 + 画像选择按钮 |
 | A2 户型识别 | 户型图 → 结构 IR | 图片、可选的已知尺寸 → 房间、墙、门、窗（带置信度） | `scene.floorplan_parse`、`scene.floorplan_to_ir`、`render.overlay` | VLM 认房间名、核对门的开向；几何由 CV 算法出 | 纯 CV 结果 + 用户点选修正；保底取 WSR 导入 |
 | A3 商品库 | 抓取、规范化、检索商品 | 品类、尺寸约束 → 候选商品列表 | `catalog.search`、`catalog.crawl`（需确认）、`catalog.get` | 从商品页文字里抽尺寸字段（结构化数据缺失时） | 只用 JSON-LD / 表格解析和手工 SKU |
-| A4 资产生成 | 商品 → 3D 外形 | SKU → GLB（标称尺寸校准，QA 门） | `asset.lux3d_create`（付费，需确认）、`asset.normalize` | 不用 | 包围盒 + 主图贴片 |
+| A4 资产生成 | 商品 → 3D 外形 | SKU → GLB（标称尺寸校准，QA 门）和细节尺寸量取（验证门） | `asset.lux3d_create`（付费，需确认）、`asset.normalize` | 不用 | 包围盒 + 主图贴片 |
 | A5 布局 | 选款和摆放，整屋重新布局 | 结构 IR、住户、预算、约束 → 1–3 个布局候选 | `catalog.search`、`layout.*`、`render.views`、`sim.evaluate` | 列家具清单、给摆放约束、看渲染图做视觉检查 | 规则清单 + 靠墙启发式摆放 |
 | A6 住户决策 | 数字住户的决策层 | 运动层给的候选动作 → `{choice, reason, monologue}` | 只能从候选里选 | 选动作、写独白（数字须与事件一致） | 规则策略 + 模板句（simulation §7.3） |
 | A7 评估器 | 确定性仿真和判定 | IR、住户、任务 → 指标、事件、违规 | — | 不用 | — |
