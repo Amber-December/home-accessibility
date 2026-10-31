@@ -26,7 +26,8 @@
   </div>
 
   <header class="glass">
-    <div class="brand"><img src="logo.svg" alt="" width="30" height="30"><b>清先住</b><span class="en">LiveFirst</span></div>
+    <a class="brand" href="index.html"><img src="logo.svg" alt="" width="30" height="30"><b>清先住</b><span class="en">LiveFirst</span></a>
+    <nav class="modes" aria-label="模式"><a href="index.html" aria-current="page">试住</a><a href="lab.html">实验室</a><a href="library.html">素材库</a></nav>
     <nav id="steps" aria-label="试住步骤"></nav>
     <div class="menu" id="scene">
       <button class="menu-btn" data-act="sceneMenu" aria-haspopup="menu" aria-expanded="false" aria-controls="scene-list">情景<b id="scene-name"></b><i aria-hidden="true">▾</i></button>
@@ -42,6 +43,10 @@
   <button class="fold left" data-act="fold" data-arg="left" aria-label="收起对话面板" aria-expanded="true">‹</button>
   <aside id="detail" class="glass panel right" aria-label="详情"><div id="panel" aria-live="polite"></div><div id="pick"></div></aside>
   <button class="fold right" data-act="fold" data-arg="right" aria-label="收起详情面板" aria-expanded="true">›</button>
+  <nav id="sheet-tabs" class="glass" role="tablist" aria-label="面板">
+    <button role="tab" data-act="sheet" data-arg="chat" aria-selected="false">对话</button>
+    <button role="tab" data-act="sheet" data-arg="detail" aria-selected="true">详情</button>
+  </nav>
 
   <div id="tools">
     <div class="seg glass" id="views" role="group" aria-label="视角">

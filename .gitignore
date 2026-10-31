@@ -16,6 +16,8 @@ checkpoints/
 *.glb
 # 例外：网页演示用的 H1 住宅模型（许可见 web/models/H1/LICENSE.md）
 !web/models/H1/*.glb
+# 例外：素材库里替换方案用到的家具模型（说明见 web/library/LICENSE.md）
+!web/library/models/*.glb
 *.ply
 *.spz
 *.pt

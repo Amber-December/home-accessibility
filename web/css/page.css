@@ -1,0 +1,70 @@
+/* 清先住 · scrolling pages (实验室, 素材库): same palette, fonts and nav as the 试住 app. */
+@font-face { font-family: "LF Sans"; src: url(../fonts/LFSans.woff2) format("woff2"); font-weight: 400 600; font-display: swap; }
+@font-face { font-family: "LF Heading"; src: url(../fonts/LFHeading.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "Michroma"; src: url(../fonts/Michroma-400.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "Barlow SC"; src: url(../fonts/BarlowSemiCondensed-400.woff2) format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Barlow SC"; src: url(../fonts/BarlowSemiCondensed-600.woff2) format("woff2"); font-weight: 600; font-display: swap; }
+
+:root {
+  --purple: #660874; --lilac: #C7A6DE; --paper: #ECEAE6; --ink: #24212A; --muted: #6A6570; --line: rgba(36, 33, 42, .12);
+  --red: #D7263D; --amber: #E8A33D; --lemon: #D9C836; --teal: #2A9D8F;
+  --glass: rgba(251, 250, 248, .92); --shadow: 0 8px 28px rgba(36, 33, 42, .10); --gap: 12px;
+  --f-body: "LF Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --f-head: "LF Heading", var(--f-body);
+  --f-num: "Barlow SC", var(--f-body);
+  font: 14px/1.6 var(--f-body); color: var(--ink);
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--paper); min-height: 100vh; }
+button { font: inherit; border: 1px solid var(--line); background: #fff; color: var(--ink); border-radius: 8px; padding: 6px 12px; cursor: pointer; }
+button:hover:not(:disabled) { border-color: var(--purple); }
+button:disabled { color: #A8A3AD; cursor: not-allowed; }
+button.primary { background: var(--purple); border-color: var(--purple); color: #fff; }
+button.small { padding: 2px 8px; font-size: 12px; }
+:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
+a { color: var(--purple); }
+h2 { margin: 0 0 8px; font: 17.5px/1.4 var(--f-head); letter-spacing: .02em; }
+h3 { margin: 14px 0 6px; font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: .04em; }
+.muted { color: var(--muted); font-size: 12px; }
+.num { font-family: var(--f-num); font-variant-numeric: tabular-nums; }
+.glass { background: var(--glass); border: 1px solid rgba(255, 255, 255, .6); box-shadow: var(--shadow); border-radius: 14px; }
+input[type=checkbox], input[type=radio] { accent-color: var(--purple); }
+input[type=number], input[type=search], select { font: inherit; padding: 3px 8px; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
+
+/* header and global nav (PRD 5.10.2) */
+header.top { position: sticky; top: 0; z-index: 3; margin: var(--gap); height: 56px; display: flex; align-items: center; gap: 16px; padding: 0 14px; }
+.brand { display: flex; align-items: center; gap: 8px; white-space: nowrap; color: inherit; text-decoration: none; }
+.brand b { font: 22px/1 var(--f-head); color: var(--purple); letter-spacing: .04em; }
+.brand .en { font: 10px/1 "Michroma", sans-serif; letter-spacing: .12em; color: var(--muted); text-transform: uppercase; }
+nav.modes { display: flex; gap: 2px; padding: 3px; border-radius: 10px; background: rgba(36, 33, 42, .05); }
+nav.modes a { padding: 4px 12px; border-radius: 7px; color: var(--ink); text-decoration: none; white-space: nowrap; }
+nav.modes a[aria-current="page"] { background: var(--purple); color: #fff; }
+header.top .note { margin-left: auto; }
+
+main.cols { display: grid; gap: var(--gap); padding: 0 var(--gap) var(--gap); align-items: start; }
+main.cols > section { padding: 14px 16px; min-width: 0; }
+.steps-h { display: flex; align-items: center; gap: 8px; }
+.steps-h .k { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--purple); color: #fff; font: 600 12px var(--f-num); }
+.opts { display: flex; flex-direction: column; gap: 4px; }
+.opts label { display: flex; align-items: center; gap: 6px; }
+.opts label.off { color: #A8A3AD; }
+.row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+/* status: colour and pattern together (PRD 5.10.5) */
+.pat-ok { background: var(--teal); }
+.pat-fix { background: repeating-linear-gradient(45deg, rgba(36, 33, 42, .45) 0 1px, transparent 1px 5px), var(--amber); }
+.pat-fail { background: repeating-linear-gradient(45deg, rgba(255, 255, 255, .75) 0 1px, transparent 1px 5px),
+  repeating-linear-gradient(-45deg, rgba(255, 255, 255, .75) 0 1px, transparent 1px 5px), var(--red); }
+.pat-na { background: radial-gradient(circle, rgba(36, 33, 42, .35) 0 1px, transparent 1.2px) 0 0 / 5px 5px, #D9D5DC; }
+.pat-wait { background: rgba(36, 33, 42, .08); }
+.sw { display: inline-block; width: 14px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: -1px; }
+.legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: 12px; color: var(--muted); margin: 6px 0; }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
+@media (max-width: 760px) {
+  header.top { height: auto; flex-wrap: wrap; padding: 8px 10px; gap: 8px 12px; margin: 8px; }
+  .brand .en { display: none; }
+  header.top .note { margin-left: 0; flex-basis: 100%; }
+  main.cols { grid-template-columns: 1fr !important; padding: 0 8px 8px; gap: 8px; }
+}

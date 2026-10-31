@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>清先住 LiveFirst · 实验室</title>
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/page.css">
+  <link rel="stylesheet" href="css/lab.css">
+</head>
+<body>
+  <header class="top glass">
+    <a class="brand" href="index.html"><img src="logo.svg" alt="" width="30" height="30"><b>清先住</b><span class="en">LiveFirst</span></a>
+    <nav class="modes" aria-label="模式">
+      <a href="index.html">试住</a><a href="lab.html" aria-current="page">实验室</a><a href="library.html">素材库</a>
+    </nav>
+    <span class="note muted" id="note"></span>
+  </header>
+
+  <main class="cols lab">
+    <div class="side">
+      <section class="glass" aria-labelledby="h-src">
+        <h2 class="steps-h" id="h-src"><span class="k">1</span>数据源</h2>
+        <div class="opts">
+          <label><input type="radio" name="src" checked> <span id="src-name">WSR 户型库</span></label>
+          <label class="off"><input type="radio" name="src" disabled> 上传户型库（后续开放）</label>
+          <label class="off"><input type="radio" name="src" disabled> 生成户型（后续开放）</label>
+        </div>
+        <p class="muted" id="src-info"></p>
+      </section>
+
+      <section class="glass" aria-labelledby="h-set">
+        <h2 class="steps-h" id="h-set"><span class="k">2</span>设置</h2>
+        <h3>住户</h3><div class="opts" id="personas"></div>
+        <h3>任务</h3><div class="opts" id="tasks"></div>
+        <h3>改造条件</h3>
+        <div class="opts">
+          <label>预算 <input type="number" id="budget" min="0" step="500" inputmode="numeric" placeholder="不限" aria-label="预算（元）"> 元</label>
+          <label><input type="checkbox" id="rent"> 租房（不做租房不能做的改动）</label>
+          <label><input type="checkbox" id="nowall"> 不动墙</label>
+        </div>
+        <p class="row"><button class="primary" id="run">开始批量实验</button><span class="muted" id="run-info"></span></p>
+      </section>
+    </div>
+
+    <div class="main">
+      <section class="glass" aria-labelledby="h-run">
+        <h2 class="steps-h" id="h-run"><span class="k">3</span>运行 <span class="muted num" id="progress"></span></h2>
+        <div class="legend" id="legend"></div>
+        <div class="grid" id="grid" aria-live="polite"></div>
+      </section>
+
+      <section class="glass" aria-labelledby="h-res" id="results" hidden>
+        <h2 class="steps-h" id="h-res"><span class="k">4</span>结果</h2>
+        <div class="stats" id="stats"></div>
+        <div class="two">
+          <div><h3>失败原因排行</h3><ol class="bars" id="reasons"></ol></div>
+          <div><h3>各住户通过率</h3><ol class="bars" id="bypersona"></ol></div>
+          <div><h3>最难住的户型</h3><ol class="worst" id="worst"></ol></div>
+        </div>
+        <h3>排行</h3>
+        <div class="scroll"><table id="rank"></table></div>
+        <h3>不适用</h3>
+        <ul class="na" id="na"></ul>
+      </section>
+    </div>
+  </main>
+
+  <script src="js/text.js"></script>
+  <script src="js/lab.js"></script>
+</body>
+</html>

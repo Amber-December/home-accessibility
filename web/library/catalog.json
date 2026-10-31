@@ -1,0 +1,7383 @@
+{
+ "source": "IKEA 中国官网商品页（商品图、尺寸图、标称尺寸）。静态家具由 Aholo Lux3D 按商品图生成，再按标称尺寸缩放；带门、抽屉、升降等活动部件的家具加了关节骨骼，可开合，并在 MuJoCo 里检查关节行程和穿模",
+ "price_note": "价格是按品类填的样例价，不是商品页报价",
+ "items": [
+  {
+   "id": "09579973",
+   "name": "KALLAX 卡莱克",
+   "variant": "带2门/4屉 白色/淡蓝灰色 波浪形",
+   "category": "书柜和置物架",
+   "ir": [
+    "bookcase",
+    "shelf"
+   ],
+   "size_m": [
+    1.465,
+    0.39,
+    0.765
+   ],
+   "dims_cm": {
+    "width": 146.5,
+    "depth": 39.0,
+    "height": 76.5
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/kallax-qia-lai-ke-ge-jia-dan-yuan-dai-2-men-4-ti-bai-se-dan-lan-hui-se-bo-lang-xing-s09579973/",
+   "lux3d": false,
+   "limitations": [
+    "门板和抽屉面板未表现参考图中的波浪形拉手凹槽，前面板整体较为简化。",
+    "板材边缘的深色接缝在渲染中较明显，视觉上略重。",
+    "实际渲染为统一闭合姿态；全关状态与参考图的外观布局一致，不能体现各机构的中间运动状态。"
+   ],
+   "price_cny": 399,
+   "price_src": "样例",
+   "img": "library/img/09579973.jpg",
+   "ref": "library/img/09579973-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/09579973-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/09579973-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是一个带两个侧开门、四个直线抽屉和开放搁格的横向搁架柜，门与抽屉均需要刚性活动结构；功能图片明确显示抽屉可向前拉出，主图显示左右两扇门及中间四个抽屉。",
+    "mechanisms": {
+     "门": 2,
+     "抽屉": 4
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 6,
+     "configs": 503,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/09579973-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "10483880",
+   "name": "BAGGEBO 巴格布",
+   "variant": "白色",
+   "category": "书柜和置物架",
+   "ir": [
+    "bookcase",
+    "shelf"
+   ],
+   "size_m": [
+    0.5,
+    0.25,
+    1.6
+   ],
+   "dims_cm": {
+    "width": 50.0,
+    "depth": 25.0,
+    "height": 160.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/baggebo-ba-ge-bu-shu-jia-bai-se-10483880/",
+   "lux3d": true,
+   "limitations": [
+    "模型采用简化的整体网格，未充分表现参考图中的板材厚度、连接件和细节五金。",
+    "顶部边缘及部分侧边可见轻微深色瑕疵或渲染缝隙。",
+    "视图0的透视角度与参考图相近，但仍存在一定角度和比例观感差异。"
+   ],
+   "price_cny": 399,
+   "price_src": "样例",
+   "img": "library/img/10483880.jpg",
+   "ref": "library/img/10483880-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/10483880-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是一个白色开放式书架，照片和尺寸图均显示固定侧板、固定搁板及开放格，没有门、抽屉、旋转或可调机构，因此不需要刚性联动。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      1.9,
+      0.65,
+      5.77
+     ],
+     "to": [
+      0.5,
+      0.25,
+      1.6
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "20174216",
+   "name": "LÄCKÖ 拉科",
+   "variant": "灰色",
+   "category": "书柜和置物架",
+   "ir": [
+    "bookcase",
+    "shelf"
+   ],
+   "size_m": [
+    0.61,
+    0.32,
+    1.6
+   ],
+   "dims_cm": {
+    "width": 61.0,
+    "depth": 32.0,
+    "height": 160.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/laeckoe-la-ke-hu-wai-ge-jia-dan-yuan-hui-se-20174216/",
+   "lux3d": true,
+   "limitations": [
+    "顶部弧形框架、竖向细杆和搁板网格为简化近似，细节密度略低于参考图。",
+    "视图0采用明显透视角度，未完全复现参考图的正面展示角度。"
+   ],
+   "price_cny": 399,
+   "price_src": "样例",
+   "img": "library/img/20174216.jpg",
+   "ref": "library/img/20174216-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/20174216-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是一个带四层固定金属搁板和固定背部竖向支撑的户外搁架单元，照片与尺寸图均未显示门、抽屉、滑轨、旋转或其他可动机构，因此可按静态结构建模。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.72,
+      0.33,
+      1.8
+     ],
+     "to": [
+      0.61,
+      0.32,
+      1.6
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "20178592",
+   "name": "LAIVA 莱瓦",
+   "variant": "黑褐色",
+   "category": "书柜和置物架",
+   "ir": [
+    "bookcase",
+    "shelf"
+   ],
+   "size_m": [
+    0.62,
+    0.24,
+    1.65
+   ],
+   "dims_cm": {
+    "width": 62.0,
+    "depth": 24.0,
+    "height": 165.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/laiva-lai-wa-shu-jia-hei-he-se-20178592/",
+   "lux3d": true,
+   "limitations": [
+    "渲染分辨率较低，五金连接点和木纹细节不如实物参考清晰。",
+    "实际模型的背板覆盖范围在部分视角下不完全可见，但正面布局与参考一致。",
+    "模型采用单一网格和简化材质，未完整呈现参考中的细小结构与装配细节。"
+   ],
+   "price_cny": 399,
+   "price_src": "样例",
+   "img": "library/img/20178592.jpg",
+   "ref": "library/img/20178592-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/20178592-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/20178592-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是一个开放式固定书架，照片和尺寸图显示为刚性框架、固定搁板及开放储物格，没有门、抽屉、旋转或可调机构。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "尺寸图",
+      "62 cm"
+     ],
+     "depth": [
+      "尺寸图",
+      "24 cm"
+     ],
+     "height": [
+      "尺寸图",
+      "165 cm"
+     ]
+    },
+    "rescale": {
+     "from": [
+      1.6,
+      0.54,
+      4.14
+     ],
+     "to": [
+      0.62,
+      0.24,
+      1.65
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "20492775",
+   "name": "BILLY 毕利",
+   "variant": "仿橡木",
+   "category": "书柜和置物架",
+   "ir": [
+    "bookcase",
+    "shelf"
+   ],
+   "size_m": [
+    0.4,
+    0.28,
+    2.02
+   ],
+   "dims_cm": {
+    "width": 40.0,
+    "depth": 28.0,
+    "height": 202.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/billy-bi-li-shu-jia-fang-xiang-mu-20492775/",
+   "lux3d": true,
+   "limitations": [
+    "层板厚度和定位孔等细节未明显表现。",
+    "渲染视角和产品参考图略有差异，比例观感受相机影响。"
+   ],
+   "price_cny": 399,
+   "price_src": "样例",
+   "img": "library/img/20492775.jpg",
+   "ref": "library/img/20492775-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/20492775-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "可调整层板属于可拆装位置选择，不是铰链或滑轨关节；开放式书架没有门或抽屉。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      2.0,
+      1.45,
+      9.56
+     ],
+     "to": [
+      0.4,
+      0.28,
+      2.02
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "49251346",
+   "name": "IVAR 伊娃",
+   "variant": "松木",
+   "category": "书柜和置物架",
+   "ir": [
+    "bookcase",
+    "shelf"
+   ],
+   "size_m": [
+    0.89,
+    0.5,
+    1.79
+   ],
+   "dims_cm": {
+    "width": 89.0,
+    "depth": 50.0,
+    "height": 179.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/ivar-yi-wa-ge-jia-dan-yuan-song-mu-s49251346/",
+   "lux3d": true,
+   "limitations": [
+    "层板孔位、板材厚度和背部交叉拉杆细节为近似处理。",
+    "模型视图中的结构细节和木纹表现较参考图简化。",
+    "实际模型为单一网格，未体现独立立柱和层板部件拆分。"
+   ],
+   "price_cny": 399,
+   "price_src": "样例",
+   "img": "library/img/49251346.jpg",
+   "ref": "library/img/49251346-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/49251346-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/49251346-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "可调整层板属于可拆装位置选择，不是铰链或滑轨关节；开放式书架没有门或抽屉。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      1.75,
+      0.97,
+      3.49
+     ],
+     "to": [
+      0.89,
+      0.5,
+      1.79
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "70351443",
+   "name": "FINNBY 芬比",
+   "variant": "黑色",
+   "category": "书柜和置物架",
+   "ir": [
+    "bookcase",
+    "shelf"
+   ],
+   "size_m": [
+    0.6,
+    0.24,
+    1.8
+   ],
+   "dims_cm": {
+    "width": 60.0,
+    "depth": 24.0,
+    "height": 180.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/finnby-fen-bi-shu-jia-hei-se-70351443/",
+   "lux3d": true,
+   "limitations": [
+    "层板具体间距与参考图存在轻微差异。",
+    "模型顶部可见少量突出的安装或定位细节，参考图中不明显。",
+    "侧板定位孔和层板可调结构未明确表现，但该资产声明为静态且未规划相关机制。"
+   ],
+   "price_cny": 399,
+   "price_src": "样例",
+   "img": "library/img/70351443.jpg",
+   "ref": "library/img/70351443-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/70351443-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/70351443-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "可调整层板属于可拆装位置选择，不是铰链或滑轨关节；开放式书架没有门或抽屉。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      1.9,
+      0.75,
+      5.65
+     ],
+     "to": [
+      0.6,
+      0.24,
+      1.8
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "09241825",
+   "name": "LINNMON 利蒙 / ADILS 阿迪斯",
+   "variant": "白色/黑色",
+   "category": "书桌和办公桌",
+   "ir": [
+    "desk"
+   ],
+   "size_m": [
+    1.0,
+    0.6,
+    0.74
+   ],
+   "dims_cm": {
+    "length": 100.0,
+    "width": 60.0,
+    "height": 74.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/linnmon-li-meng-adils-a-di-si-zhuo-zi-bai-se-hei-se-s09241825/",
+   "lux3d": true,
+   "limitations": [
+    "桌面与桌腿的具体尺寸、直径和连接结构为近似建模。",
+    "未展示桌面内部蜂窝或复合板材结构，但该结构属于不可见内部细节。"
+   ],
+   "price_cny": 599,
+   "price_src": "样例",
+   "img": "library/img/09241825.jpg",
+   "ref": "library/img/09241825-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/09241825-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "该产品是矩形白色桌面配四条黑色直腿的普通桌子，未见抽屉、门、折叠、升降或其他活动机构，因此适用desk路线且无需刚性关节。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      1.8,
+      1.1,
+      1.38
+     ],
+     "to": [
+      1.0,
+      0.6,
+      0.74
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "20489886",
+   "name": "SMÅGÖRA 斯莫约拉",
+   "variant": "白色",
+   "category": "书桌和办公桌",
+   "ir": [
+    "desk"
+   ],
+   "size_m": [
+    0.93,
+    0.51,
+    0.88
+   ],
+   "dims_cm": {
+    "depth": 51.0,
+    "height": 88.0,
+    "width": 93.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/smagoera-si-mo-yue-la-shu-zhuo-bai-se-20489886/",
+   "lux3d": true,
+   "limitations": [
+    "材质与边缘细节较为简化，未完全复现实物的细微倒角、连接件和表面质感。",
+    "挂钩/旋钮及桌面走线孔的尺寸和位置为近似建模。",
+    "部分背部结构在视图中不可完全确认，但整体桌架结构与参考一致。"
+   ],
+   "price_cny": 599,
+   "price_src": "样例",
+   "img": "library/img/20489886.jpg",
+   "ref": "library/img/20489886-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/20489886-in0.jpg",
+      "kind": "功能图"
+     },
+     {
+      "img": "library/img/20489886-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "本地场景图明确显示侧面旋钮为挂书包的挂钩，前方是固定前档；材料清单也无抽屉结构。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      1.0,
+      0.53,
+      0.96
+     ],
+     "to": [
+      0.93,
+      0.51,
+      0.88
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "49417752",
+   "name": "MÅLSKYTT 莫慧特 / ADILS 阿迪斯",
+   "variant": "桦木/黑色",
+   "category": "书桌和办公桌",
+   "ir": [
+    "desk"
+   ],
+   "size_m": [
+    1.4,
+    0.6,
+    0.73
+   ],
+   "dims_cm": {
+    "length": 140.0,
+    "width": 60.0,
+    "height": 73.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/malskytt-mo-hui-te-adils-a-di-si-shu-zhuo-hua-mu-hei-se-s49417752/",
+   "lux3d": true,
+   "limitations": [
+    "桌面厚度、桌腿直径和安装细节为近似建模，未完全复现参考图中的细节。",
+    "渲染视角与参考图略有差异，无法据此精确判断所有尺寸比例。"
+   ],
+   "price_cny": 599,
+   "price_src": "样例",
+   "img": "library/img/49417752.jpg",
+   "ref": "library/img/49417752-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [],
+    "route_note": "这是带四条固定桌腿的矩形书桌，照片显示无抽屉、柜门、升降、折叠或旋转部件；属于桌面与腿组成的静态桌体。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      1.4,
+      0.62,
+      0.73
+     ],
+     "to": [
+      1.4,
+      0.6,
+      0.73
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "49439966",
+   "name": "MÅLVAKT 摩尔瓦克 / NÄRSPEL 奈斯皮尔",
+   "variant": "黑色/灰绿色",
+   "category": "书桌和办公桌",
+   "ir": [
+    "desk"
+   ],
+   "size_m": [
+    1.2,
+    0.8,
+    0.734
+   ],
+   "dims_cm": {
+    "length": 120.0,
+    "width": 80.0,
+    "height": 73.4
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/malvakt-mo-er-wa-ke-naerspel-nai-si-pi-er-shu-zhuo-hei-se-hui-lu-se-s49439966/",
+   "lux3d": true,
+   "limitations": [
+    "桌腿由参考图中的较宽、略带棱角的金属腿简化为较细的圆柱或近圆柱形构件。",
+    "腿部底端连接件和桌面下方的具体固定结构未细致表现。",
+    "实际渲染中的桌腿倾角和可见遮挡关系与参考图略有差异，但整体支撑布局一致。"
+   ],
+   "price_cny": 599,
+   "price_src": "样例",
+   "img": "library/img/49439966.jpg",
+   "ref": "library/img/49439966-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [],
+    "route_note": "这是一个矩形书桌，由黑色桌面和四组灰绿色金属斜腿组成；照片未显示抽屉、门、升降、折叠或其他活动机构，因此可按刚性桌体建模。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      1.8,
+      1.15,
+      1.15
+     ],
+     "to": [
+      1.2,
+      0.8,
+      0.73
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "49638112",
+   "name": "LAGKAPTEN 拉格开普",
+   "variant": "着白色漆/仿橡木 白色",
+   "category": "书桌和办公桌",
+   "ir": [
+    "desk"
+   ],
+   "size_m": [
+    1.2,
+    0.6,
+    0.73
+   ],
+   "dims_cm": {
+    "length": 120.0,
+    "width": 60.0,
+    "height": 73.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/lagkapten-la-ge-kai-pu-shu-zhuo-zhao-bai-se-qi-fang-xiang-mu-bai-se-s49638112/",
+   "lux3d": false,
+   "limitations": [
+    "抽屉面板使用小圆形旋钮，而参考图为内凹式拉手。",
+    "木质表面纹理和颜色变化较弱，渲染中更接近均匀浅米白色。",
+    "柜体、桌面和腿部的细节及边缘结构有所简化。"
+   ],
+   "price_cny": 599,
+   "price_src": "样例",
+   "img": "library/img/49638112.jpg",
+   "ref": "library/img/49638112-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/49638112-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是一个矩形书桌，官方尺寸明确为120×60×73厘米。主图和尺寸图均显示左侧抽屉柜内有五个上下排列的直线滑动抽屉，右侧为开放膝部空间并由桌腿支撑；没有门、旋转或复杂折叠机构。",
+    "mechanisms": {
+     "抽屉": 5
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 5,
+     "configs": 440,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/49638112-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "60278288",
+   "name": "LILLÅSEN 利罗森",
+   "variant": "竹",
+   "category": "书桌和办公桌",
+   "ir": [
+    "desk"
+   ],
+   "size_m": [
+    1.02,
+    0.49,
+    0.74
+   ],
+   "dims_cm": {
+    "width": 49.0,
+    "depth": 102.0,
+    "height": 74.0,
+    "clearance_under_furniture": 67.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/lillasen-li-luo-sen-shu-zhuo-zhu-60278288/",
+   "lux3d": false,
+   "limitations": [
+    "抽屉拉手在闭合视图中不明显或未建模，细节弱于参考图。",
+    "木纹表现较为简化，桌面和抽屉面颜色略偏均匀。",
+    "金属腿、横向连接杆和桌面边缘的比例与参考存在轻微简化。"
+   ],
+   "price_cny": 599,
+   "price_src": "样例",
+   "img": "library/img/60278288.jpg",
+   "ref": "library/img/60278288-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/60278288-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是带三只直线滑动抽屉和四条金属腿的矩形书桌；抽屉需要滑动机构，但没有复杂折叠、升降或旋转结构，符合 desk 路线。",
+    "mechanisms": {
+     "抽屉": 3
+    },
+    "dims_src": {
+     "width": [
+      "尺寸图",
+      "102 cm"
+     ],
+     "depth": [
+      "尺寸图",
+      "49 cm"
+     ],
+     "height": [
+      "尺寸图",
+      "74 cm"
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 3,
+     "configs": 354,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/60278288-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "90473561",
+   "name": "ALEX 阿来斯",
+   "variant": "着白色漆/仿橡木",
+   "category": "书桌和办公桌",
+   "ir": [
+    "desk"
+   ],
+   "size_m": [
+    1.0,
+    0.48,
+    0.76
+   ],
+   "dims_cm": {
+    "width": 100.0,
+    "depth": 48.0,
+    "height": 76.0,
+    "clearance_under_furniture": 62.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/alex-a-lai-si-shu-zhuo-zhao-bai-se-qi-fang-xiang-mu-90473561/",
+   "lux3d": false,
+   "limitations": [
+    "抽屉前板未复刻参考图中的半月形手扣凹槽，属于可接受的装饰简化。",
+    "桌腿、钢制横向框架及连接件的截面和细节较为简化。",
+    "木纹与边框比例为近似建模，未完全复刻官方细部。"
+   ],
+   "price_cny": 599,
+   "price_src": "样例",
+   "img": "library/img/90473561.jpg",
+   "ref": "library/img/90473561-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/90473561-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/90473561-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "该产品是带两个直线滑动抽屉的书桌，需模拟抽屉滑动机构；桌面下方为开放膝部空间，采用钢制框架和四条腿支撑。未见门、旋转或复杂折叠机构。",
+    "mechanisms": {
+     "抽屉": 2
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 2,
+     "configs": 319,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/90473561-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "00481792",
+   "name": "BJÖRKBERGET 比约伯格",
+   "variant": "伊德库拉 蓝色",
+   "category": "书桌椅和办公椅",
+   "ir": [
+    "officechair"
+   ],
+   "size_m": [
+    0.58,
+    0.59,
+    0.88
+   ],
+   "dims_cm": {
+    "width": 58.0,
+    "depth": 59.0,
+    "max_height": 93.0,
+    "seat_width": 43.0,
+    "seat_depth": 39.0,
+    "min_seat_height": 47.0,
+    "max_seat_height": 52.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/bjoerkberget-bi-yue-bo-ge-zhuan-yi-yi-de-ku-la-lan-se-00481792/",
+   "lux3d": true,
+   "limitations": [
+    "座椅整体比例和靠背轮廓为合理简化，细节及缝线表现少于参考图。",
+    "渲染视图未直接展示完整的升降行程，但中心支柱结构与转椅类别一致。",
+    "部分支腿在视图中因透视和遮挡不可见，不能据此判定支腿缺失。"
+   ],
+   "price_cny": 499,
+   "price_src": "样例",
+   "img": "library/img/00481792.jpg",
+   "ref": "library/img/00481792-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/00481792-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/00481792-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "官方尺寸图和产品照片显示这是带中心气压缸的转椅，支持座面旋转及座高在47–52厘米之间垂直调节；未见靠背倾仰或扶手调节机构。",
+    "mechanisms": {
+     "座椅旋转": 1,
+     "升降": 1
+    },
+    "dims_src": {
+     "width": [
+      "尺寸图",
+      "58 cm"
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "尺寸图",
+      "93 cm"
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.54,
+      0.54,
+      0.92
+     ],
+     "to": [
+      0.58,
+      0.59,
+      0.88
+     ]
+    },
+    "review": 4,
+    "joints": {
+     "n": 2,
+     "configs": 319,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/00481792-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "09488572",
+   "name": "LOBERGET 洛贝里特 / MALSKÄR 马尔夏",
+   "variant": "白色/黑色",
+   "category": "书桌椅和办公椅",
+   "ir": [
+    "officechair"
+   ],
+   "size_m": [
+    0.67,
+    0.67,
+    0.78
+   ],
+   "dims_cm": {
+    "width": 67.0,
+    "depth": 67.0,
+    "height": 90.0,
+    "seat_width": 40.0,
+    "seat_depth": 43.0,
+    "min_seat_height": 45.0,
+    "max_seat_height": 56.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/loberget-luo-bei-li-te-malskaer-ma-er-xia-zhuan-yi-bai-se-hei-se-s09488572/",
+   "lux3d": true,
+   "limitations": [
+    "渲染分辨率较低，座椅下方的连接结构和调节机构细节不如参考图清晰。",
+    "调节杆在部分视角中被座椅或立柱遮挡，但在侧后方视图中可见。",
+    "座椅外形和底座轮廓为合理简化，未完全复现参考图中的细微曲面与金属连接件。"
+   ],
+   "price_cny": 499,
+   "price_src": "样例",
+   "img": "library/img/09488572.jpg",
+   "ref": "library/img/09488572-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/09488572-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "该产品是带五爪脚轮底座的转椅，照片显示座椅可绕中央立柱旋转，并通过侧面调节杆实现气压升降。官方尺寸提供最小座高45厘米和最大座高56厘米；未见靠背倾仰或可调扶手等复杂机构。",
+    "mechanisms": {
+     "座椅旋转": 1,
+     "升降": 1
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.74,
+      0.73,
+      0.95
+     ],
+     "to": [
+      0.67,
+      0.67,
+      0.78
+     ]
+    },
+    "review": 4,
+    "joints": {
+     "n": 2,
+     "configs": 319,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/09488572-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "50564332",
+   "name": "BLECKBERGET 布雷伯格",
+   "variant": "克罗夫斯塔 白色/橙棕色",
+   "category": "书桌椅和办公椅",
+   "ir": [
+    "officechair"
+   ],
+   "size_m": [
+    0.68,
+    0.68,
+    0.78
+   ],
+   "dims_cm": {
+    "depth": 68.0,
+    "width": 68.0,
+    "max_height": 90.0,
+    "seat_width": 47.0,
+    "seat_depth": 44.0,
+    "max_seat_height": 59.0,
+    "min_seat_height": 47.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/bleckberget-bu-lei-bo-ge-zhuan-yi-ke-luo-fu-si-ta-bai-se-cheng-zong-se-50564332/",
+   "lux3d": true,
+   "limitations": [
+    "模型的座垫和靠背条纹细节较弱，暖白与橙棕色的织物效果不如参考图明显。",
+    "底座、脚轮及靠背支撑结构进行了简化，但主要结构和轮廓保持正确。",
+    "渲染视角和参考图略有差异，不能完全直接比较比例细节。"
+   ],
+   "price_cny": 499,
+   "price_src": "样例",
+   "img": "library/img/50564332.jpg",
+   "ref": "library/img/50564332-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/50564332-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/50564332-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是带中央气压升降柱和座椅旋转功能的转椅；图片显示无靠背倾仰、可调扶手或折叠机构，因此适用于受限的转椅路线。",
+    "mechanisms": {
+     "座椅旋转": 1,
+     "升降": 1
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.66,
+      0.71,
+      0.9
+     ],
+     "to": [
+      0.68,
+      0.68,
+      0.78
+     ]
+    },
+    "review": 4,
+    "joints": {
+     "n": 2,
+     "configs": 319,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/50564332-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "69907467",
+   "name": "STOLJAN 斯多延",
+   "variant": "黑色/黑色",
+   "category": "书桌椅和办公椅",
+   "ir": [
+    "officechair"
+   ],
+   "size_m": [
+    0.45,
+    0.51,
+    0.81
+   ],
+   "dims_cm": {
+    "width": 45.0,
+    "depth": 51.0,
+    "height": 81.0,
+    "seat_width": 44.0,
+    "seat_depth": 44.0,
+    "seat_height": 46.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/stoljan-si-duo-yan-hui-yi-yi-hei-se-hei-se-s69907467/",
+   "lux3d": true,
+   "limitations": [
+    "座面、靠背和钢架的细节与原图存在一定简化。",
+    "渲染中的座面与靠背曲面比例、边缘厚度和连接结构不完全等同于参考图。",
+    "材质整体偏平滑，未充分体现参考图中的织物或塑料细微表面质感。"
+   ],
+   "price_cny": 499,
+   "price_src": "样例",
+   "img": "library/img/69907467.jpg",
+   "ref": "library/img/69907467-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/69907467-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/69907467-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是固定式四腿会议椅，照片和尺寸图未显示旋转、升降、折叠或其他可动机构；可堆叠属于收纳特性而非生产系统中的机械关节。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.46,
+      0.51,
+      0.82
+     ],
+     "to": [
+      0.45,
+      0.51,
+      0.81
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "89503192",
+   "name": "LÄKTARE 莱科塔",
+   "variant": "桦木贴面/白色",
+   "category": "书桌椅和办公椅",
+   "ir": [
+    "officechair"
+   ],
+   "size_m": [
+    0.55,
+    0.5,
+    0.83
+   ],
+   "dims_cm": {
+    "width": 55.0,
+    "depth": 50.0,
+    "height": 83.0,
+    "seat_width": 46.0,
+    "seat_depth": 42.0,
+    "seat_height": 45.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/laektare-lai-ke-ta-hui-yi-yi-hua-mu-tie-mian-bai-se-s89503192/",
+   "lux3d": true,
+   "limitations": [
+    "扶手支架的管径、弯曲半径和连接细节较为简化。",
+    "木质座背的纹理和浅色明暗表现弱于参考图。",
+    "部分视角下后腿、支架与座背连接处存在遮挡，细节无法完全确认。"
+   ],
+   "price_cny": 499,
+   "price_src": "样例",
+   "img": "library/img/89503192.jpg",
+   "ref": "library/img/89503192-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/89503192-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/89503192-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是固定式会议椅，座面、靠背和白色金属支架没有可见的旋转、升降、折叠或其他机械关节。可叠放和悬挂清洁属于使用/收纳特性，不构成需要建模的刚性 articulation。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.57,
+      0.55,
+      0.82
+     ],
+     "to": [
+      0.55,
+      0.5,
+      0.83
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "90320342",
+   "name": "KULLABERG 乐维",
+   "variant": "松木/黑色",
+   "category": "书桌椅和办公椅",
+   "ir": [
+    "officechair"
+   ],
+   "size_m": [
+    0.58,
+    0.58,
+    0.83
+   ],
+   "dims_cm": {
+    "width": 58.0,
+    "depth": 58.0,
+    "max_height": 94.0,
+    "seat_width": 42.0,
+    "seat_depth": 39.0,
+    "min_seat_height": 44.0,
+    "max_seat_height": 55.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/kullaberg-le-wei-zhuan-yi-song-mu-hei-se-90320342/",
+   "lux3d": true,
+   "limitations": [
+    "模型的座面与靠背曲面、边缘细节较为简化。",
+    "靠背支撑与底部环形脚架的具体造型与参考图略有差异。",
+    "部分视角下高度调节杆不明显，但全关节展开视图显示了升降结构。"
+   ],
+   "price_cny": 499,
+   "price_src": "样例",
+   "img": "library/img/90320342.jpg",
+   "ref": "library/img/90320342-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/90320342-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "产品为带中央支柱的转椅，图片显示座椅可旋转，并有侧面高度调节杆；官方尺寸明确给出44–55厘米座高范围。无靠背后仰、可调扶手或折叠机构。",
+    "mechanisms": {
+     "座椅旋转": 1,
+     "升降": 1
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.45,
+      0.5,
+      0.92
+     ],
+     "to": [
+      0.58,
+      0.58,
+      0.83
+     ]
+    },
+    "review": 4,
+    "joints": {
+     "n": 2,
+     "configs": 319,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/90320342-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "00369540",
+   "name": "NORDVIKEN 诺德维肯",
+   "variant": "白色",
+   "category": "凳子",
+   "ir": [
+    "stool"
+   ],
+   "size_m": [
+    0.4,
+    0.48,
+    1.01
+   ],
+   "dims_cm": {
+    "width": 40.0,
+    "depth": 48.0,
+    "height": 101.0,
+    "seat_width": 40.0,
+    "seat_depth": 34.0,
+    "seat_height": 75.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/nordviken-nuo-de-wei-ken-kao-bei-ba-deng-bai-se-00369540/",
+   "lux3d": true,
+   "limitations": [
+    "靠背曲面、座面边缘和连接细节较为简化。",
+    "实际渲染中的比例与参考图略有差异，但整体高脚吧凳轮廓一致。",
+    "未能从单一视角完全确认所有底部连接结构，但多视图显示结构完整。"
+   ],
+   "price_cny": 99,
+   "price_src": "样例",
+   "img": "library/img/00369540.jpg",
+   "ref": "library/img/00369540-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [],
+    "route_note": "这是带靠背和脚踏横杆的固定式靠背吧凳，图片未显示旋转、升降、折叠或其他可动机构；靠背、座面和腿均为刚性结构。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.4,
+      0.47,
+      0.98
+     ],
+     "to": [
+      0.4,
+      0.48,
+      1.01
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "00600709",
+   "name": "HADDARP 哈达尔普",
+   "variant": "4边 橙色",
+   "category": "凳子",
+   "ir": [
+    "stool"
+   ],
+   "size_m": [
+    0.438,
+    0.438,
+    0.47
+   ],
+   "dims_cm": {
+    "depth": 43.8,
+    "height": 47.0,
+    "width": 43.8
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/haddarp-ha-da-er-pu-ta-jiao-deng-4-bian-cheng-se-00600709/",
+   "lux3d": true,
+   "limitations": [
+    "踏板和下层踏板表面的防滑纹理未建模，模型表面较为光滑。",
+    "实际模型的橙色偏浅、偏粉，与参考图的鲜艳橙色存在一定差异。",
+    "下层踏板及腿部连接结构进行了简化，未完整表现参考图中的细节和材质区分。"
+   ],
+   "price_cny": 99,
+   "price_src": "样例",
+   "img": "library/img/00600709.jpg",
+   "ref": "library/img/00600709-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/00600709-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/00600709-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是固定式两层踏脚凳，照片和尺寸图均未显示抽屉、门、旋转、升降或折叠机构；上下踏板与四条固定倾斜腿构成刚性结构。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.46,
+      0.46,
+      0.5
+     ],
+     "to": [
+      0.44,
+      0.44,
+      0.47
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "20623719",
+   "name": "KONSTRUNDA 康斯图达",
+   "variant": "蓝色",
+   "category": "凳子",
+   "ir": [
+    "stool"
+   ],
+   "size_m": [
+    0.33,
+    0.29,
+    0.44
+   ],
+   "dims_cm": {
+    "depth": 29.0,
+    "height": 44.0,
+    "width": 33.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/konstrunda-kang-si-tu-da-deng-lan-se-20623719/",
+   "lux3d": true,
+   "limitations": [
+    "渲染颜色相比官方主图偏浅、偏灰蓝，蓝色漆面饱和度不足。",
+    "木纹和漆面高光细节较简化。",
+    "底部小脚在渲染中不明显，但不影响凳子的主要结构识别。"
+   ],
+   "price_cny": 99,
+   "price_src": "样例",
+   "img": "library/img/20623719.jpg",
+   "ref": "library/img/20623719-ref.jpg",
+   "glb": "library/models/20623719.glb",
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/20623719-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/20623719-in1.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是一个涂蓝色的实心松木凳子，照片显示为固定式箱体/三角形座面与固定支撑脚，没有门、抽屉、旋转、升降或折叠机构。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.66,
+      0.56,
+      0.85
+     ],
+     "to": [
+      0.33,
+      0.29,
+      0.44
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": [
+    {
+     "home": "scene000058",
+     "plan": "P02",
+     "title": "凳子换成 KONSTRUNDA 康斯图达（33×29 cm）"
+    }
+   ]
+  },
+  {
+   "id": "50225592",
+   "name": "BEKVÄM 贝卡姆",
+   "variant": "白杨",
+   "category": "凳子",
+   "ir": [
+    "stool"
+   ],
+   "size_m": [
+    0.43,
+    0.39,
+    0.5
+   ],
+   "dims_cm": {
+    "width": 43.0,
+    "depth": 39.0,
+    "height": 50.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/bekvaem-bei-qia-mu-ta-jiao-deng-bai-yang-50225592/",
+   "lux3d": true,
+   "limitations": [
+    "木纹、边缘细节和连接件表现较为简化。",
+    "部分结构在当前视角中被遮挡，无法完整核验所有隐藏连接。"
+   ],
+   "price_cny": 99,
+   "price_src": "样例",
+   "img": "library/img/50225592.jpg",
+   "ref": "library/img/50225592-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/50225592-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是一个由实心木材构成的双层踏脚凳，具有固定的踏板、支撑框架和四条腿。图片中未显示抽屉、门、折叠、滑动或其他可动机构，因此应按静态家具建模。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.5,
+      0.45,
+      0.59
+     ],
+     "to": [
+      0.43,
+      0.39,
+      0.5
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "50608133",
+   "name": "KYRRE 叙勒",
+   "variant": "灰白",
+   "category": "凳子",
+   "ir": [
+    "stool"
+   ],
+   "size_m": [
+    0.42,
+    0.48,
+    0.45
+   ],
+   "dims_cm": {
+    "width": 42.0,
+    "depth": 48.0,
+    "height": 45.0,
+    "seat_width": 34.0,
+    "seat_depth": 35.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/kyrre-xu-le-deng-hui-bai-50608133/",
+   "lux3d": true,
+   "limitations": [
+    "座面三角圆角轮廓及边缘曲率为简化近似，与参考图的具体比例和曲线略有差异。",
+    "腿部弯曲、截面和连接细节较为简化，未完全复现参考产品的贴面与结构细节。",
+    "渲染材质呈灰白色，木纹贴面效果不明显，但颜色家族一致。"
+   ],
+   "price_cny": 99,
+   "price_src": "样例",
+   "img": "library/img/50608133.jpg",
+   "ref": "library/img/50608133-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/50608133-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/50608133-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是固定式三脚凳，座面与三条弯曲支腿为刚性连接，未见抽屉、门、旋转、升降或折叠机构。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.52,
+      0.54,
+      0.63
+     ],
+     "to": [
+      0.42,
+      0.48,
+      0.45
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "80557071",
+   "name": "JUTEBODA 尤特博达",
+   "variant": "自然色/白色",
+   "category": "凳子",
+   "ir": [
+    "stool"
+   ],
+   "size_m": [
+    0.41,
+    0.37,
+    0.45
+   ],
+   "dims_cm": {
+    "width": 41.0,
+    "depth": 37.0,
+    "height": 45.0,
+    "seat_depth": 34.0,
+    "seat_width": 37.0,
+    "seat_height": 45.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/juteboda-you-te-bo-da-deng-zi-ran-se-bai-se-80557071/",
+   "lux3d": true,
+   "limitations": [
+    "座面编织纹理呈较明显的放射状，和实物的交错编织方向及局部缝隙有所差异。",
+    "座面边缘包覆和三腿与座面连接处的细节较简化。",
+    "渲染中未能验证具体尺寸数值，但整体比例与参考图基本一致。"
+   ],
+   "price_cny": 99,
+   "price_src": "样例",
+   "img": "library/img/80557071.jpg",
+   "ref": "library/img/80557071-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/80557071-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/80557071-in1.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是一个固定式三脚凳，座面与三根钢制支腿没有可见的旋转、升降、折叠或其他机械关节；仅需建模静态结构。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "尺寸图",
+      "41 cm"
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "尺寸图",
+      "45 cm"
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.45,
+      0.36,
+      0.5
+     ],
+     "to": [
+      0.41,
+      0.37,
+      0.45
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "00553618",
+   "name": "BAGGEBO 巴格布",
+   "variant": "白色",
+   "category": "展示与餐边柜",
+   "ir": [
+    "sideboard"
+   ],
+   "size_m": [
+    0.78,
+    0.299,
+    0.92
+   ],
+   "dims_cm": {
+    "depth": 30.0,
+    "height": 92.0,
+    "width": 78.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/baggebo-ba-ge-bu-can-bian-gui-bai-se-00553618/",
+   "lux3d": false,
+   "limitations": [
+    "顶板和部分板材边缘的黑色接缝较明显，较参考图更突出。",
+    "支腿和板材厚度为简化近似，细节不如官方产品图。",
+    "闭合视图中的抽屉和柜门处于关闭姿态，需结合全开视图确认运动结构。"
+   ],
+   "price_cny": 999,
+   "price_src": "样例",
+   "img": "library/img/00553618.jpg",
+   "ref": "library/img/00553618-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/00553618-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/00553618-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "图片显示为矩形白色餐边柜，包含一个直线滑动抽屉、一个普通侧铰链门和多个开放式搁格，属于柜类可支持结构。右侧门的把手位于左侧，推断铰链在右侧。",
+    "mechanisms": {
+     "抽屉": 1,
+     "门": 1
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 2,
+     "configs": 319,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/00553618-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "09187480",
+   "name": "BESTÅ 贝达",
+   "variant": "白色/Selsviken/Stubbarp 高光/米色",
+   "category": "展示与餐边柜",
+   "ir": [
+    "sideboard"
+   ],
+   "size_m": [
+    1.8,
+    0.419,
+    0.74
+   ],
+   "dims_cm": {
+    "width": 180.0,
+    "depth": 42.0,
+    "height": 74.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/besta-bei-da-chu-wu-zu-he-dai-men-bai-se-selsviken-stubbarp-gao-guang-mi-se-s09187480/",
+   "lux3d": false,
+   "limitations": [
+    "模型门板带有明显小圆形把手，而参考图为较简洁的无外露把手外观。",
+    "模型边缘出现较粗的黑色接缝/描边，参考图中的缝隙更细且更自然。",
+    "模型支脚和柜体细节较为简化，内部隔板未在闭合视图中体现。"
+   ],
+   "price_cny": 999,
+   "price_src": "样例",
+   "img": "library/img/09187480.jpg",
+   "ref": "library/img/09187480-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/09187480-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/09187480-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是带三扇侧铰链门的储物柜组合，主图显示三个连续门板，功能图显示中部门打开后有内部搁板；因此不能归类为静态物体。结构属于支持的普通矩形柜体、侧开门和开放式内部搁板。",
+    "mechanisms": {
+     "门": 3
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 3,
+     "configs": 354,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/09187480-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "10452299",
+   "name": "HEMNES 汉尼斯",
+   "variant": "黑褐色/浅褐色",
+   "category": "展示与餐边柜",
+   "ir": [
+    "sideboard"
+   ],
+   "size_m": [
+    0.9,
+    0.37,
+    1.98
+   ],
+   "dims_cm": {
+    "width": 90.0,
+    "depth": 37.0,
+    "height": 198.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/hemnes-han-ni-si-bo-li-men-san-ti-chu-gui-hei-he-se-qian-he-se-10452299/",
+   "lux3d": false,
+   "limitations": [
+    "门框、抽屉缝隙和五金件进行了简化，细节少于参考图。",
+    "上部内部搁板在闭合视图中不明显，但全开视图显示了内部隔板/搁板结构。",
+    "顶部及部分内侧采用较明显的浅褐色，与参考图的浅色木质内饰相符，但材质纹理较简化。"
+   ],
+   "price_cny": 999,
+   "price_src": "样例",
+   "img": "library/img/10452299.jpg",
+   "ref": "library/img/10452299-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/10452299-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是带两扇玻璃侧铰门和三个直线滑动抽屉的高柜，属于支持的普通橱柜结构；照片与尺寸图均显示上部双门、下部三屉和四条腿。",
+    "mechanisms": {
+     "门": 2,
+     "抽屉": 3
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 5,
+     "configs": 440,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/10452299-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "10456909",
+   "name": "HAUGA 豪嘉",
+   "variant": "米黄色",
+   "category": "展示与餐边柜",
+   "ir": [
+    "sideboard"
+   ],
+   "size_m": [
+    1.4,
+    0.46,
+    0.84
+   ],
+   "dims_cm": {
+    "width": 140.0,
+    "depth": 46.0,
+    "height": 84.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/hauga-hao-jia-can-bian-gui-mi-huang-se-10456909/",
+   "lux3d": false,
+   "limitations": [
+    "实际模型顶部为平板，缺少参考图中明显的后挡板及两侧上翻护板，整体上部轮廓有所简化。",
+    "门板和抽屉面板的装饰线条、把手细节较少，表面更偏统一简化涂装。",
+    "实际模型前部间隙和各分区比例与参考图存在一定偏差。"
+   ],
+   "price_cny": 999,
+   "price_src": "样例",
+   "img": "library/img/10456909.jpg",
+   "ref": "library/img/10456909-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/10456909-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/10456909-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是带两扇侧铰链门和三个直线滑动抽屉的餐边柜，照片与尺寸图均显示左右各一扇门、中部三层抽屉；属于支持的普通柜体机构。",
+    "mechanisms": {
+     "门": 2,
+     "抽屉": 3
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 3,
+    "joints": {
+     "n": 5,
+     "configs": 440,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/10456909-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "30439730",
+   "name": "LIATORP 赖尔多",
+   "variant": "白色",
+   "category": "展示与餐边柜",
+   "ir": [
+    "sideboard"
+   ],
+   "size_m": [
+    1.45,
+    0.479,
+    0.88
+   ],
+   "dims_cm": {
+    "width": 145.0,
+    "depth": 48.0,
+    "height": 88.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/liatorp-lai-er-duo-can-bian-gui-bai-se-30439730/",
+   "lux3d": false,
+   "limitations": [
+    "顶部和底部装饰线条较为简化，柜脚与参考图的造型不同。",
+    "玻璃门框、中央开放格及内部搁板比例与参考图存在轻微差异。",
+    "渲染中接缝描边偏明显，视觉上略显硬朗。"
+   ],
+   "price_cny": 999,
+   "price_src": "样例",
+   "img": "library/img/30439730.jpg",
+   "ref": "library/img/30439730-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/30439730-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/30439730-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是带两个玻璃侧门、一个中央直线抽屉及中央开放搁架的餐边柜；侧门需要普通侧铰链，抽屉需要直线滑动机构，适合 cabinet 路由。",
+    "mechanisms": {
+     "玻璃门": 2,
+     "抽屉": 1
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 3,
+     "configs": 354,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/30439730-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "50520362",
+   "name": "SKRUVBY 斯库比",
+   "variant": "蓝黑色",
+   "category": "展示与餐边柜",
+   "ir": [
+    "sideboard"
+   ],
+   "size_m": [
+    0.7,
+    0.375,
+    0.9
+   ],
+   "dims_cm": {
+    "depth": 37.5,
+    "height": 90.0,
+    "width": 70.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/skruvby-si-ku-bi-bo-li-men-chu-gui-lan-hei-se-50520362/",
+   "lux3d": false,
+   "limitations": [
+    "顶板木色相较参考图更偏浅棕色，木纹细节不明显。",
+    "门框、底部踢脚和支脚造型较为简化，比例与参考图存在小幅差异。",
+    "玻璃门及内部搁板在部分闭合视角中较暗，透明度和层次表现弱于参考图。"
+   ],
+   "price_cny": 999,
+   "price_src": "样例",
+   "img": "library/img/50520362.jpg",
+   "ref": "library/img/50520362-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/50520362-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/50520362-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是带两扇钢化玻璃侧铰门的矩形橱柜，照片和尺寸图均显示左右对开的玻璃门；因此需要刚性铰接，不应归类为静态物体。内部搁板为固定/可调搁置结构，但无需作为运动机构建模。",
+    "mechanisms": {
+     "门": 2
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 2,
+     "configs": 319,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/50520362-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "90415161",
+   "name": "LOMMARP 鲁马尔普",
+   "variant": "深蓝绿色",
+   "category": "展示与餐边柜",
+   "ir": [
+    "sideboard"
+   ],
+   "size_m": [
+    0.86,
+    0.49,
+    1.99
+   ],
+   "dims_cm": {
+    "width": 86.0,
+    "depth": 49.0,
+    "height": 199.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/lommarp-lu-ma-er-pu-bo-li-men-chu-gui-shen-lan-lu-se-90415161/",
+   "lux3d": false,
+   "limitations": [
+    "模型省略了参考图中较明显的顶部装饰檐口、底部横向装饰和较复杂的腿部造型。",
+    "渲染整体偏近黑色，深蓝绿色特征不如参考图明显。",
+    "上部玻璃门的透明度和内部搁板可见性较弱。"
+   ],
+   "price_cny": 999,
+   "price_src": "样例",
+   "img": "library/img/90415161.jpg",
+   "ref": "library/img/90415161-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/90415161-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/90415161-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是带普通侧铰链门和可调节搁板的矩形玻璃门橱柜。主图与尺寸图明确显示上部两扇玻璃门、下部四扇木门；结构属于 cabinet 路由支持的普通开门机构。",
+    "mechanisms": {
+     "门": 6,
+     "可调隔板": 4
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 3,
+    "joints": {
+     "n": 6,
+     "configs": 503,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/90415161-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "09157925",
+   "name": "KOPARDAL 科帕达",
+   "variant": "灰色/鲁瑞",
+   "category": "床",
+   "ir": [
+    "bed"
+   ],
+   "size_m": [
+    1.32,
+    2.08,
+    0.94
+   ],
+   "dims_cm": {
+    "length": 208.0,
+    "width": 132.0,
+    "height": 94.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/kopardal-ke-pa-da-chuang-jia-hui-se-lu-rui-s09157925/",
+   "lux3d": true,
+   "limitations": [
+    "床板条、内部支撑和连接件未单独建模，属于可接受的隐藏结构简化。",
+    "模型以单个网格和单一材质呈现，细节层次低于参考图。",
+    "床垫被建模为整体白色块体，表面褶皱和更细致的软包特征较少。"
+   ],
+   "price_cny": 1499,
+   "price_src": "样例",
+   "img": "library/img/09157925.jpg",
+   "ref": "library/img/09157925-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/09157925-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/09157925-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是固定式钢制床架，图片未显示任何可展开、升降、折叠或滑动机构；床垫和寝具为道具，不作为家具机构处理。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "尺寸图",
+      "132 cm"
+     ],
+     "depth": [
+      "尺寸图",
+      "208 cm"
+     ],
+     "height": [
+      "尺寸图",
+      "94 cm"
+     ]
+    },
+    "rescale": {
+     "from": [
+      2.18,
+      3.94,
+      1.64
+     ],
+     "to": [
+      1.32,
+      2.08,
+      0.94
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "20249486",
+   "name": "MALM 马尔姆",
+   "variant": "白色",
+   "category": "床",
+   "ir": [
+    "bed"
+   ],
+   "size_m": [
+    1.35,
+    2.09,
+    1.0
+   ],
+   "dims_cm": {
+    "length": 209.0,
+    "width": 135.0,
+    "height": 100.0,
+    "clearance_under_furniture": 21.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/malm-ma-er-mu-gao-chuang-jia-bai-se-20249486/",
+   "lux3d": true,
+   "limitations": [
+    "床垫作为附加物体出现在渲染中，床架本体细节被部分遮挡。",
+    "床架采用简化固定板式结构，未呈现参考图中的细微边缘、连接和材质层次。",
+    "渲染视图中未能精确验证全部尺寸及床下净空。"
+   ],
+   "price_cny": 1499,
+   "price_src": "样例",
+   "img": "library/img/20249486.jpg",
+   "ref": "library/img/20249486-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/20249486-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/20249486-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是带固定床头板、床尾板和床侧板的高床架，照片与尺寸图均未显示抽屉、门、升降、折叠或其他可动机构；床下空间是开放的固定间隙，不属于储物升降机构。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      1.21,
+      2.0,
+      0.95
+     ],
+     "to": [
+      1.35,
+      2.09,
+      1.0
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "20458314",
+   "name": "GRIMSBU 格里姆斯布",
+   "variant": "白色",
+   "category": "床",
+   "ir": [
+    "bed"
+   ],
+   "size_m": [
+    0.92,
+    2.02,
+    0.55
+   ],
+   "dims_cm": {
+    "length": 202.0,
+    "width": 92.0,
+    "height": 55.0,
+    "clearance_under_furniture": 21.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/grimsbu-ge-li-mu-si-bu-chuang-jia-bai-se-20458314/",
+   "lux3d": true,
+   "limitations": [
+    "渲染中存在大面积灰白色软包/床垫状表面，明显遮挡了床架的床板与侧框结构；参考图中的床垫和寝具不属于床架本体。",
+    "床尾低护栏及侧面框架细节不如参考图清晰，整体结构表现较为简化。",
+    "模型为单一网格和单一材质，螺栓、塑料脚等细节基本未单独呈现。"
+   ],
+   "price_cny": 1499,
+   "price_src": "样例",
+   "img": "library/img/20458314.jpg",
+   "ref": "library/img/20458314-ref.jpg",
+   "glb": "library/models/20458314.glb",
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/20458314-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/20458314-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是白色粉末涂层钢制床架，照片和尺寸图均未显示抽屉、门、折叠、升降或其他可动机构；床垫和寝具属于可移除物品，不构成家具关节。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "尺寸图",
+      "92 cm"
+     ],
+     "depth": [
+      "尺寸图",
+      "202 cm"
+     ],
+     "height": [
+      "尺寸图",
+      "55 cm"
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.91,
+      2.0,
+      0.52
+     ],
+     "to": [
+      0.92,
+      2.02,
+      0.55
+     ]
+    },
+    "review": 3,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": [
+    {
+     "home": "scene000064",
+     "plan": "P04",
+     "title": "主卧床换成 GRIMSBU 格里姆斯布（92×202 cm）"
+    },
+    {
+     "home": "scene000104",
+     "plan": "P05",
+     "title": "客厅餐桌换成 GAMLARED 冈拉瑞德（85×85 cm） + 主卧床换成 GRIMSBU 格里姆斯布（92×202 cm） + 茶几换成 FJÄLLBO 耶伯（90×46 cm）"
+    },
+    {
+     "home": "scene000173",
+     "plan": "P04",
+     "title": "主卧床换成 GRIMSBU 格里姆斯布（92×202 cm）"
+    },
+    {
+     "home": "scene000333",
+     "plan": "P05",
+     "title": "主卧躺椅换成 AGEN 爱格（58×56 cm） + 主卧床换成 GRIMSBU 格里姆斯布（92×202 cm）"
+    },
+    {
+     "home": "H1",
+     "plan": "P04",
+     "title": "主卧床换成 GRIMSBU 格里姆斯布（92×202 cm）"
+    }
+   ]
+  },
+  {
+   "id": "30603768",
+   "name": "MELLGRUND 梅尔格伦",
+   "variant": "灰白",
+   "category": "床",
+   "ir": [
+    "bed"
+   ],
+   "size_m": [
+    1.27,
+    2.08,
+    1.29
+   ],
+   "dims_cm": {
+    "clearance_under_furniture": 25.0,
+    "height": 129.0,
+    "length": 208.0,
+    "width": 127.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/mellgrund-mei-er-ge-lun-chuang-jia-hui-bai-30603768/",
+   "lux3d": true,
+   "limitations": [
+    "未建模床垫和寝具，实际渲染使用了简化的床垫体块。",
+    "床头和床尾的复杂弧形金属花饰、管径及连接细节相较参考图有所简化。",
+    "材质表现偏灰且较均匀，粉末涂层的真实质感和细微反射不足。"
+   ],
+   "price_cny": 1499,
+   "price_src": "样例",
+   "img": "library/img/30603768.jpg",
+   "ref": "library/img/30603768-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/30603768-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/30603768-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是固定式金属床架，照片显示床头板、床尾板、侧 rails 和床脚均为刚性固定结构，没有抽屉、门、升降、折叠或其他可动机构。床垫及寝具属于道具，不纳入模型。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      2.07,
+      3.03,
+      2.03
+     ],
+     "to": [
+      1.27,
+      2.08,
+      1.29
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "40558138",
+   "name": "BRUKSVARA 布瓦拉",
+   "variant": "褐色",
+   "category": "床",
+   "ir": [
+    "bed"
+   ],
+   "size_m": [
+    1.86,
+    2.05,
+    0.88
+   ],
+   "dims_cm": {
+    "clearance_under_furniture": 20.0,
+    "height": 88.0,
+    "length": 205.0,
+    "width": 186.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/bruksvara-bu-wa-la-chuang-jia-he-se-40558138/",
+   "lux3d": true,
+   "limitations": [
+    "内部连接件、刨花板封边和床板条具体固定结构未精确建模。",
+    "床头软包的厚度、材质细节和木纹表现为视觉近似。",
+    "渲染视角与参考图略有差异，部分结构细节不可直接比较。"
+   ],
+   "price_cny": 1499,
+   "price_src": "样例",
+   "img": "library/img/40558138.jpg",
+   "ref": "library/img/40558138-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/40558138-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/40558138-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是固定式床架，包含床头板、床尾板、侧档、床板条和支腿；图片未显示抽屉、门、折叠、升降或其他需要运动的机构。软包床头板不属于机械关节。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      2.18,
+      2.61,
+      1.06
+     ],
+     "to": [
+      1.86,
+      2.05,
+      0.88
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "99158020",
+   "name": "NESTTUN 奈斯顿",
+   "variant": "白色/鲁瑞",
+   "category": "床",
+   "ir": [
+    "bed"
+   ],
+   "size_m": [
+    1.56,
+    2.07,
+    0.95
+   ],
+   "dims_cm": {
+    "length": 207.0,
+    "width": 156.0,
+    "height": 95.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/nesttun-nai-si-dun-chuang-jia-bai-se-lu-rui-s99158020/",
+   "lux3d": true,
+   "limitations": [
+    "床头网格的具体钢条或丝带数量与参考图不完全一致，但整体网格结构和轮廓相符。",
+    "床板条未作为主要可见外观单独建模，实际视图中主要由床垫遮挡。",
+    "床架与床垫的尺寸比例及边缘细节进行了简化。"
+   ],
+   "price_cny": 1499,
+   "price_src": "样例",
+   "img": "library/img/99158020.jpg",
+   "ref": "library/img/99158020-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/99158020-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是带固定床头板、床尾板、侧框和床板条的钢制床架，照片与尺寸图未显示门、抽屉、升降、折叠或其他可操作机构；床板条属于承重结构而非机械关节。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      2.08,
+      2.78,
+      1.12
+     ],
+     "to": [
+      1.56,
+      2.07,
+      0.95
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "00352988",
+   "name": "LACK 拉克",
+   "variant": "黑色",
+   "category": "床边与小桌",
+   "ir": [
+    "nightstand",
+    "bedsidecabinet",
+    "sidetable"
+   ],
+   "size_m": [
+    0.55,
+    0.55,
+    0.45
+   ],
+   "dims_cm": {
+    "length": 55.0,
+    "width": 55.0,
+    "height": 45.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/lack-la-ke-bian-zhuo-hei-se-00352988/",
+   "lux3d": true,
+   "limitations": [
+    "桌面厚度、桌腿截面和边缘细节为近似建模，未体现内部蜂窝纸芯结构。",
+    "模型表面略偏深灰，但仍属于黑色/近黑色范围。",
+    "各个旋转视图构图基本相同，视角差异不明显。"
+   ],
+   "price_cny": 199,
+   "price_src": "样例",
+   "img": "library/img/00352988.jpg",
+   "ref": "library/img/00352988-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/00352988-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是一个无门、无抽屉、无旋转或折叠机构的黑色方形边桌，具有固定桌面和四条固定桌腿，可按静态刚体建模。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.9,
+      0.9,
+      0.73
+     ],
+     "to": [
+      0.55,
+      0.55,
+      0.45
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "00354063",
+   "name": "BRIMNES 百灵",
+   "variant": "白色",
+   "category": "床边与小桌",
+   "ir": [
+    "nightstand",
+    "bedsidecabinet",
+    "sidetable"
+   ],
+   "size_m": [
+    0.39,
+    0.41,
+    0.53
+   ],
+   "dims_cm": {
+    "width": 39.0,
+    "depth": 41.0,
+    "height": 53.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/brimnes-bai-ling-chuang-tou-zhuo-bai-se-00354063/",
+   "lux3d": false,
+   "limitations": [
+    "抽屉玻璃区域、框架和面板细节进行了简化。",
+    "模型视图中的抽屉面板相对参考略显内缩，前脸比例和细节不完全一致。",
+    "材质表现偏灰，且黑色边缘线降低了与白色参考产品的视觉一致性。"
+   ],
+   "price_cny": 199,
+   "price_src": "样例",
+   "img": "library/img/00354063.jpg",
+   "ref": "library/img/00354063-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/00354063-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/00354063-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是一个带一个直线滑动抽屉和上部开放隔层的床头柜；抽屉正面含钢化玻璃面板，因此不能归类为静态物体。未发现侧开门或复杂机构。",
+    "mechanisms": {
+     "抽屉": 1
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 3,
+    "joints": {
+     "n": 1,
+     "configs": 286,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/00354063-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "10354091",
+   "name": "HEMNES 汉尼斯",
+   "variant": "白色漆",
+   "category": "床边与小桌",
+   "ir": [
+    "nightstand",
+    "bedsidecabinet",
+    "sidetable"
+   ],
+   "size_m": [
+    0.46,
+    0.35,
+    0.7
+   ],
+   "dims_cm": {
+    "width": 46.0,
+    "depth": 35.0,
+    "height": 70.0,
+    "clearance_under_furniture": 25.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/hemnes-han-ni-si-chuang-tou-zhuo-bai-se-qi-10354091/",
+   "lux3d": false,
+   "limitations": [
+    "四腿未复刻原产品的轻微渐变锥度，整体细节较简化。",
+    "抽屉内部结构、木纹和五金细节未完全表现。",
+    "模型比例和局部板件厚度为合理近似，并非精确官方CAD复刻。"
+   ],
+   "price_cny": 199,
+   "price_src": "样例",
+   "img": "library/img/10354091.jpg",
+   "ref": "library/img/10354091-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/10354091-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/10354091-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "产品是带四条腿、开放式搁板和一个直线滑动抽屉的床头桌；抽屉需要直线抽拉机构，因此不能归类为静态物体。",
+    "mechanisms": {
+     "抽屉": 1
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 1,
+     "configs": 286,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/10354091-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "10558229",
+   "name": "BRUKSVARA 布瓦拉",
+   "variant": "蓝色",
+   "category": "床边与小桌",
+   "ir": [
+    "nightstand",
+    "bedsidecabinet",
+    "sidetable"
+   ],
+   "size_m": [
+    0.42,
+    0.3,
+    0.61
+   ],
+   "dims_cm": {
+    "depth": 30.0,
+    "height": 61.0,
+    "width": 42.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/bruksvara-bu-wa-la-bian-zhuo-lan-se-10558229/",
+   "lux3d": true,
+   "limitations": [
+    "管状支腿、桌面边缘和连接件的细节较为简化。",
+    "渲染颜色偏灰蓝，未完全复现参考图中较明亮的蓝色观感。",
+    "部分螺钉、端盖和结构连接细节未清晰表现。"
+   ],
+   "price_cny": 199,
+   "price_src": "样例",
+   "img": "library/img/10558229.jpg",
+   "ref": "library/img/10558229-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/10558229-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是带固定桌面、固定后背板和固定弯曲钢支腿的边桌，照片与尺寸图均未显示抽屉、门、旋转、升降或折叠机构。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.53,
+      0.33,
+      0.75
+     ],
+     "to": [
+      0.42,
+      0.3,
+      0.61
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "20515319",
+   "name": "LISTERBY 丽思德比",
+   "variant": "深褐色 着色橡木贴面",
+   "category": "床边与小桌",
+   "ir": [
+    "nightstand",
+    "bedsidecabinet",
+    "sidetable"
+   ],
+   "size_m": [
+    0.5,
+    0.5,
+    0.56
+   ],
+   "dims_cm": {
+    "height": 56.0,
+    "diameter": 50.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/listerby-li-si-de-bi-bian-zhuo-shen-he-se-zhao-se-xiang-mu-tie-mian-20515319/",
+   "lux3d": true,
+   "limitations": [
+    "实际渲染的木色相比参考图略浅，木纹表现和光泽有所不同。",
+    "腿部、桌面和底层搁板的细节与厚度为简化建模，未完全复刻参考图的连接与边缘细节。"
+   ],
+   "price_cny": 199,
+   "price_src": "样例",
+   "img": "library/img/20515319.jpg",
+   "ref": "library/img/20515319-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/20515319-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是一个圆形双层边桌，具有固定的桌面、下层搁板和四条固定桌腿；未见抽屉、门、旋转或其他需要刚性联动的机构。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "尺寸图",
+      "直径 50 cm"
+     ],
+     "depth": [
+      "尺寸图",
+      "直径 50 cm"
+     ],
+     "height": [
+      "尺寸图",
+      "高度 56 cm"
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.54,
+      0.54,
+      0.6
+     ],
+     "to": [
+      0.5,
+      0.5,
+      0.56
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "40386731",
+   "name": "KNARREVIK 科纳列维克",
+   "variant": "黑色",
+   "category": "床边与小桌",
+   "ir": [
+    "nightstand",
+    "bedsidecabinet",
+    "sidetable"
+   ],
+   "size_m": [
+    0.37,
+    0.28,
+    0.45
+   ],
+   "dims_cm": {
+    "width": 37.0,
+    "depth": 28.0,
+    "height": 45.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/knarrevik-ke-na-lie-wei-ke-chuang-tou-zhuo-hei-se-40386731/",
+   "lux3d": true,
+   "limitations": [
+    "螺钉、连接件和表面纹理细节较参考图简化。",
+    "渲染视角和比例表现与参考图略有差异，但不影响主要结构识别。"
+   ],
+   "price_cny": 199,
+   "price_src": "样例",
+   "img": "library/img/40386731.jpg",
+   "ref": "library/img/40386731-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/40386731-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "该床头桌为固定式黑色粉末涂层钢制框架，具有固定桌面、固定中层搁板和四条腿；照片与尺寸图均未显示门、抽屉、旋转、升降或折叠机构，因此可按静态家具建模。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "尺寸图",
+      "37.0 cm"
+     ],
+     "depth": [
+      "尺寸图",
+      "28.0 cm"
+     ],
+     "height": [
+      "尺寸图",
+      "45.0 cm"
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.46,
+      0.33,
+      0.55
+     ],
+     "to": [
+      0.37,
+      0.28,
+      0.45
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "50407361",
+   "name": "BJÖRKSNÄS 约纳斯",
+   "variant": "桦木",
+   "category": "床边与小桌",
+   "ir": [
+    "nightstand",
+    "bedsidecabinet",
+    "sidetable"
+   ],
+   "size_m": [
+    0.48,
+    0.38,
+    0.69
+   ],
+   "dims_cm": {
+    "width": 48.0,
+    "depth": 38.0,
+    "height": 69.0,
+    "clearance_under_furniture": 20.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/bjoerksnaes-yue-na-si-chuang-tou-zhuo-hua-mu-50407361/",
+   "lux3d": false,
+   "limitations": [
+    "模型整体边缘和腿部较方直，参考图中的圆角、圆柱腿和细腻木纹表现较弱。",
+    "抽屉使用小圆形旋钮，参考产品为皮革拉手。",
+    "渲染材质偏浅灰白，桦木色和木纹质感不如参考图明显。"
+   ],
+   "price_cny": 199,
+   "price_src": "样例",
+   "img": "library/img/50407361.jpg",
+   "ref": "library/img/50407361-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/50407361-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/50407361-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是带四条腿、开放式下层搁板和一个直线滑动抽屉的床头桌；抽屉属于刚性可动部件，因此不能归类为静态物体。其结构符合 desk 路由支持的矩形桌体、腿和直线抽屉。",
+    "mechanisms": {
+     "抽屉": 1
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 1,
+     "configs": 286,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/50407361-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "00454232",
+   "name": "BINGSTA 比因斯塔",
+   "variant": "威索尔 深灰色/卡布萨 深灰色",
+   "category": "扶手椅",
+   "ir": [
+    "armchair",
+    "loungechair"
+   ],
+   "size_m": [
+    0.7,
+    0.58,
+    0.76
+   ],
+   "dims_cm": {
+    "width": 70.0,
+    "depth": 58.0,
+    "height": 76.0,
+    "clearance_under_furniture": 33.0,
+    "seat_depth": 48.0,
+    "seat_height": 45.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/bingsta-bi-yin-si-ta-dan-ren-sha-fa-fu-shou-yi-wei-suo-er-shen-hui-se-qia-bu-sa-shen-hui-se-00454232/",
+   "lux3d": true,
+   "limitations": [
+    "未表现参考图中的明显缝线、织物细节和坐垫压缩形变。",
+    "靠背与扶手的曲面比例、边缘轮廓相较参考图略有简化。",
+    "视图0中部分腿部和后部连接结构存在遮挡，但其他视图显示四条固定金属腿基本完整。"
+   ],
+   "price_cny": 899,
+   "price_src": "样例",
+   "img": "library/img/00454232.jpg",
+   "ref": "library/img/00454232-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/00454232-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是固定式软包扶手椅，照片和尺寸图均未显示旋转、升降、倾仰或折叠机构；松垫属于软性坐垫，不构成机械关节。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.79,
+      0.74,
+      0.82
+     ],
+     "to": [
+      0.7,
+      0.58,
+      0.76
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "39299018",
+   "name": "BUSKBO 布克伯",
+   "variant": "藤条/德维克 白色",
+   "category": "扶手椅",
+   "ir": [
+    "armchair",
+    "loungechair"
+   ],
+   "size_m": [
+    0.72,
+    0.63,
+    0.75
+   ],
+   "dims_cm": {
+    "width": 72.0,
+    "depth": 63.0,
+    "height": 75.0,
+    "clearance_under_furniture": 12.0,
+    "seat_width": 43.0,
+    "seat_depth": 52.0,
+    "seat_height": 32.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/buskbo-bu-ke-bo-dan-ren-sha-fa-fu-shou-yi-teng-tiao-de-wei-ke-bai-se-s39299018/",
+   "lux3d": true,
+   "limitations": [
+    "藤条编织纹理和连接绑带细节较为简化。",
+    "坐垫边缘与参考图的柔软褶皱、缝线表现略有差异。",
+    "模型整体比例和局部支撑结构与参考图存在轻微简化。"
+   ],
+   "price_cny": 899,
+   "price_src": "样例",
+   "img": "library/img/39299018.jpg",
+   "ref": "library/img/39299018-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/39299018-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是带固定藤编框架和固定腿部的单人扶手椅；图片与尺寸图未显示旋转、升降、折叠或其他刚性可动机构。坐垫为松软可拆部件，不视为机械关节。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "尺寸图",
+      "72 cm"
+     ],
+     "depth": [
+      "尺寸图",
+      "63 cm"
+     ],
+     "height": [
+      "尺寸图",
+      "75 cm"
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.78,
+      0.74,
+      0.82
+     ],
+     "to": [
+      0.72,
+      0.63,
+      0.75
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "39390772",
+   "name": "AGEN 爱格",
+   "variant": "藤条/诺尔纳 自然色",
+   "category": "扶手椅",
+   "ir": [
+    "armchair",
+    "loungechair"
+   ],
+   "size_m": [
+    0.58,
+    0.56,
+    0.79
+   ],
+   "dims_cm": {
+    "depth": 56.0,
+    "height": 79.0,
+    "seat_depth": 40.0,
+    "seat_height": 45.0,
+    "seat_width": 43.0,
+    "width": 58.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/agen-ai-ge-dai-dian-fu-shou-yi-teng-tiao-nuo-er-na-zi-ran-se-s39390772/",
+   "lux3d": true,
+   "limitations": [
+    "藤条编织密度、边缘包裹和竹制框架连接方式为近似建模。",
+    "坐垫颜色和形状基本匹配，但材质纹理与参考图中的布面细节较弱。",
+    "模型视图与参考图的相机角度不同，无法完全比较比例和背部结构。"
+   ],
+   "price_cny": 899,
+   "price_src": "样例",
+   "img": "library/img/39390772.jpg",
+   "ref": "library/img/39390772-ref.jpg",
+   "glb": "library/models/39390772.glb",
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/39390772-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是带固定藤编框架、固定四腿和松软坐垫的扶手椅；图片及尺寸图未显示旋转、升降、倾仰、折叠或其他机械关节。坐垫属于松软部件，不构成机械 articulation。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.6,
+      0.61,
+      0.78
+     ],
+     "to": [
+      0.58,
+      0.56,
+      0.79
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": [
+    {
+     "home": "scene000333",
+     "plan": "P05",
+     "title": "主卧躺椅换成 AGEN 爱格（58×56 cm） + 主卧床换成 GRIMSBU 格里姆斯布（92×202 cm）"
+    }
+   ]
+  },
+  {
+   "id": "40262882",
+   "name": "EKERÖ 伊克尔",
+   "variant": "斯科特伯 黄色",
+   "category": "扶手椅",
+   "ir": [
+    "armchair",
+    "loungechair"
+   ],
+   "size_m": [
+    0.7,
+    0.73,
+    0.75
+   ],
+   "dims_cm": {
+    "width": 70.0,
+    "depth": 73.0,
+    "height": 75.0,
+    "seat_width": 57.0,
+    "seat_depth": 46.0,
+    "seat_height": 43.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/ekeroe-yi-ke-er-dan-ren-sha-fa-fu-shou-yi-si-ke-te-bo-huang-se-40262882/",
+   "lux3d": true,
+   "limitations": [
+    "靠背软垫相较参考图更弯曲、略显松软，且顶部轮廓不完全一致。",
+    "模型黄色偏深偏棕，材质织物纹理和缝线细节弱于参考图。",
+    "扶手、靠背和坐垫的圆角及比例进行了简化。"
+   ],
+   "price_cny": 899,
+   "price_src": "样例",
+   "img": "library/img/40262882.jpg",
+   "ref": "library/img/40262882-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/40262882-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/40262882-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是带固定坐垫、靠垫和扶手的单人扶手椅；照片与尺寸图均未显示旋转、升降、 recline 或折叠机构，松垫不构成机械关节。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.72,
+      0.73,
+      0.82
+     ],
+     "to": [
+      0.7,
+      0.73,
+      0.75
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "40624336",
+   "name": "EKENÄSET 伊格塞特",
+   "variant": "胡桃木纹/许兰达 浅米色",
+   "category": "扶手椅",
+   "ir": [
+    "armchair",
+    "loungechair"
+   ],
+   "size_m": [
+    0.65,
+    0.74,
+    0.75
+   ],
+   "dims_cm": {
+    "width": 65.0,
+    "depth": 74.0,
+    "height": 75.0,
+    "seat_width": 55.0,
+    "seat_depth": 52.0,
+    "seat_height": 44.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/ekenaeset-yi-ge-sai-te-dan-ren-sha-fa-fu-shou-yi-hu-tao-mu-wen-xu-lan-da-qian-mi-se-40624336/",
+   "lux3d": true,
+   "limitations": [
+    "座垫和靠背缺少参考图中较明显的缝线、织物纹理和边缘细节。",
+    "木框连接与局部支撑结构进行了简化，未完全复现参考图的细部比例。",
+    "靠背与座垫的视觉厚度及倾角与参考图存在轻微差异。"
+   ],
+   "price_cny": 899,
+   "price_src": "样例",
+   "img": "library/img/40624336.jpg",
+   "ref": "library/img/40624336-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/40624336-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是不可调节的单人扶手椅；照片显示固定的软垫、木制扶手和四条固定椅腿，没有旋转、升降、倾仰或折叠机构，因此可按静态家具建模。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.66,
+      0.82,
+      0.82
+     ],
+     "to": [
+      0.65,
+      0.74,
+      0.75
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "60425642",
+   "name": "FRÖSET 富罗瑟",
+   "variant": "黑漆 橡木贴面",
+   "category": "扶手椅",
+   "ir": [
+    "armchair",
+    "loungechair"
+   ],
+   "size_m": [
+    0.59,
+    0.57,
+    0.74
+   ],
+   "dims_cm": {
+    "width": 59.0,
+    "depth": 57.0,
+    "height": 74.0,
+    "seat_width": 59.0,
+    "seat_depth": 46.0,
+    "seat_height": 38.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/froeset-fu-luo-se-xiu-xian-yi-hei-qi-xiang-mu-tie-mian-60425642/",
+   "lux3d": true,
+   "limitations": [
+    "靠背相较参考图略显窄小，横向展开比例和边缘曲率存在一定差异。",
+    "座面及腿部结构进行了简化，连接件和木纹细节不如参考图明显。",
+    "视图0中部分后腿和支撑结构被遮挡，无法完整比较所有结构细节。"
+   ],
+   "price_cny": 899,
+   "price_src": "样例",
+   "img": "library/img/60425642.jpg",
+   "ref": "library/img/60425642-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/60425642-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是带固定靠背、固定座面和四条固定腿的休闲椅，未见旋转、升降、折叠或其他可动机构；图片中的连接件属于结构固定件而非铰接机构。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.58,
+      0.58,
+      0.72
+     ],
+     "to": [
+      0.59,
+      0.57,
+      0.74
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "10354623",
+   "name": "MALM 马尔姆",
+   "variant": "黑褐色",
+   "category": "斗柜和抽屉柜",
+   "ir": [
+    "chestofdrawers"
+   ],
+   "size_m": [
+    0.8,
+    0.48,
+    1.0
+   ],
+   "dims_cm": {
+    "width": 80.0,
+    "depth": 48.0,
+    "height": 100.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/malm-ma-er-mu-si-dou-chou-ti-gui-hei-he-se-10354623/",
+   "lux3d": false,
+   "limitations": [
+    "抽屉面板、间隙和底座细节相较官方实物图有所简化。",
+    "木纹为低对比程序化近似，未完全复现参考图中的白蜡木纹理。",
+    "墙面防倾倒固定件未作为外观主体建模，但这不影响四个抽屉的主要功能。"
+   ],
+   "price_cny": 799,
+   "price_src": "样例",
+   "img": "library/img/10354623.jpg",
+   "ref": "library/img/10354623-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/10354623-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/10354623-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是一个带四个可直线拉出的抽屉柜，抽屉数量和布局在主图及尺寸图中清晰可见；不应归类为静态物体。结构为矩形柜体、底座和四个等宽抽屉，不含门或复杂机构。",
+    "mechanisms": {
+     "抽屉": 4
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 4,
+     "configs": 393,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/10354623-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "10355731",
+   "name": "KULLEN 库伦",
+   "variant": "黑褐色",
+   "category": "斗柜和抽屉柜",
+   "ir": [
+    "chestofdrawers"
+   ],
+   "size_m": [
+    0.7,
+    0.4,
+    1.12
+   ],
+   "dims_cm": {
+    "width": 70.0,
+    "depth": 40.0,
+    "height": 112.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/kullen-ku-lun-wu-dou-chou-ti-gui-hei-he-se-10355731/",
+   "lux3d": false,
+   "limitations": [
+    "抽屉面板、间隙和底部支脚比例为近似建模，细节不如产品参考图。",
+    "渲染材质为简化的黑褐色表面，木纹和封边表现较弱。",
+    "渲染视图未展示抽屉内部结构，但五个抽屉均有对应独立直线滑动关节。"
+   ],
+   "price_cny": 799,
+   "price_src": "样例",
+   "img": "library/img/10355731.jpg",
+   "ref": "library/img/10355731-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/10355731-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/10355731-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是一个矩形五斗抽屉柜，主图和尺寸图均明确显示五个上下排列的直线滑动抽屉；抽屉需要前后滑动，因此不能归类为静态家具。",
+    "mechanisms": {
+     "抽屉": 5
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 5,
+     "configs": 440,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/10355731-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "30355688",
+   "name": "HEMNES 汉尼斯",
+   "variant": "黑褐色",
+   "category": "斗柜和抽屉柜",
+   "ir": [
+    "chestofdrawers"
+   ],
+   "size_m": [
+    1.08,
+    0.5,
+    0.96
+   ],
+   "dims_cm": {
+    "width": 108.0,
+    "depth": 50.0,
+    "height": 96.0,
+    "clearance_under_furniture": 11.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/hemnes-han-ni-si-san-dou-chou-ti-gui-hei-he-se-30355688/",
+   "lux3d": false,
+   "limitations": [
+    "参考图每只抽屉有两个圆形拉手，模型每只抽屉为单个居中小拉手，五金细节不一致。",
+    "模型整体细节和木纹表现较简化，颜色更接近纯黑而非参考中的黑褐色。"
+   ],
+   "price_cny": 799,
+   "price_src": "样例",
+   "img": "library/img/30355688.jpg",
+   "ref": "library/img/30355688-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/30355688-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/30355688-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是带三只正面抽屉的矩形抽屉柜，抽屉需要沿深度方向直线滑动；实物照片和尺寸图均显示为三斗布局，无门或复杂机构。",
+    "mechanisms": {
+     "抽屉": 3
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 3,
+     "configs": 354,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/30355688-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "50407304",
+   "name": "BJÖRKSNÄS 约纳斯",
+   "variant": "桦木",
+   "category": "斗柜和抽屉柜",
+   "ir": [
+    "chestofdrawers"
+   ],
+   "size_m": [
+    0.9,
+    0.47,
+    0.9
+   ],
+   "dims_cm": {
+    "width": 90.0,
+    "depth": 47.0,
+    "height": 90.0,
+    "clearance_under_furniture": 12.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/bjoerksnaes-yue-na-si-wu-dou-chou-ti-gui-hua-mu-50407304/",
+   "lux3d": false,
+   "limitations": [
+    "木材纹理、粗糙度和桦木色为近似表现，较参考图更均匀。",
+    "抽屉面板间隙和顶部、侧板等装饰细节有所简化。",
+    "拉手外观与参考图相近，但为简化几何，不作为独立机械关节。"
+   ],
+   "price_cny": 799,
+   "price_src": "样例",
+   "img": "library/img/50407304.jpg",
+   "ref": "library/img/50407304-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/50407304-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/50407304-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是一个带有五个直线滑动抽屉的桦木抽屉柜：顶部为两个小抽屉，下方为三个通宽抽屉。抽屉需要直线滑动机构，符合 cabinet 路由。",
+    "mechanisms": {
+     "抽屉": 5
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 5,
+     "configs": 440,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/50407304-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "60433487",
+   "name": "GODISHUS 古迪胡斯",
+   "variant": "白色",
+   "category": "斗柜和抽屉柜",
+   "ir": [
+    "chestofdrawers"
+   ],
+   "size_m": [
+    0.6,
+    0.4,
+    0.64
+   ],
+   "dims_cm": {
+    "width": 60.0,
+    "depth": 40.0,
+    "height": 64.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/godishus-gu-di-hu-si-san-dou-chou-ti-gui-bai-se-60433487/",
+   "lux3d": false,
+   "limitations": [
+    "模型整体比例和透视与参考图略有差异，但仍保持三斗抽屉柜的主要轮廓。",
+    "参考图中的圆角顶部护件、低矮底座和拉钮配色未完全复现。",
+    "抽屉内部和滑轨结构进行了合理简化。"
+   ],
+   "price_cny": 799,
+   "price_src": "样例",
+   "img": "library/img/60433487.jpg",
+   "ref": "library/img/60433487-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/60433487-in0.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是一个带三个直线滑动抽屉的白色三斗抽屉柜，抽屉数量和布局在主图及功能图中清晰可见；不属于静态物体。",
+    "mechanisms": {
+     "抽屉": 3
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 3,
+     "configs": 354,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/60433487-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "60503296",
+   "name": "GURSKEN 古希肯",
+   "variant": "浅米色",
+   "category": "斗柜和抽屉柜",
+   "ir": [
+    "chestofdrawers"
+   ],
+   "size_m": [
+    0.69,
+    0.38,
+    0.67
+   ],
+   "dims_cm": {
+    "depth": 38.0,
+    "height": 67.0,
+    "width": 69.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/gursken-gu-xi-ken-san-dou-chou-ti-gui-qian-mi-se-60503296/",
+   "lux3d": false,
+   "limitations": [
+    "模型底部采用四条明显外露圆柱腿，而参考图更接近低矮连续底座/侧板落地结构。",
+    "抽屉面板和顶板边缘有较明显的深色描边或缝隙，参考图的边缘更简洁、颜色更统一。",
+    "模型抽屉面板带有外凸框边，参考产品主要为平整面板。",
+    "模型视图中的比例和透视略有差异，腿部使整体视觉高度略高。"
+   ],
+   "price_cny": 799,
+   "price_src": "样例",
+   "img": "library/img/60503296.jpg",
+   "ref": "library/img/60503296-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/60503296-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/60503296-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是一个矩形三斗抽屉柜，主图和尺寸图均明确显示三个上下排列的直线滑动抽屉；没有门或复杂机构。",
+    "mechanisms": {
+     "抽屉": 3
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 3,
+     "configs": 354,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/60503296-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "70610154",
+   "name": "RAST 拉斯特",
+   "variant": "松木",
+   "category": "斗柜和抽屉柜",
+   "ir": [
+    "chestofdrawers"
+   ],
+   "size_m": [
+    0.6,
+    0.35,
+    0.59
+   ],
+   "dims_cm": {
+    "depth": 35.0,
+    "height": 59.0,
+    "width": 60.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/rast-la-si-te-san-dou-chou-ti-gui-song-mu-70610154/",
+   "lux3d": false,
+   "limitations": [
+    "模型正面内缩、板材厚度及底部小脚比例为近似建模，并非精确CAD复制。",
+    "渲染视角与参考图略有差异，但视图0能清楚显示正面三抽屉和右侧板。",
+    "参考图中抽屉前板较平整，实际模型的边框和侧向结构表现更突出。"
+   ],
+   "price_cny": 799,
+   "price_src": "样例",
+   "img": "library/img/70610154.jpg",
+   "ref": "library/img/70610154-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/70610154-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/70610154-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "产品是带三个直线滑动抽屉的松木三斗抽屉柜，照片和尺寸图均明确显示三只抽屉；抽屉需要沿深度方向拉出，因此不能归类为静态物体。结构属于支持的矩形柜体和普通直线抽屉机制。",
+    "mechanisms": {
+     "抽屉": 3
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 3,
+     "configs": 354,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/70610154-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "09270304",
+   "name": "LANDSKRONA 兰德克纳",
+   "variant": "哥兰/邦斯塔 金棕/金属",
+   "category": "沙发",
+   "ir": [
+    "sofa"
+   ],
+   "size_m": [
+    2.04,
+    0.89,
+    0.78
+   ],
+   "dims_cm": {
+    "width": 204.0,
+    "depth": 89.0,
+    "height": 78.0,
+    "armrest_height": 64.0,
+    "seat_width": 180.0,
+    "seat_depth": 61.0,
+    "seat_height": 44.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/landskrona-lan-de-ke-na-san-ren-sha-fa-ge-lan-bang-si-ta-jin-zong-jin-shu-s09270304/",
+   "lux3d": true,
+   "limitations": [
+    "靠背软垫的绗缝和分格造型与参考图差异明显，实际模型表现为较少的水平褶皱/鼓包。",
+    "参考图中的靠背更高、更厚，模型的靠背视觉高度和软包体积略有不足。",
+    "腿部及镀铬脚垫为简化造型，细节和连接结构不完全一致。",
+    "模型整体偏单一材质表现，皮革纹理、缝线和压花细节弱于参考图。"
+   ],
+   "price_cny": 1999,
+   "price_src": "样例",
+   "img": "library/img/09270304.jpg",
+   "ref": "library/img/09270304-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/09270304-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是固定式三人沙发，照片显示固定扶手、靠背和沙发框架；座垫与靠背垫属于松散软垫，不构成机械关节。未发现躺椅、折叠、滑动或可调机构。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      2.1,
+      1.07,
+      0.82
+     ],
+     "to": [
+      2.04,
+      0.89,
+      0.78
+     ]
+    },
+    "review": 3,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "20619072",
+   "name": "LILLESÄTER 利乐塞特",
+   "variant": "阿斯沃 灰白",
+   "category": "沙发",
+   "ir": [
+    "sofa"
+   ],
+   "size_m": [
+    2.01,
+    0.9,
+    0.69
+   ],
+   "dims_cm": {
+    "armrest_height": 51.0,
+    "depth": 90.0,
+    "clearance_under_furniture": 2.0,
+    "height": 69.0,
+    "seat_depth": 65.0,
+    "seat_height": 44.0,
+    "seat_width": 166.0,
+    "width": 201.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/lillesaeter-li-le-sai-te-san-ren-sha-fa-a-si-wo-hui-bai-20619072/",
+   "lux3d": true,
+   "limitations": [
+    "坐垫、靠背和扶手的分件缝线与软包细节较简化。",
+    "实际模型的靠背与底座轮廓较为连续，未完全复现参考图中更明显的坐垫分块和右侧扶手包覆结构。",
+    "渲染视图分辨率较低，材质纹理与布料质感表现有限。"
+   ],
+   "price_cny": 1999,
+   "price_src": "样例",
+   "img": "library/img/20619072.jpg",
+   "ref": "library/img/20619072-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/20619072-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是固定式三人布艺沙发，照片和尺寸图未显示可动靠背、座椅、扶手或其他刚性铰接机构；坐垫与靠背分缝属于软包分件，不视为机械关节。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      2.1,
+      0.93,
+      0.73
+     ],
+     "to": [
+      2.01,
+      0.9,
+      0.69
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "30245044",
+   "name": "STOCKHOLM 斯德哥尔摩",
+   "variant": "西格劳拉 自然色",
+   "category": "沙发",
+   "ir": [
+    "sofa"
+   ],
+   "size_m": [
+    2.11,
+    0.88,
+    0.8
+   ],
+   "dims_cm": {
+    "width": 211.0,
+    "depth": 88.0,
+    "height": 80.0,
+    "clearance_under_furniture": 14.0,
+    "armrest_height": 72.0,
+    "seat_width": 158.0,
+    "seat_depth": 59.0,
+    "seat_height": 43.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/stockholm-si-de-ge-er-mo-san-ren-sha-fa-xi-ge-lao-la-zi-ran-se-30245044/",
+   "lux3d": true,
+   "limitations": [
+    "靠垫分块、缝线和皮革褶皱细节较参考图简化。",
+    "模型的靠背及侧靠垫比例与参考图略有差异。",
+    "四条金属腿的形状和安装角度为近似表现。"
+   ],
+   "price_cny": 1999,
+   "price_src": "样例",
+   "img": "library/img/30245044.jpg",
+   "ref": "library/img/30245044-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/30245044-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/30245044-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是固定式三人沙发，图片显示为固定框架、扶手和金属腿；座垫及靠背垫为松散软垫，不属于机械关节或可操作机构。未见 recline、折叠、旋转或升降结构。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      2.2,
+      0.92,
+      0.85
+     ],
+     "to": [
+      2.11,
+      0.88,
+      0.8
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "50436354",
+   "name": "BRUSEN 布鲁森",
+   "variant": "红色",
+   "category": "沙发",
+   "ir": [
+    "sofa"
+   ],
+   "size_m": [
+    1.46,
+    0.64,
+    0.75
+   ],
+   "dims_cm": {
+    "width": 146.0,
+    "depth": 64.0,
+    "height": 75.0,
+    "seat_width": 120.0,
+    "seat_depth": 52.0,
+    "seat_height": 42.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/brusen-bu-lu-sen-san-ren-sha-fa-hu-wai-hong-se-50436354/",
+   "lux3d": true,
+   "limitations": [
+    "模型材质颜色略偏浅红/砖红，与参考图的鲜红色存在轻微差异。",
+    "模型为单一网格和单一材质，未细分记录座面框架、脚部塑料等隐藏或材质结构。",
+    "部分视角中后侧或内侧支腿被座面与栏杆遮挡，但其他视角显示结构完整。"
+   ],
+   "price_cny": 1999,
+   "price_src": "样例",
+   "img": "library/img/50436354.jpg",
+   "ref": "library/img/50436354-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [],
+    "route_note": "这是固定式户外三人沙发，图片显示为焊接钢管框架、固定座面和固定靠背，没有门、抽屉、旋转、升降、折叠或其他可动机构。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      1.6,
+      0.7,
+      0.8
+     ],
+     "to": [
+      1.46,
+      0.64,
+      0.75
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "60499628",
+   "name": "GREVLUNDA 格雷夫隆达",
+   "variant": "带左贵妃椅/弗洛胡勒 中褐色",
+   "category": "沙发",
+   "ir": [
+    "sofa"
+   ],
+   "size_m": [
+    2.9,
+    0.97,
+    1.11
+   ],
+   "dims_cm": {
+    "armrest_height": 66.0,
+    "depth": 97.0,
+    "clearance_under_furniture": 11.0,
+    "height": 111.0,
+    "seat_height": 51.0,
+    "seat_width": 250.0,
+    "width": 290.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/grevlunda-ge-lei-fu-long-da-san-ren-sha-fa-dai-zuo-gui-fei-yi-fu-luo-hu-le-zhong-he-se-60499628/",
+   "lux3d": true,
+   "limitations": [
+    "靠背、坐垫和扶手的分块与参考图不完全一致，软垫细节和缝线较简化。",
+    "模型的左侧贵妃椅比例和前伸深度看起来略小于参考图。",
+    "参考图具有更明显的三张独立靠背与坐垫分区，模型的分区表现较弱。",
+    "未能仅凭渲染图确认精确尺寸，但整体轮廓和功能形态一致。"
+   ],
+   "price_cny": 1999,
+   "price_src": "样例",
+   "img": "library/img/60499628.jpg",
+   "ref": "library/img/60499628-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/60499628-in0.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是带左侧贵妃椅的三人皮质沙发；照片显示固定框架、固定扶手和固定靠背，没有可验证的躺椅、折叠、滑动或其他刚性运动机构。坐垫和靠垫属于软性可拆部件，不视为机械关节。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      2.8,
+      1.73,
+      0.98
+     ],
+     "to": [
+      2.9,
+      0.97,
+      1.11
+     ]
+    },
+    "review": 3,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "80519526",
+   "name": "KIVIK 奇维",
+   "variant": "哥兰/邦斯塔 黑色",
+   "category": "沙发",
+   "ir": [
+    "sofa"
+   ],
+   "size_m": [
+    2.27,
+    0.95,
+    0.83
+   ],
+   "dims_cm": {
+    "depth": 95.0,
+    "height": 83.0,
+    "seat_depth": 60.0,
+    "seat_height": 45.0,
+    "seat_width": 180.0,
+    "width": 227.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/kivik-qi-wei-san-ren-sha-fa-ge-lan-bang-si-ta-hei-se-80519526/",
+   "lux3d": true,
+   "limitations": [
+    "模型整体靠背高度和沙发比例略低于参考图。",
+    "底部短脚及部分离地结构在当前视图中不明显。",
+    "缝线、软塌程度和皮革压花细节较为简化。",
+    "参考图与模型均为双座垫、双靠垫构成，未体现独立三座垫分割。"
+   ],
+   "price_cny": 1999,
+   "price_src": "样例",
+   "img": "library/img/80519526.jpg",
+   "ref": "library/img/80519526-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/80519526-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/80519526-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是固定式三人沙发，照片显示固定扶手、座框和靠背，座垫与靠背垫属于可拆卸软垫而非机械关节；未见躺椅、折叠、滑动或可调机构。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      2.0,
+      0.8,
+      0.78
+     ],
+     "to": [
+      2.27,
+      0.95,
+      0.83
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "00294516",
+   "name": "BESTÅ 贝达",
+   "variant": "黑褐色",
+   "category": "电视柜",
+   "ir": [
+    "tvstand"
+   ],
+   "size_m": [
+    1.2,
+    0.4,
+    0.38
+   ],
+   "dims_cm": {
+    "width": 120.0,
+    "depth": 40.0,
+    "height": 38.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/besta-bei-da-dian-shi-gui-hei-he-se-00294516/",
+   "lux3d": true,
+   "limitations": [
+    "模型为单一网格，细节、内部安装孔和底部小脚的表现较简化。",
+    "顶部走线孔和边缘结构的造型较粗略。",
+    "部分视角下封闭面板的功能和朝向不够明确，但未见明确的活动机构标识。"
+   ],
+   "price_cny": 599,
+   "price_src": "样例",
+   "img": "library/img/00294516.jpg",
+   "ref": "library/img/00294516-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/00294516-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/00294516-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是一个矩形电视柜框架，实物图显示为两个开放式储物格，没有柜门、抽屉或其他可动部件，因此不需要刚性铰接机构。线缆孔仅为固定的走线配件，不视为机械机构。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      1.4,
+      0.53,
+      0.5
+     ],
+     "to": [
+      1.2,
+      0.4,
+      0.38
+     ]
+    },
+    "review": 3,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "00352573",
+   "name": "BYÅS 彼亚斯",
+   "variant": "高光 白色",
+   "category": "电视柜",
+   "ir": [
+    "tvstand"
+   ],
+   "size_m": [
+    1.6,
+    0.417,
+    0.45
+   ],
+   "dims_cm": {
+    "width": 160.0,
+    "depth": 42.0,
+    "height": 45.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/byas-bi-ya-si-dian-shi-gui-gao-guang-bai-se-00352573/",
+   "lux3d": false,
+   "limitations": [
+    "抽屉滑轨、内部连接件和可调孔位未细致表现。",
+    "拉手为简化的小片式几何，材质与边缘细节较少。",
+    "渲染分辨率较低，部分缝隙和底座细节不够清晰。"
+   ],
+   "price_cny": 599,
+   "price_src": "样例",
+   "img": "library/img/00352573.jpg",
+   "ref": "library/img/00352573-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/00352573-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/00352573-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "功能原图显示左右整块面板连同抽屉侧壁沿深度直线拉出，源材料列出抽屉构件；因此为两侧抽屉、中间一块固定搁板形成两个开放格。此前将两侧判为铰链门错误，现依据功能图修正。",
+    "mechanisms": {
+     "抽屉": 2
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 2,
+     "configs": 319,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/00352573-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "10439774",
+   "name": "BRUSALI 布鲁萨里",
+   "variant": "白色",
+   "category": "电视柜",
+   "ir": [
+    "tvstand"
+   ],
+   "size_m": [
+    1.2,
+    0.36,
+    0.62
+   ],
+   "dims_cm": {
+    "width": 120.0,
+    "depth": 36.0,
+    "height": 62.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/brusali-bu-lu-sa-li-dian-shi-gui-bai-se-10439774/",
+   "lux3d": true,
+   "limitations": [
+    "装饰线条、侧面细节和搁板调节孔的表现较为简化。",
+    "实际模型与参考图的透视角度及局部比例略有差异。"
+   ],
+   "price_cny": 599,
+   "price_src": "样例",
+   "img": "library/img/10439774.jpg",
+   "ref": "library/img/10439774-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/10439774-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是带开放式隔间的电视柜，主体为矩形柜体并由腿支撑。正面没有门或抽屉，但官方材料和图片显示内部搁板带可调节孔位，因此需要表示可调节搁板机构，不能归类为静态物体。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      1.45,
+      0.48,
+      0.79
+     ],
+     "to": [
+      1.2,
+      0.36,
+      0.62
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "20415065",
+   "name": "HAUGA 豪嘉",
+   "variant": "米黄色",
+   "category": "电视柜",
+   "ir": [
+    "tvstand"
+   ],
+   "size_m": [
+    1.38,
+    0.359,
+    0.54
+   ],
+   "dims_cm": {
+    "width": 138.0,
+    "depth": 36.0,
+    "height": 54.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/hauga-hao-jia-dian-shi-gui-mi-huang-se-20415065/",
+   "lux3d": false,
+   "limitations": [
+    "抽屉旋钮数量和细节进行了简化，但未影响两个独立抽屉的识别与功能布局。",
+    "电线管理开孔未作为独立前面板区域建模；参考资料也未完整确认其正面位置。",
+    "侧面围挡和顶部过渡曲线为近似细分实体，装饰精度低于参考图。",
+    "视图90和180主要展示背面或非主要比较面，正面视图0与参考产品最具可比性。"
+   ],
+   "price_cny": 599,
+   "price_src": "样例",
+   "img": "library/img/20415065.jpg",
+   "ref": "library/img/20415065-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/20415065-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/20415065-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "产品是带两个直线抽屉和两个开放储物格的电视柜；抽屉需要直线滑动机构，柜体本身属于规则矩形柜架，适合cabinet路线。",
+    "mechanisms": {
+     "抽屉": 2
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 2,
+     "configs": 319,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/20415065-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "50352900",
+   "name": "HEMNES 汉尼斯",
+   "variant": "浅褐色",
+   "category": "电视柜",
+   "ir": [
+    "tvstand"
+   ],
+   "size_m": [
+    1.48,
+    0.47,
+    0.57
+   ],
+   "dims_cm": {
+    "width": 148.0,
+    "depth": 47.0,
+    "height": 57.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/hemnes-han-ni-si-dian-shi-gui-qian-he-se-50352900/",
+   "lux3d": false,
+   "limitations": [
+    "模型整体较简化，未复现参考图中明显的松木节疤、复杂木纹和真实表面粗糙度。",
+    "顶板和边框比例、腿部及板件细节与参考产品存在一定简化差异。",
+    "抽屉滑轨内部五金未直接建模，但三个抽屉均有独立直线运动关节。"
+   ],
+   "price_cny": 599,
+   "price_src": "样例",
+   "img": "library/img/50352900.jpg",
+   "ref": "library/img/50352900-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/50352900-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/50352900-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是带三个直线抽屉和三个开放式搁格的电视柜，抽屉需要直线滑动机构，不能归类为静态物体。图片与尺寸图显示为三列相同布局、底部独立支腿结构。",
+    "mechanisms": {
+     "抽屉": 3
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 3,
+     "configs": 354,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/50352900-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "50483878",
+   "name": "BAGGEBO 巴格布",
+   "variant": "金属/白色",
+   "category": "电视柜",
+   "ir": [
+    "tvstand"
+   ],
+   "size_m": [
+    0.9,
+    0.35,
+    0.4
+   ],
+   "dims_cm": {
+    "width": 90.0,
+    "depth": 35.0,
+    "height": 40.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/baggebo-ba-ge-bu-dian-shi-gui-jin-shu-bai-se-50483878/",
+   "lux3d": true,
+   "limitations": [
+    "网孔纹理未按参考图逐孔建模，整体表现为简化的白色金属表面。",
+    "参考图中的局部网孔板细节和连接件较为简化。",
+    "模型表面存在轻微斑驳或噪点感，与参考图的均匀白色粉末涂层不完全一致。"
+   ],
+   "price_cny": 599,
+   "price_src": "样例",
+   "img": "library/img/50483878.jpg",
+   "ref": "library/img/50483878-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/50483878-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是带金属网架搁板和固定分隔板的开放式电视柜，照片与尺寸图均未显示门、抽屉、旋转或其他可动机构，因此无需刚性 articulation。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      1.6,
+      0.69,
+      0.75
+     ],
+     "to": [
+      0.9,
+      0.35,
+      0.4
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "70501310",
+   "name": "FJÄLLBO 耶伯",
+   "variant": "黑色",
+   "category": "电视柜",
+   "ir": [
+    "tvstand"
+   ],
+   "size_m": [
+    1.0,
+    0.359,
+    0.54
+   ],
+   "dims_cm": {
+    "depth": 36.0,
+    "height": 54.0,
+    "width": 100.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/fjaellbo-ye-bo-dian-shi-gui-hei-se-70501310/",
+   "lux3d": false,
+   "limitations": [
+    "门框、螺钉和圆角细节相较参考图有所简化。",
+    "网孔形状和孔距为近似建模，未完全复现参考图的冲压网外观。",
+    "模型木质顶板颜色较浅，纹理表现与参考图存在差异。",
+    "参考图为透视近景，渲染视图较远，因此细节可见度有限。"
+   ],
+   "price_cny": 599,
+   "price_src": "样例",
+   "img": "library/img/70501310.jpg",
+   "ref": "library/img/70501310-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/70501310-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/70501310-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是带两扇普通侧铰链网孔门和内部搁板的电视柜；门可向外开启，属于支持的矩形柜体结构。",
+    "mechanisms": {
+     "门": 2
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 2,
+     "configs": 319,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/70501310-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "00487874",
+   "name": "IDANÄS 宜达奈",
+   "variant": "白色",
+   "category": "茶几",
+   "ir": [
+    "coffeetable"
+   ],
+   "size_m": [
+    1.07,
+    0.549,
+    0.49
+   ],
+   "dims_cm": {
+    "clearance_under_furniture": 12.0,
+    "height": 49.0,
+    "length": 107.0,
+    "width": 55.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/idanaes-yi-da-nai-cha-ji-bai-se-00487874/",
+   "lux3d": false,
+   "limitations": [
+    "玻璃顶板在渲染中呈灰白半透明效果，透明度和真实玻璃质感弱于参考图。",
+    "腿部、顶框和抽屉比例及细节有所简化，抽屉拉手也较小。",
+    "渲染视角与参考图略有差异。"
+   ],
+   "price_cny": 399,
+   "price_src": "样例",
+   "img": "library/img/00487874.jpg",
+   "ref": "library/img/00487874-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/00487874-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是带四条腿、开放搁板和两个直线抽屉的矩形茶几；抽屉需要直线滑动机构，不能归类为静态物体。玻璃桌面和白色涂装框架均在图片及官方记录中得到支持。",
+    "mechanisms": {
+     "抽屉": 2
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 2,
+     "configs": 319,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/00487874-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "10353063",
+   "name": "LISABO 利萨伯",
+   "variant": "白蜡木贴面",
+   "category": "茶几",
+   "ir": [
+    "coffeetable"
+   ],
+   "size_m": [
+    1.18,
+    0.5,
+    0.5
+   ],
+   "dims_cm": {
+    "length": 118.0,
+    "width": 50.0,
+    "height": 50.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/lisabo-li-sa-bo-cha-ji-bai-zha-mu-tie-mian-10353063/",
+   "lux3d": true,
+   "limitations": [
+    "桌面边缘圆角、厚度及四条腿的截面和倾角为近似建模，未完全复现原产品的细节。",
+    "渲染材质的木纹方向和明暗表现与参考图略有差异。",
+    "视图中桌腿连接和隐藏结构不可见。"
+   ],
+   "price_cny": 399,
+   "price_src": "样例",
+   "img": "library/img/10353063.jpg",
+   "ref": "library/img/10353063-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/10353063-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/10353063-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是无门、无抽屉、无升降或折叠机构的四腿茶几；桌面和腿均为固定结构，不需要刚性运动关节。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      1.4,
+      0.66,
+      0.64
+     ],
+     "to": [
+      1.18,
+      0.5,
+      0.5
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "10413496",
+   "name": "HEMNES 汉尼斯",
+   "variant": "白色漆/浅褐色",
+   "category": "茶几",
+   "ir": [
+    "coffeetable"
+   ],
+   "size_m": [
+    0.9,
+    0.9,
+    0.46
+   ],
+   "dims_cm": {
+    "length": 90.0,
+    "width": 90.0,
+    "height": 46.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/hemnes-han-ni-si-cha-ji-bai-se-qi-qian-he-se-10413496/",
+   "lux3d": true,
+   "limitations": [
+    "下层开放置物架的板厚、边框和连接细节较参考图简化。",
+    "桌面木纹和白色漆面的材质表现为近似视觉效果，细节不完全一致。",
+    "模型以单一网格表现，未体现实际装配拆分，但未造成可见结构问题。"
+   ],
+   "price_cny": 399,
+   "price_src": "样例",
+   "img": "library/img/10413496.jpg",
+   "ref": "library/img/10413496-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/10413496-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是一个方形茶几/矮桌，具有固定桌面、四条固定腿和下方开放置物层，没有门、抽屉、旋转或折叠机构。桌面和置物层均为静态结构，适合 desk 路线。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.9,
+      0.9,
+      0.48
+     ],
+     "to": [
+      0.9,
+      0.9,
+      0.46
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "10500356",
+   "name": "BORGEBY 伯格比",
+   "variant": "黑色",
+   "category": "茶几",
+   "ir": [
+    "coffeetable"
+   ],
+   "size_m": [
+    0.7,
+    0.7,
+    0.42
+   ],
+   "dims_cm": {
+    "height": 42.0,
+    "diameter": 70.0,
+    "clearance_under_furniture": 6.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/borgeby-bo-ge-bi-cha-ji-hei-se-10500356/",
+   "lux3d": true,
+   "limitations": [
+    "渲染材质较暗且表面细节、木纹表现不明显。",
+    "与参考图相比，支腿和环形搁板的局部曲面与边缘细节有所简化。",
+    "渲染视图较小，无法精确核验尺寸比例。"
+   ],
+   "price_cny": 399,
+   "price_src": "样例",
+   "img": "library/img/10500356.jpg",
+   "ref": "library/img/10500356-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/10500356-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/10500356-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是一个圆形茶几，具有固定桌面、固定圆形搁板和固定支腿；储物搁板为开放式结构，没有门、抽屉、滑轨或其他可动机构，因此可归类为静态家具。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "尺寸图",
+      "70 cm"
+     ],
+     "depth": [
+      "尺寸图",
+      "70 cm"
+     ],
+     "height": [
+      "尺寸图",
+      "42 cm"
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.9,
+      0.9,
+      0.56
+     ],
+     "to": [
+      0.7,
+      0.7,
+      0.42
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "20513909",
+   "name": "LISTERBY 丽思德比",
+   "variant": "深褐色 着色橡木贴面",
+   "category": "茶几",
+   "ir": [
+    "coffeetable"
+   ],
+   "size_m": [
+    1.4,
+    0.6,
+    0.37
+   ],
+   "dims_cm": {
+    "length": 140.0,
+    "width": 60.0,
+    "height": 37.0,
+    "clearance_under_furniture": 12.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/listerby-li-si-de-bi-cha-ji-shen-he-se-zhao-se-xiang-mu-tie-mian-20513909/",
+   "lux3d": true,
+   "limitations": [
+    "模型整体细节和木材纹理表现较简化。",
+    "桌面边缘圆角、桌腿及下层条板的截面与参考图存在轻微差异。",
+    "渲染视图比例较小，难以精确核对尺寸和间隙。"
+   ],
+   "price_cny": 399,
+   "price_src": "样例",
+   "img": "library/img/20513909.jpg",
+   "ref": "library/img/20513909-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/20513909-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是带固定下层搁架的矩形茶几，桌面、支撑杆、搁架和四条腿均为固定结构；照片与尺寸图未显示抽屉、门、旋转、升降或折叠机构。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      1.2,
+      0.6,
+      0.34
+     ],
+     "to": [
+      1.4,
+      0.6,
+      0.37
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "30340381",
+   "name": "FJÄLLBO 耶伯",
+   "variant": "黑色",
+   "category": "茶几",
+   "ir": [
+    "coffeetable"
+   ],
+   "size_m": [
+    0.9,
+    0.46,
+    0.46
+   ],
+   "dims_cm": {
+    "length": 90.0,
+    "width": 46.0,
+    "height": 46.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/fjaellbo-ye-bo-cha-ji-hei-se-30340381/",
+   "lux3d": true,
+   "limitations": [
+    "下层金属网孔纹理较细且在渲染中略显均匀，未完全复现参考图的具体编织细节。",
+    "螺钉、连接件和局部圆角细节有所简化。"
+   ],
+   "price_cny": 399,
+   "price_src": "样例",
+   "img": "library/img/30340381.jpg",
+   "ref": "library/img/30340381-ref.jpg",
+   "glb": "library/models/30340381.glb",
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/30340381-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是一个固定式茶几，具有实木桌面、金属腿架和下方固定网格搁板；图片中未见门、抽屉、旋转、升降或折叠机构，因此无需刚性运动关节。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      1.2,
+      0.62,
+      0.62
+     ],
+     "to": [
+      0.9,
+      0.46,
+      0.46
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": [
+    {
+     "home": "scene000104",
+     "plan": "P05",
+     "title": "客厅餐桌换成 GAMLARED 冈拉瑞德（85×85 cm） + 主卧床换成 GRIMSBU 格里姆斯布（92×202 cm） + 茶几换成 FJÄLLBO 耶伯（90×46 cm）"
+    },
+    {
+     "home": "scene000460",
+     "plan": "P03",
+     "title": "茶几换成 FJÄLLBO 耶伯（90×46 cm）"
+    }
+   ]
+  },
+  {
+   "id": "50497583",
+   "name": "FRÖTORP 弗瑞托普",
+   "variant": "煤黑色 仿大理石/黑色 玻璃",
+   "category": "茶几",
+   "ir": [
+    "coffeetable"
+   ],
+   "size_m": [
+    0.88,
+    0.88,
+    0.35
+   ],
+   "dims_cm": {
+    "diameter": 88.0,
+    "height": 35.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/froetorp-fu-rui-tuo-pu-cha-ji-mei-hei-se-fang-da-li-shi-hei-se-bo-li-50497583/",
+   "lux3d": true,
+   "limitations": [
+    "支撑架的弯曲收脚结构相较参考图有所简化，部分视角下呈较直的立柱形态。",
+    "上层黑色玻璃与下层仿大理石板的材质区分不够明显，但整体仍保持黑色视觉效果。",
+    "渲染模型的比例和透视表现略有差异，未提供尺寸标尺，无法仅凭图像确认精确尺寸。"
+   ],
+   "price_cny": 399,
+   "price_src": "样例",
+   "img": "library/img/50497583.jpg",
+   "ref": "library/img/50497583-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/50497583-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是圆形双层茶几，结构由固定的圆形上台面、下层搁板和金属支架组成，照片与尺寸图未显示抽屉、门、旋转或其他可动机构，因此可按静态家具建模。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "尺寸图",
+      "88 cm直径"
+     ],
+     "depth": [
+      "尺寸图",
+      "88 cm直径"
+     ],
+     "height": [
+      "尺寸图",
+      "35 cm"
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.9,
+      0.9,
+      0.36
+     ],
+     "to": [
+      0.88,
+      0.88,
+      0.35
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "00556056",
+   "name": "BRUKSVARA 布瓦拉",
+   "variant": "褐色",
+   "category": "衣物收纳柜",
+   "ir": [
+    "wardrobe"
+   ],
+   "size_m": [
+    0.794,
+    0.565,
+    2.01
+   ],
+   "dims_cm": {
+    "width": 79.4,
+    "depth": 56.5,
+    "height": 201.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/bruksvara-bu-wa-la-2-men-2-ti-yi-gui-he-se-00556056/",
+   "lux3d": false,
+   "limitations": [
+    "实际模型木纹和褐色略偏浅，质感与参考图存在轻微差异。",
+    "挂钩在提供的渲染视图中未清晰可见，但可能被门板或内部结构遮挡。",
+    "门板和抽屉缝隙较简化，未完全复现参考图的细节。"
+   ],
+   "price_cny": 999,
+   "price_src": "样例",
+   "img": "library/img/00556056.jpg",
+   "ref": "library/img/00556056-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/00556056-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/00556056-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是带两扇侧铰链门和两个直线抽屉的矩形衣柜，照片清楚显示左侧全高门、右侧较短门以及右下方两个抽屉，属于 cabinet 路线。",
+    "mechanisms": {
+     "门": 2,
+     "抽屉": 2
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 4,
+     "configs": 393,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/00556056-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "10437237",
+   "name": "KLEPPSTAD 克勒普斯塔",
+   "variant": "白色",
+   "category": "衣物收纳柜",
+   "ir": [
+    "wardrobe"
+   ],
+   "size_m": [
+    0.79,
+    0.549,
+    1.76
+   ],
+   "dims_cm": {
+    "width": 79.0,
+    "depth": 55.0,
+    "height": 176.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/kleppstad-ke-le-pu-si-ta-shuang-men-yi-gui-bai-se-10437237/",
+   "lux3d": false,
+   "limitations": [
+    "顶部和部分板件边缘的黑色接缝较明显，参考图中的接缝更细、更弱。",
+    "模型底座和侧脚的造型较简化，比例与参考图存在轻微差异。",
+    "门把手尺寸较小且不够突出，但仍位于两门中部附近。"
+   ],
+   "price_cny": 999,
+   "price_src": "样例",
+   "img": "library/img/10437237.jpg",
+   "ref": "library/img/10437237-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/10437237-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是一个矩形双门衣柜，照片明确显示左右两扇普通侧铰链门；需要支持门的刚性旋转，不应归类为静态物体。内部可见一块搁板，未见抽屉或复杂机构。",
+    "mechanisms": {
+     "门": 2
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 2,
+     "configs": 319,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/10437237-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "30453759",
+   "name": "RAKKESTAD 拉科斯塔德",
+   "variant": "黑褐色",
+   "category": "衣物收纳柜",
+   "ir": [
+    "wardrobe"
+   ],
+   "size_m": [
+    0.79,
+    0.549,
+    1.76
+   ],
+   "dims_cm": {
+    "width": 79.0,
+    "depth": 55.0,
+    "height": 176.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/rakkestad-la-ke-si-ta-de-shuang-men-yi-gui-hei-he-se-30453759/",
+   "lux3d": false,
+   "limitations": [
+    "模型采用较简化的平板门外观，未完整还原参考图中的厚重边框和嵌板结构。",
+    "内部实际显示为多层搁板，参考信息仅明确要求至少一块搁板，因此不视为布局错误。",
+    "渲染视角和参考图略有差异，但视图0同样展示了正面及右侧面，具有可比性。"
+   ],
+   "price_cny": 999,
+   "price_src": "样例",
+   "img": "library/img/30453759.jpg",
+   "ref": "library/img/30453759-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/30453759-in0.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是一个矩形双门衣柜，主图清楚显示左右两扇木质侧铰门；因此需要支持两扇普通侧开门。内部图片显示可调搁板和开放储物空间，但搁板调节结构不应凭图像细节过度建模，且不属于主要前面板机构。",
+    "mechanisms": {
+     "门": 2,
+     "可调隔板": 1
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 3,
+    "joints": {
+     "n": 2,
+     "configs": 319,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/30453759-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "30453764",
+   "name": "RAKKESTAD 拉科斯塔德",
+   "variant": "黑褐色",
+   "category": "衣物收纳柜",
+   "ir": [
+    "wardrobe"
+   ],
+   "size_m": [
+    1.173,
+    0.549,
+    1.757
+   ],
+   "dims_cm": {
+    "width": 117.0,
+    "depth": 55.0,
+    "height": 176.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/rakkestad-la-ke-si-ta-de-san-men-yi-gui-hei-he-se-30453764/",
+   "lux3d": false,
+   "limitations": [
+    "门板为较简化的平面造型，未复现参考图中的明显边框、横向装饰板和更丰富的木纹细节。",
+    "把手尺寸较小且不明显，但三个独立门板仍可辨识。",
+    "内部搁板和挂衣杆在闭合视图中不可见；在全开视图中可见左侧上部搁板及右侧分隔区域的搁板。"
+   ],
+   "price_cny": 999,
+   "price_src": "样例",
+   "img": "library/img/30453764.jpg",
+   "ref": "library/img/30453764-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/30453764-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/30453764-in1.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是一个矩形三门衣柜，主图清楚显示三个独立的侧开门；门需要普通铰链开合，内部右侧搁板和左侧挂衣空间为固定结构。尺寸图提供了整体宽度、深度和高度，因此可按柜体路线建模。",
+    "mechanisms": {
+     "门": 3
+    },
+    "dims_src": {
+     "width": [
+      "尺寸图",
+      "117.3 cm"
+     ],
+     "depth": [
+      "尺寸图",
+      "55.0 cm"
+     ],
+     "height": [
+      "尺寸图",
+      "175.7 cm"
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 3,
+     "configs": 354,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/30453764-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "39603679",
+   "name": "LASTARE 拉思塔尔",
+   "variant": "白色/黄色",
+   "category": "衣物收纳柜",
+   "ir": [
+    "wardrobe"
+   ],
+   "size_m": [
+    0.6,
+    0.419,
+    1.03
+   ],
+   "dims_cm": {
+    "width": 60.0,
+    "depth": 42.0,
+    "height": 103.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/lastare-la-si-ta-er-yi-gui-zu-he-bai-se-huang-se-s39603679/",
+   "lux3d": false,
+   "limitations": [
+    "参考图为左门打开、右门关闭，而提供的关闭视图为两门关闭；全开视图则为两门同时打开，姿态不完全匹配，但不影响铰链机构存在性判断。",
+    "内部层板和柜内结构为简化建模，未完全复现参考图中的孔位、挂杆或收纳细节。",
+    "视图中未呈现参考图同等程度的材质、光照和边缘细节。"
+   ],
+   "price_cny": 999,
+   "price_src": "样例",
+   "img": "library/img/39603679.jpg",
+   "ref": "library/img/39603679-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/39603679-in0.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "该产品是矩形衣柜组合，主图和功能图明确显示左右两扇普通侧铰链门；内部为开放式储物空间和层板。两扇门需要刚性转动 articulation，属于 cabinet 路线。",
+    "mechanisms": {
+     "门": 2
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 2,
+     "configs": 319,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/39603679-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "50378684",
+   "name": "MUSKEN 穆斯肯",
+   "variant": "白色",
+   "category": "衣物收纳柜",
+   "ir": [
+    "wardrobe"
+   ],
+   "size_m": [
+    1.242,
+    0.6,
+    2.005
+   ],
+   "dims_cm": {
+    "width": 124.2,
+    "depth": 60.0,
+    "height": 200.5
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/musken-mu-si-ken-shuang-men-yi-gui-dai-3-ge-chou-ti-bai-se-50378684/",
+   "lux3d": false,
+   "limitations": [
+    "把手和门板竖向装饰纹理较为简化，未完全复现参考图中的细节。",
+    "内部层板、孔位及柜内收纳结构采用近似建模。",
+    "模型正面比例和门缝间隙为视觉估计，未达到精确CAD复刻程度。"
+   ],
+   "price_cny": 999,
+   "price_src": "样例",
+   "img": "library/img/50378684.jpg",
+   "ref": "library/img/50378684-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/50378684-in0.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是带两扇侧铰链柜门和三个直线滑动抽屉的矩形衣柜，照片清楚显示左侧全高门、右侧较短门以及右下方三个抽屉；普通柜门和抽屉机构属于支持范围。",
+    "mechanisms": {
+     "门": 2,
+     "抽屉": 3,
+     "可调隔板": 3
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 5,
+     "configs": 440,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/50378684-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "80441759",
+   "name": "KLEPPSTAD 克勒普斯塔",
+   "variant": "白色",
+   "category": "衣物收纳柜",
+   "ir": [
+    "wardrobe"
+   ],
+   "size_m": [
+    1.17,
+    0.549,
+    1.76
+   ],
+   "dims_cm": {
+    "width": 117.0,
+    "depth": 55.0,
+    "height": 176.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/kleppstad-ke-le-pu-si-ta-san-men-yi-gui-bai-se-80441759/",
+   "lux3d": false,
+   "limitations": [
+    "柜门按近似等宽处理，门缝、边框和把手细节较照片简化。",
+    "顶部与部分接缝呈现较明显的深色间隙，与参考图的白色整体观感略有差异。",
+    "模型正面比例和底座细节为简化表现。"
+   ],
+   "price_cny": 999,
+   "price_src": "样例",
+   "img": "library/img/80441759.jpg",
+   "ref": "library/img/80441759-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/80441759-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/80441759-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是一个带三扇普通侧铰链门的矩形衣柜。主图显示三块连续的白色门板，功能图显示最左门向外打开；因此需要支持侧开门铰接。内部搁板属于固定结构，不增加机械机构。",
+    "mechanisms": {
+     "门": 3
+    },
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": null,
+    "review": 4,
+    "joints": {
+     "n": 3,
+     "configs": 354,
+     "penetration_m": 0.0,
+     "passed": true
+    },
+    "open_img": "library/img/80441759-open.jpg"
+   },
+   "used_in": []
+  },
+  {
+   "id": "09420394",
+   "name": "SANDSBERG 桑德贝利",
+   "variant": "黑色",
+   "category": "餐桌",
+   "ir": [
+    "diningtable"
+   ],
+   "size_m": [
+    1.1,
+    0.67,
+    0.75
+   ],
+   "dims_cm": {
+    "length": 110.0,
+    "width": 67.0,
+    "height": 75.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/sandsberg-sang-de-bei-li-zhuo-zi-hei-se-s09420394/",
+   "lux3d": true,
+   "limitations": [
+    "桌腿截面、连接件和脚垫细节进行了简化。",
+    "桌面及桌架厚度与参考图存在轻微近似差异。",
+    "渲染视角和参考图不完全一致，但不影响主要结构判断。"
+   ],
+   "price_cny": 799,
+   "price_src": "样例",
+   "img": "library/img/09420394.jpg",
+   "ref": "library/img/09420394-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/09420394-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是带四条固定金属腿的矩形餐桌，桌面与桌架均为固定结构，未见抽屉、门、折叠、伸缩或其他需要刚性 articulation 的活动机构。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "尺寸图",
+      "110 cm"
+     ],
+     "depth": [
+      "尺寸图",
+      "67 cm"
+     ],
+     "height": [
+      "尺寸图",
+      "75 cm"
+     ]
+    },
+    "rescale": {
+     "from": [
+      1.4,
+      0.82,
+      0.99
+     ],
+     "to": [
+      1.1,
+      0.67,
+      0.75
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "10493539",
+   "name": "MÖRBYLÅNGA 莫比恩",
+   "variant": "橡木贴面 着褐色漆",
+   "category": "餐桌",
+   "ir": [
+    "diningtable"
+   ],
+   "size_m": [
+    1.6,
+    0.85,
+    0.75
+   ],
+   "dims_cm": {
+    "height": 75.0,
+    "length": 160.0,
+    "width": 85.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/moerbylanga-mo-bi-en-zhuo-zi-xiang-mu-tie-mian-zhao-he-se-qi-10493539/",
+   "lux3d": true,
+   "limitations": [
+    "桌面纹理与参考图的深色橡木质感略有差异，模型整体颜色稍偏浅。",
+    "桌面、桌腿和底部框架的连接细节较为简化，未完整呈现参考图中的细部结构。",
+    "模型为单一网格，无法从渲染中确认隐藏连接方式。"
+   ],
+   "price_cny": 799,
+   "price_src": "样例",
+   "img": "library/img/10493539.jpg",
+   "ref": "library/img/10493539-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/10493539-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/10493539-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是带固定桌腿和横向支撑结构的矩形餐桌，图片与尺寸图均未显示抽屉、折叠、伸缩或其他可动机构，因此采用desk路线且无需刚性活动关节。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      1.8,
+      1.11,
+      0.97
+     ],
+     "to": [
+      1.6,
+      0.85,
+      0.75
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "30382451",
+   "name": "LISABO 利萨伯",
+   "variant": "黑色/白蜡木贴面",
+   "category": "餐桌",
+   "ir": [
+    "diningtable"
+   ],
+   "size_m": [
+    1.4,
+    0.78,
+    0.74
+   ],
+   "dims_cm": {
+    "length": 140.0,
+    "width": 78.0,
+    "height": 74.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/lisabo-li-sa-bo-zhuo-zi-hei-se-bai-zha-mu-tie-mian-30382451/",
+   "lux3d": true,
+   "limitations": [
+    "桌腿截面、倾斜角度和连接细节为简化近似。",
+    "黑色表面木纹不明显，未充分体现白蜡木贴面质感。",
+    "桌面圆角和厚度与参考图存在轻微视觉差异。"
+   ],
+   "price_cny": 799,
+   "price_src": "样例",
+   "img": "library/img/30382451.jpg",
+   "ref": "library/img/30382451-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/30382451-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "该产品是矩形桌面与四条固定桌腿组成的普通桌子，照片和尺寸图未显示抽屉、门、折叠、伸缩或其他刚性运动机构，因此采用desk路线并视为静态结构。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "尺寸图",
+      "140 cm"
+     ],
+     "depth": [
+      "尺寸图",
+      "78 cm"
+     ],
+     "height": [
+      "尺寸图",
+      "74 cm"
+     ]
+    },
+    "rescale": {
+     "from": [
+      1.4,
+      0.77,
+      0.76
+     ],
+     "to": [
+      1.4,
+      0.78,
+      0.74
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "30463857",
+   "name": "DANDERYD 丹德立",
+   "variant": "橡木贴面/白色",
+   "category": "餐桌",
+   "ir": [
+    "diningtable"
+   ],
+   "size_m": [
+    1.3,
+    0.8,
+    0.75
+   ],
+   "dims_cm": {
+    "length": 130.0,
+    "width": 80.0,
+    "height": 75.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/danderyd-dan-de-li-can-zhuo-xiang-mu-tie-mian-bai-se-30463857/",
+   "lux3d": true,
+   "limitations": [
+    "桌面下方的白色围框/支撑结构相较参考图明显简化，部分视角下不够突出。",
+    "桌腿的车削细节和比例为概括建模，未完全复现参考图的细部造型。",
+    "材质表现更接近统一的浅橡木与浅色腿部，白色涂层与木质桌面的区分度略弱。"
+   ],
+   "price_cny": 799,
+   "price_src": "样例",
+   "img": "library/img/30463857.jpg",
+   "ref": "library/img/30463857-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/30463857-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是带四条固定桌腿的矩形餐桌，桌面无折叠、伸缩或其他活动结构；按桌类静态结构处理。官方尺寸与尺寸图一致。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      1.4,
+      0.81,
+      0.85
+     ],
+     "to": [
+      1.3,
+      0.8,
+      0.75
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "50400576",
+   "name": "MÖCKELBY 麦肯伯",
+   "variant": "橡木",
+   "category": "餐桌",
+   "ir": [
+    "diningtable"
+   ],
+   "size_m": [
+    1.4,
+    0.79,
+    0.74
+   ],
+   "dims_cm": {
+    "length": 140.0,
+    "width": 79.0,
+    "height": 74.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/moeckelby-mai-ken-bo-zhuo-zi-xiang-mu-50400576/",
+   "lux3d": true,
+   "limitations": [
+    "木纹与橡木自然色差较参考图简化。",
+    "桌腿、横梁和交叉支撑的截面与连接细节为近似建模。",
+    "模型视图中的比例和透视与参考图略有差异。"
+   ],
+   "price_cny": 799,
+   "price_src": "样例",
+   "img": "library/img/50400576.jpg",
+   "ref": "library/img/50400576-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/50400576-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是带四条桌腿、桌底框架和交叉支撑的矩形木质桌子；没有抽屉、门、折叠、伸缩或其他可动机构，属于桌子路线。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "尺寸图",
+      "140 cm"
+     ],
+     "depth": [
+      "尺寸图",
+      "79 cm"
+     ],
+     "height": [
+      "尺寸图",
+      "74 cm"
+     ]
+    },
+    "rescale": {
+     "from": [
+      2.0,
+      1.01,
+      0.72
+     ],
+     "to": [
+      1.4,
+      0.79,
+      0.74
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "60373493",
+   "name": "GAMLARED 冈拉瑞德",
+   "variant": "浅仿古色/黑色",
+   "category": "餐桌",
+   "ir": [
+    "diningtable"
+   ],
+   "size_m": [
+    0.85,
+    0.85,
+    0.75
+   ],
+   "dims_cm": {
+    "height": 75.0,
+    "diameter": 85.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/gamlared-gang-la-rui-de-zhuo-zi-qian-fang-gu-se-hei-se-60373493/",
+   "lux3d": true,
+   "limitations": [
+    "桌腿和桌下连接结构相较参考图有所简化，细节与截面形状不完全一致。",
+    "渲染视角和参考图不同，无法直接核验所有底部连接细节。"
+   ],
+   "price_cny": 799,
+   "price_src": "样例",
+   "img": "library/img/60373493.jpg",
+   "ref": "library/img/60373493-ref.jpg",
+   "glb": "library/models/60373493.glb",
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/60373493-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是带四条固定桌腿的圆形餐桌，未见抽屉、门、旋转、折叠或伸缩机构。圆桌不符合矩形桌面模板，因此采用静态路线。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "尺寸图",
+      "直径85厘米"
+     ],
+     "depth": [
+      "尺寸图",
+      "直径85厘米"
+     ],
+     "height": [
+      "尺寸图",
+      "高度75厘米"
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.75,
+      0.75,
+      0.69
+     ],
+     "to": [
+      0.85,
+      0.85,
+      0.75
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": [
+    {
+     "home": "scene000104",
+     "plan": "P05",
+     "title": "客厅餐桌换成 GAMLARED 冈拉瑞德（85×85 cm） + 主卧床换成 GRIMSBU 格里姆斯布（92×202 cm） + 茶几换成 FJÄLLBO 耶伯（90×46 cm）"
+    },
+    {
+     "home": "scene000121",
+     "plan": "P02",
+     "title": "客厅餐桌换成 GAMLARED 冈拉瑞德（85×85 cm）"
+    }
+   ]
+  },
+  {
+   "id": "80491773",
+   "name": "SKOGSTA 斯古塔",
+   "variant": "相思木/黑色",
+   "category": "餐桌",
+   "ir": [
+    "diningtable"
+   ],
+   "size_m": [
+    1.6,
+    0.81,
+    0.74
+   ],
+   "dims_cm": {
+    "length": 160.0,
+    "width": 81.0,
+    "height": 74.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/skogsta-si-gu-ta-zhuo-zi-xiang-si-mu-hei-se-80491773/",
+   "lux3d": true,
+   "limitations": [
+    "桌面木纹与参考图的条纹分布和深浅变化不完全一致。",
+    "桌腿、横梁及斜撑的截面和连接件细节为简化近似。",
+    "渲染模型的视角与参考图略有差异。"
+   ],
+   "price_cny": 799,
+   "price_src": "样例",
+   "img": "library/img/80491773.jpg",
+   "ref": "library/img/80491773-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/80491773-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是带四条腿和固定横向支撑结构的矩形餐桌，桌面与支架均为固定件；照片和尺寸图未显示抽屉、门、折叠、伸缩或其他刚性活动机构。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      3.8,
+      1.8,
+      1.9
+     ],
+     "to": [
+      1.6,
+      0.81,
+      0.74
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "10362487",
+   "name": "INGOLF 英格弗",
+   "variant": "白色",
+   "category": "餐椅",
+   "ir": [
+    "chair"
+   ],
+   "size_m": [
+    0.43,
+    0.52,
+    0.91
+   ],
+   "dims_cm": {
+    "width": 43.0,
+    "depth": 52.0,
+    "height": 91.0,
+    "seat_width": 43.0,
+    "seat_depth": 38.0,
+    "seat_height": 45.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/ingolf-ying-ge-fu-yi-zi-bai-se-10362487/",
+   "lux3d": true,
+   "limitations": [
+    "渲染材质与光照较简单，白色漆面细节和真实粗糙度表现有限。",
+    "部分视角下椅背和椅腿比例、曲线与参考图存在轻微差异，但不影响整体功能形态。"
+   ],
+   "price_cny": 299,
+   "price_src": "样例",
+   "img": "library/img/10362487.jpg",
+   "ref": "library/img/10362487-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/10362487-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "该产品是白色实木餐椅，照片和尺寸图均未显示旋转、升降、折叠或其他可动机构；交叉靠背和椅腿均为固定结构。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.44,
+      0.54,
+      0.9
+     ],
+     "to": [
+      0.43,
+      0.52,
+      0.91
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "10457230",
+   "name": "LISABO 利萨伯",
+   "variant": "黑色",
+   "category": "餐椅",
+   "ir": [
+    "chair"
+   ],
+   "size_m": [
+    0.46,
+    0.51,
+    0.8
+   ],
+   "dims_cm": {
+    "width": 46.0,
+    "depth": 51.0,
+    "height": 80.0,
+    "seat_width": 44.0,
+    "seat_depth": 39.0,
+    "seat_height": 45.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/lisabo-li-sa-bo-yi-zi-hei-se-10457230/",
+   "lux3d": true,
+   "limitations": [
+    "靠背与座面边缘的圆角、曲面比例和木纹细节较参考图简化。",
+    "靠背支撑件和椅腿截面、连接结构为近似形式。",
+    "渲染视角与参考图略有差异，部分结构比例受透视影响。"
+   ],
+   "price_cny": 299,
+   "price_src": "样例",
+   "img": "library/img/10457230.jpg",
+   "ref": "library/img/10457230-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/10457230-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "该产品是固定式餐椅，具有四条固定椅腿、固定座面和固定靠背；照片及尺寸图未显示旋转、升降、折叠或其他可动机构。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.46,
+      0.53,
+      0.82
+     ],
+     "to": [
+      0.46,
+      0.51,
+      0.8
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "29429204",
+   "name": "EKEDALEN 伊克多兰",
+   "variant": "深褐色/哈克波 深灰色",
+   "category": "餐椅",
+   "ir": [
+    "chair"
+   ],
+   "size_m": [
+    0.45,
+    0.51,
+    0.95
+   ],
+   "dims_cm": {
+    "width": 45.0,
+    "depth": 51.0,
+    "height": 95.0,
+    "seat_width": 45.0,
+    "seat_depth": 39.0,
+    "seat_height": 48.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/ekedalen-yi-ke-duo-lan-yi-zi-shen-he-se-ha-ke-bo-shen-hui-se-s29429204/",
+   "lux3d": true,
+   "limitations": [
+    "模型整体细节较简化，木材纹理和边缘倒角不如参考图明显。",
+    "座垫颜色偏均匀灰色，织物质感表现较弱。",
+    "靠背弧度和部分比例与参考产品存在轻微差异。"
+   ],
+   "price_cny": 299,
+   "price_src": "样例",
+   "img": "library/img/29429204.jpg",
+   "ref": "library/img/29429204-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/29429204-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/29429204-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是带软垫座椅和固定弧形椅背的餐椅；图片未显示旋转、升降、折叠或其他可动机构，因此应按静态家具建模。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.45,
+      0.51,
+      0.95
+     ],
+     "to": [
+      0.45,
+      0.51,
+      0.95
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "30457314",
+   "name": "ODGER 奥德格",
+   "variant": "煤黑色",
+   "category": "餐椅",
+   "ir": [
+    "chair"
+   ],
+   "size_m": [
+    0.45,
+    0.51,
+    0.81
+   ],
+   "dims_cm": {
+    "width": 45.0,
+    "depth": 51.0,
+    "height": 81.0,
+    "seat_width": 45.0,
+    "seat_depth": 41.0,
+    "seat_height": 43.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/odger-ao-de-ge-yi-zi-mei-hei-se-30457314/",
+   "lux3d": true,
+   "limitations": [
+    "座椅与腿部结构为简化建模，未表现参考图中的细微连接扣件和点状木塑纹理。",
+    "模型整体比例和座壳曲面与参考图存在轻微差异，但未影响椅子的主要功能形态。"
+   ],
+   "price_cny": 299,
+   "price_src": "样例",
+   "img": "library/img/30457314.jpg",
+   "ref": "library/img/30457314-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/30457314-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是固定式餐椅，座壳与四条腿均为刚性固定结构；图片和尺寸图未显示旋转、升降、折叠或其他可动机构。简单三步扣合属于组装方式，不是使用时的机构。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.46,
+      0.49,
+      0.82
+     ],
+     "to": [
+      0.45,
+      0.51,
+      0.81
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "50417633",
+   "name": "YNGVAR 伊格瓦",
+   "variant": "红色",
+   "category": "餐椅",
+   "ir": [
+    "chair"
+   ],
+   "size_m": [
+    0.53,
+    0.51,
+    0.71
+   ],
+   "dims_cm": {
+    "width": 53.0,
+    "depth": 51.0,
+    "height": 71.0,
+    "seat_width": 40.0,
+    "seat_depth": 40.0,
+    "seat_height": 46.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/yngvar-yi-ge-wa-yi-zi-hong-se-50417633/",
+   "lux3d": true,
+   "limitations": [
+    "渲染中的红色比参考图略浅、偏粉，光泽和材质细节有所简化。",
+    "腿部弯曲、连接件及座面底部结构相较参考图进行了简化。",
+    "靠背曲率和座面轮廓与参考图接近，但并非完全一致。"
+   ],
+   "price_cny": 299,
+   "price_src": "样例",
+   "img": "library/img/50417633.jpg",
+   "ref": "library/img/50417633-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/50417633-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/50417633-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是固定式餐椅，图片显示四条固定腿、固定座面和固定靠背，没有抽屉、门、旋转、升降、折叠或倾仰机构。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.61,
+      0.58,
+      0.81
+     ],
+     "to": [
+      0.53,
+      0.51,
+      0.71
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "60161066",
+   "name": "BERNHARD 伯恩哈德",
+   "variant": "镀铬/米奥 白色",
+   "category": "餐椅",
+   "ir": [
+    "chair"
+   ],
+   "size_m": [
+    0.49,
+    0.5,
+    0.77
+   ],
+   "dims_cm": {
+    "width": 49.0,
+    "depth": 50.0,
+    "height": 77.0,
+    "seat_width": 45.0,
+    "seat_depth": 40.0,
+    "seat_height": 47.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/bernhard-bo-en-ha-de-yi-zi-du-ge-mi-ao-bai-se-60161066/",
+   "lux3d": true,
+   "limitations": [
+    "模型表现为较薄的整体壳体，未充分还原参考图中较厚的软包和明显包边。",
+    "参考图的座背曲面与软垫体积略更饱满，模型在座面和靠背连接处更简化。",
+    "金属支架和脚垫细节进行了简化。"
+   ],
+   "price_cny": 299,
+   "price_src": "样例",
+   "img": "library/img/60161066.jpg",
+   "ref": "library/img/60161066-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/60161066-in0.jpg",
+      "kind": "尺寸图"
+     }
+    ],
+    "route_note": "这是无扶手软垫餐椅，图片显示固定的椅座、靠背和镀铬钢管腿架；没有旋转、升降、倾仰、折叠或其他可动机构，因此应按静态物体建模。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.54,
+      0.58,
+      0.83
+     ],
+     "to": [
+      0.49,
+      0.5,
+      0.77
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  },
+  {
+   "id": "70214286",
+   "name": "ADDE 阿德",
+   "variant": "黑色",
+   "category": "餐椅",
+   "ir": [
+    "chair"
+   ],
+   "size_m": [
+    0.39,
+    0.47,
+    0.77
+   ],
+   "dims_cm": {
+    "width": 39.0,
+    "depth": 47.0,
+    "height": 77.0,
+    "seat_width": 39.0,
+    "seat_depth": 34.0,
+    "seat_height": 45.0
+   },
+   "url": "https://www.ikea.cn/cn/zh/p/adde-a-de-yi-zi-hei-se-70214286/",
+   "lux3d": true,
+   "limitations": [
+    "座面与靠背的穿孔数量、孔形和曲面细节相较参考图有所简化。",
+    "模型使用单一材质表现，未明确区分塑料座背与钢制腿框的材质差异。",
+    "部分视图中座面穿孔因渲染分辨率和角度显得不够清晰。"
+   ],
+   "price_cny": 299,
+   "price_src": "样例",
+   "img": "library/img/70214286.jpg",
+   "ref": "library/img/70214286-ref.jpg",
+   "glb": null,
+   "harness": {
+    "inputs": [
+     {
+      "img": "library/img/70214286-in0.jpg",
+      "kind": "尺寸图"
+     },
+     {
+      "img": "library/img/70214286-in1.jpg",
+      "kind": "功能图"
+     }
+    ],
+    "route_note": "这是无扶手、无旋转、无升降、无折叠功能的固定式餐椅。图片显示钢制腿框与固定的塑料座面和靠背，不存在需要建模的刚性活动机构。",
+    "mechanisms": {},
+    "dims_src": {
+     "width": [
+      "商品页",
+      ""
+     ],
+     "depth": [
+      "商品页",
+      ""
+     ],
+     "height": [
+      "商品页",
+      ""
+     ]
+    },
+    "rescale": {
+     "from": [
+      0.44,
+      0.51,
+      0.82
+     ],
+     "to": [
+      0.39,
+      0.47,
+      0.77
+     ]
+    },
+    "review": 4,
+    "joints": null,
+    "open_img": null
+   },
+   "used_in": []
+  }
+ ]
+}

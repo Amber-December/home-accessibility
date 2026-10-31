@@ -2,7 +2,8 @@
 (() => {
   'use strict';
   const HA = window.HA = window.HA || {};
-  const ROOM = { livingRoom: '客厅', masterBedroom: '主卧', guestBedroom: '次卧', bathroom: '卫生间', kitchen: '厨房', corridor: '走廊', balcony: '阳台', diningRoom: '餐厅', study: '书房' };
+  const ROOM = { livingRoom: '客厅', masterBedroom: '主卧', guestBedroom: '次卧', bathroom: '卫生间', kitchen: '厨房', corridor: '走廊', balcony: '阳台', diningRoom: '餐厅', study: '书房',
+    studyRoom: '书房', childrensRoom: '儿童房', eldersRoom: '老人房', cloakroom: '衣帽间', entranceHall: '玄关' };
   const CAT = {
     bed: '床', sofa: '沙发', toilet: '马桶', wardrobe: '衣柜', diningtable: '餐桌', coffeetable: '茶几', TVStand: '电视柜',
     bathroomcabinet: '浴室柜', armchair: '扶手椅', loungechair: '躺椅', chair: '椅子', stool: '凳子', cabinet: '柜子',

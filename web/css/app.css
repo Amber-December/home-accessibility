@@ -47,7 +47,10 @@ h4 { margin: 14px 0 6px; font-size: 12px; font-weight: 600; color: var(--muted);
 /* ---- header ---- */
 header { position: fixed; top: var(--gap); left: var(--gap); right: var(--gap); height: var(--head); z-index: 3;
   display: flex; align-items: center; gap: 16px; padding: 0 14px; }
-.brand { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.brand { display: flex; align-items: center; gap: 8px; white-space: nowrap; color: inherit; text-decoration: none; }
+nav.modes { display: flex; gap: 2px; padding: 3px; border-radius: 10px; background: rgba(36, 33, 42, .05); }
+nav.modes a { padding: 4px 10px; border-radius: 7px; color: var(--ink); text-decoration: none; white-space: nowrap; font-size: 13px; }
+nav.modes a[aria-current="page"] { background: var(--purple); color: #fff; }
 .brand b { font: 22px/1 var(--f-head); color: var(--purple); letter-spacing: .04em; }
 .brand .en { font: 10px/1 "Michroma", sans-serif; letter-spacing: .12em; color: var(--muted); text-transform: uppercase; }
 #steps { display: flex; align-items: center; gap: 2px; margin-left: 8px; flex: 1; min-width: 0; }
@@ -112,6 +115,14 @@ body.fold-left .fold.left { left: var(--gap); } body.fold-right .fold.right { ri
 .chat-in { display: flex; gap: 6px; padding: 10px; border-top: 1px solid var(--line); }
 .chat-in input { flex: 1; font: inherit; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
 .chat-in input:focus { outline: 2px solid var(--purple); outline-offset: -1px; }
+.chat-in .add { width: 34px; padding: 0; font-size: 18px; line-height: 1; background: #fff; color: var(--purple); }
+.mcard .homes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 6px 0; }
+.mcard .homes a { display: flex; flex-direction: column; gap: 1px; padding: 4px; border: 1px solid var(--line); border-radius: 8px;
+  color: var(--ink); text-decoration: none; font-size: 11px; min-width: 0; }
+.mcard .homes a:hover { border-color: var(--purple); }
+.mcard .homes a.on { border-color: var(--purple); box-shadow: 0 0 0 1px var(--purple) inset; }
+.mcard .homes img { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 5px; background: #F4F2EF; }
+.mcard .homes b { font-size: 12px; } .mcard .homes span { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 #detail { overflow: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; }
 #detail > #panel > button { margin-top: 12px; width: 100%; padding: 9px 12px; }
@@ -211,6 +222,41 @@ svg.scatter { width: 100%; height: auto; display: block; font-family: var(--f-nu
 .band.b3 { background: var(--teal); }
 
 @media (max-width: 1100px) { :root { --chat: 280px; --detail: 300px; } #steps button { padding: 6px 6px; } }
+
+/* Phones: header on two rows, 3D view on top, 对话 / 详情 as tabs of one bottom sheet, timeline docked above it. */
+#sheet-tabs { display: none; }
+@media (max-width: 760px) {
+  :root { --gap: 8px; --head: 86px; --sheet: 46vh; --tabs: 40px; --tl: 76px; --L: 0px; --R: 0px; font-size: 13px; }
+  header { top: 0; left: 0; right: 0; height: var(--head); border-radius: 0; flex-wrap: wrap; align-content: center; gap: 6px 8px; padding: 6px 10px; }
+  .brand .en, #styles { display: none; }
+  .brand b { font-size: 18px; } .brand img { width: 24px; height: 24px; }
+  nav.modes a { padding: 3px 8px; font-size: 12px; }
+  #scene { margin-left: auto; } .menu-btn { padding: 4px 8px; font-size: 12px; }
+  .menu-list { left: auto; right: 0; }
+  #steps { order: 5; flex: 0 0 100%; margin: 0; overflow-x: auto; scrollbar-width: none; }
+  #steps button { padding: 3px 6px; white-space: nowrap; }
+  #stage { top: var(--head); bottom: var(--sheet); }
+  .fold { display: none; }
+  .panel, body.fold-left .panel.left, body.fold-right .panel.right { top: auto; bottom: 0; left: 0; right: 0; width: auto; height: calc(var(--sheet) - var(--tabs));
+    border-radius: 0; transform: none; opacity: 1; pointer-events: auto; }
+  body:not(.sheet-chat) #chat, body.sheet-chat #detail { display: none; }
+  #sheet-tabs { display: flex; position: fixed; z-index: 3; left: 0; right: 0; bottom: calc(var(--sheet) - var(--tabs)); height: var(--tabs);
+    padding: 4px 8px; gap: 4px; border-radius: 14px 14px 0 0; border-bottom: 1px solid var(--line); }
+  #sheet-tabs button { flex: 1; border: none; background: none; border-radius: 8px; color: var(--muted); }
+  #sheet-tabs button[aria-selected="true"] { background: rgba(102, 8, 116, .08); color: var(--purple); font-weight: 600; }
+  #tools { top: calc(var(--head) + 6px); left: 6px; right: 6px; flex-wrap: wrap; gap: 4px; }
+  #tools .seg button { padding: 2px 7px; font-size: 12px; } #tools .seg label { padding: 2px 5px; font-size: 12px; }
+  footer#timeline { left: 0; right: 0; bottom: var(--sheet); height: var(--tl); border-radius: 0; padding: 6px 8px; gap: 8px; }
+  .tl-ctrl { width: 64px; gap: 3px; } .tl-play { width: 100%; padding: 2px 6px; } .tl-speed { display: none; }
+  .tl-rowname { width: 40px; } .tl-track { height: 24px; }
+  #problem { top: calc(var(--head) + 44px); width: calc(100% - 16px); padding: 10px 12px; }
+  #problem .nums { font-size: 17px; }
+  #subtitle { bottom: calc(var(--sheet) + 8px); max-width: 92%; font-size: 14px; padding: 6px 12px; }
+  body.tl #subtitle, body.tl #walk-hint { bottom: calc(var(--sheet) + var(--tl) + 8px); }
+  #walk-hint { bottom: calc(var(--sheet) + 8px); }
+  #split-labels { top: 44px; }
+  .mcard .homes { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
   .braille.big .cell i.on { opacity: 1; }

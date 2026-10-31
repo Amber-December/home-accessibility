@@ -1,11 +1,14 @@
-"""Generate a MOCK sim result for H1 so the web UI can be built before the evaluator exists.
+"""Generate a MOCK sim result for one home so the web UI can be built before the evaluator exists.
 
 Not evaluator output: disc planning on the body layer, crude goal checks, greedy furniture moves, and a small
-grid of priced candidate plans (furniture x bathroom fittings x door work) built from a SAMPLE price table.
-The file carries "mock": true and the UI shows a watermark. Never use it for video or report numbers.
+grid of priced candidate plans (furniture or IKEA swaps x bathroom fittings x door work) built from a SAMPLE
+price table. Never use it for video or report numbers.
 
-    python web/tools/make_mock.py        # writes web/mock/H1/sim_result.json
+    python web/tools/make_mock.py                      # H1: writes web/mock/H1/sim_result.json ("mock": true)
+    python web/tools/make_mock.py --src DIR --out FILE --unlabeled
+        # DIR holds scene_ir.json and occupancy.npz (an E1 import); --unlabeled writes "mock": false for lab mode
 """
+import argparse
 import heapq
 import json
 import math
@@ -18,19 +21,35 @@ from scipy import ndimage
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 FIX = ROOT / "tests/fixtures/H1"
 OUT = ROOT / "web/mock/H1/sim_result.json"
+CATALOG = ROOT / "web/library/catalog.json"
 TASK_NAMES = {"T1": "入户到沙发", "T2": "卧室到卫生间", "T3": "取用冰箱", "T4": "床椅转移"}
-
-ir = json.loads((FIX / "scene_ir.json").read_text())
-occ = np.load(FIX / "occupancy.npz")
-G = ir["occupancy"]["grid"]
-RES, X0, Y0 = G["res"], G["x0"], G["y0"]
-LABELS = [str(s) for s in occ["labels"]]
-ROOMS = ir["occupancy"]["room_index"]
-ROOM = occ["extra_room"]
-DOOR = {i for i, s in enumerate(LABELS) if s.startswith("door:")}
-OBJ = {o["id"]: o for o in ir["objects"]}
 cards = yaml.safe_load((ROOT / "src/ha/resident/personas.yaml").read_text())
 PERSONAS = [p for p in cards["personas"] if p["id"] in cards["tasks"] and p["id"] != "stretcher"]
+
+
+def load(src):
+    """Set the per-home globals from an IR directory."""
+    global ir, occ, G, RES, X0, Y0, LABELS, ROOMS, ROOM, DOOR, OBJ, BASE
+    global ENTRY, BED, TOILET, SOFA, FRIDGE, BED_DOOR
+    ir = json.loads((src / "scene_ir.json").read_text())
+    occ = np.load(src / "occupancy.npz")
+    G = ir["occupancy"]["grid"]
+    RES, X0, Y0 = G["res"], G["x0"], G["y0"]
+    LABELS = [str(s) for s in occ["labels"]]
+    ROOMS = ir["occupancy"]["room_index"]
+    ROOM = occ["extra_room"]
+    DOOR = {i for i, s in enumerate(LABELS) if s.startswith("door:")}
+    OBJ = {o["id"]: o for o in ir["objects"] if o["aabb"].get("min")}  # a few WSR assets have an empty box
+    BASE = {"body": label_grid("layer_body"), "toe": label_grid("layer_toe")}
+    ENTRY = next((d for d in ir["doors"] if len(d["rooms"]) == 1), None)
+    BED = first("bed", "masterBedroom1") or first("bed")
+    TOILET = first("toilet", "bathroom1") or first("toilet")
+    SOFA = first("sofa", "livingRoom1") or first("sofa")
+    FRIDGE = first("refrigerator")
+    bed_room = OBJ[BED]["room"] if BED else None
+    doors = [d for d in ir["doors"] if bed_room in d["rooms"]]
+    BED_DOOR = next((d for d in doors if "livingRoom1" in d["rooms"]), None) or next(
+        (d for d in doors if not any(r.startswith("bathroom") for r in d["rooms"])), None)
 
 
 def cell(x, y):
@@ -45,9 +64,6 @@ def label_grid(layer):
     g = occ[layer].copy()
     g[np.isin(g, list(DOOR))] = -1
     return g
-
-
-BASE = {"body": label_grid("layer_body"), "toe": label_grid("layer_toe")}
 
 
 def half_width(p):
@@ -69,6 +85,8 @@ def nearest_free(dist, room_id, x, y, r):
     mask = (dist >= r) & in_room
     if not mask.any():
         mask = (dist >= 0.15) & in_room
+    if not mask.any():
+        return None
     ii, jj = np.nonzero(mask)
     ci, cj = cell(x, y)
     k = np.argmin((ii - ci) ** 2 + (jj - cj) ** 2)
@@ -76,6 +94,8 @@ def nearest_free(dist, room_id, x, y, r):
 
 
 def plan(dist, start, goal, r=0.15):
+    if start is None or goal is None:
+        return None
     h, w = dist.shape
     best = {start: 0.0}
     prev = {}
@@ -108,7 +128,7 @@ def centroid(obj_id):
 
 
 def first(cat, room=None):
-    return next((o["id"] for o in ir["objects"] if o["category"] == cat and (room is None or o["room"] == room)), None)
+    return next((o["id"] for o in OBJ.values() if o["category"].lower() == cat and (room is None or o["room"] == room)), None)
 
 
 def door_side(door, room_id, offset):
@@ -116,16 +136,24 @@ def door_side(door, room_id, offset):
     for s in (1, -1):
         x, y = cx + s * nx * offset, cy + s * ny * offset
         i, j = cell(x, y)
+        if not (0 <= i < ROOM.shape[0] and 0 <= j < ROOM.shape[1]):
+            continue
         rid = ROOM[i, j]
         if (room_id is None and rid < 0) or (room_id is not None and rid >= 0 and ROOMS[rid] == room_id):
             return x, y
     return cx + nx * offset, cy + ny * offset
 
 
-ENTRY = next(d for d in ir["doors"] if len(d["rooms"]) == 1)
-BED, TOILET, SOFA = first("bed", "masterBedroom1"), first("toilet", "bathroom1"), first("sofa", "livingRoom1")
-FRIDGE = first("refrigerator")
-BED_DOOR = next(d for d in ir["doors"] if "masterBedroom1" in d["rooms"] and "livingRoom1" in d["rooms"])
+def room_centre(room_id):
+    ii, jj = np.nonzero(ROOM == ROOMS.index(room_id))
+    return xy(int(ii.mean()), int(jj.mean()))
+
+
+def missing(task):
+    """Why a task does not apply to this home, or None."""
+    need = {"T1": [(ENTRY, "没有入户门"), (SOFA, "户型里没有沙发")], "T2": [(BED, "户型里没有床"), (TOILET, "户型里没有马桶")],
+            "T3": [(FRIDGE, "户型里没有冰箱"), (SOFA, "户型里没有沙发")], "T4": [(BED, "户型里没有床"), (BED_DOOR, "卧室没有门")]}[task]
+    return next((why for x, why in need if x is None), None)
 
 
 def task_ends(task):
@@ -133,9 +161,11 @@ def task_ends(task):
         return (None, *door_side(ENTRY, None, 1.0)), (OBJ[SOFA]["room"], *centroid(SOFA))
     if task == "T2":
         return (OBJ[BED]["room"], *centroid(BED)), (OBJ[TOILET]["room"], *centroid(TOILET))
-    if task == "T4":
-        return ("masterBedroom1", *door_side(BED_DOOR, "masterBedroom1", 0.8)), ("masterBedroom1", *centroid(BED))
-    return None
+    if task == "T3":
+        sofa_room = OBJ[SOFA]["room"]
+        return (sofa_room, *room_centre(sofa_room)), (OBJ[FRIDGE]["room"], *centroid(FRIDGE))
+    bed_room = OBJ[BED]["room"]
+    return (bed_room, *door_side(BED_DOOR, bed_room, 0.8)), (bed_room, *centroid(BED))
 
 
 def obj_id(lab):
@@ -149,8 +179,9 @@ KEEP = {"bed", "sofa", "toilet", "refrigerator"}
 
 def simulate(grids, p, task, door_w=None):
     rec = {"persona": p["id"], "task": task, "name": TASK_NAMES[task], "applicable": True}
-    if task == "T3" and FRIDGE is None:
-        return {**rec, "applicable": False, "reason": "户型里没有冰箱"}
+    why = missing(task)
+    if why:
+        return {**rec, "applicable": False, "reason": why}
     dist, near = field(grids, p)
     r = half_width(p)
     (sr, sx, sy), (gr, gx, gy) = task_ends(task)
@@ -240,6 +271,16 @@ def apply_edit(grids, edit):
     out = {}
     for name, g in grids.items():
         g = g.copy()
+        if edit["op"] == "replace" and "place" in edit:  # catalog product: its footprint, back against the old one's back
+            m = g == idx
+            ii, jj = np.nonzero(m)
+            x, y = X0 + (jj + 0.5) * RES, Y0 + (ii + 0.5) * RES
+            (cx, cy), (fx, fy) = edit["place"]["center"], edit["place"]["front"]
+            w, d = edit["product"]["size_m"][:2]
+            keep = (np.abs((x - cx) * -fy + (y - cy) * fx) <= w / 2) & (np.abs((x - cx) * fx + (y - cy) * fy) <= d / 2)
+            g[ii[~keep], jj[~keep]] = -1
+            out[name] = g
+            continue
         if edit["op"] == "replace":  # a smaller product in the same place: erode the footprint
             m = g == idx
             g[m & ~ndimage.binary_erosion(m, iterations=round(edit["shrink_m"] / RES))] = -1
@@ -247,7 +288,7 @@ def apply_edit(grids, edit):
             continue
         ii, jj = np.nonzero(g == idx)
         g[ii, jj] = -1
-        if edit["op"] == "move":
+        if edit["op"] == "move" and len(ii):  # some objects only reach one layer
             ni, nj = ii + round(edit["dy"] / RES), jj + round(edit["dx"] / RES)
             if ni.min() < 0 or nj.min() < 0 or ni.max() >= g.shape[0] or nj.max() >= g.shape[1] or (g[ni, nj] >= 0).any():
                 return None
@@ -274,7 +315,7 @@ def repair(base_runs):
                       if "obj:" + o in LABELS and math.hypot(lx - centroid(o)[0], ly - centroid(o)[1]) < 2.0)
         cands = []
         for _, o in near[:4]:
-            cat = OBJ[o]["category"]
+            cat = OBJ[o]["category"].lower()
             if cat in FIXED:
                 tried.append({"target": list(key(target)), "object_id": o, "result": "固定设施，不挪动"})
                 continue
@@ -317,6 +358,65 @@ def priced(e, rent_ok, wall):
             **({"product": {"name": name, "price_cny": price, "price_src": "样例"}} if name else {})}
 
 
+def front(o, band=0.15):
+    """Axis-aligned front of an object: away from the side whose outer band is most wall or furniture.
+    WSR world matrices do not give a consistent facing, so the back is read off the occupancy grid."""
+    a, g, idx = OBJ[o]["aabb"], BASE["body"], LABELS.index("obj:" + o)
+    i0, j0 = cell(a["min"][0], a["min"][1])
+    i1, j1 = cell(a["max"][0], a["max"][1])
+    b = max(1, round(band / RES))
+    sides = {(1, 0): (slice(i0, i1 + 1), slice(j1 + 1, j1 + 1 + b)), (-1, 0): (slice(i0, i1 + 1), slice(j0 - b, j0)),
+             (0, 1): (slice(i1 + 1, i1 + 1 + b), slice(j0, j1 + 1)), (0, -1): (slice(i0 - b, i0), slice(j0, j1 + 1))}
+    f = {}
+    for d, (si, sj) in sides.items():
+        cells = g[max(0, si.start):si.stop, max(0, sj.start):sj.stop]
+        f[d] = ((cells >= 0) & (cells != idx)).mean() if cells.size else 1.0  # off the grid counts as outside the walls
+    back = max(f, key=lambda d: f[d] - f[(-d[0], -d[1])])
+    return -back[0], -back[1]
+
+
+def swap(o, items):
+    """The smallest catalog product of the same kind that fits inside the object's footprint, as a replace edit."""
+    cat = OBJ[o]["category"].lower()
+    a = OBJ[o]["aabb"]
+    (fx, fy), ex, ey = front(o), a["max"][0] - a["min"][0], a["max"][1] - a["min"][1]
+    d0, w0 = (ex, ey) if abs(fx) > abs(fy) else (ey, ex)
+    fits = [i for i in items if cat in i["ir"] and i["size_m"][0] <= w0 and i["size_m"][1] <= d0
+            and i["size_m"][0] * i["size_m"][1] <= 0.85 * w0 * d0]
+    if not fits:
+        return None
+    it = min(fits, key=lambda i: i["size_m"][0] * i["size_m"][1])
+    cx, cy = centroid(o)
+    c = [round(cx - fx * (d0 - it["size_m"][1]) / 2, 3), round(cy - fy * (d0 - it["size_m"][1]) / 2, 3)]
+    product = {k: it[k] for k in ("id", "name", "category", "size_m", "url", "glb")}
+    return {"op": "replace", "object_id": o, "product": {**product, "price_cny": it["price_cny"], "price_src": it["price_src"]},
+            "place": {"center": c, "front": [fx, fy]}, "from_m": [round(w0, 3), round(d0, 3)],
+            "cost_cny": it["price_cny"], "rent_ok": True, "wall": False}
+
+
+def swaps(base):
+    """Catalog swaps for movable furniture within 2 m of a red violation, nearest first."""
+    if not CATALOG.exists():
+        return []
+    items = [i for i in json.loads(CATALOG.read_text())["items"] if i["lux3d"]]
+    seen, out, s0 = set(), [], score(base)
+    for r in base:
+        for v in (v for v in r.get("violations", []) if v["severity"] == "red"):
+            lx, ly = v["location"]
+            for dd, o in sorted((math.hypot(lx - centroid(o)[0], ly - centroid(o)[1]), o) for o in OBJ if "obj:" + o in LABELS):
+                if dd > 2.0 or o in seen or OBJ[o]["category"].lower() in FIXED:
+                    continue
+                seen.add(o)
+                e = swap(o, items)
+                g = e and apply_edit(BASE, e)
+                if not g:
+                    continue
+                nd = {key(x): x for x in run_all(g)}
+                if score(list(nd.values())) > s0 and not any(x["applicable"] and x["success"] and not nd[key(x)]["success"] for x in base):
+                    out.append(e)  # keep a swap only if it helps on its own and nobody gets worse
+    return out[:3]
+
+
 def door_edit(d, op):
     # sliding: the leaf no longer stands in the opening, so the clear width gains about the leaf thickness and stop
     w = round(d["clear_width"] + 0.055, 3) if op == "door_sliding" else 0.90
@@ -335,12 +435,15 @@ def title(edits):
     def cn(o):
         cat = OBJ[o]["category"]
         twin = sum(x["category"] == cat for x in ir["objects"]) > 1
-        return (room.get(OBJ[o]["room"].rstrip("0123456789"), "") if twin else "") + CN.get(cat, cat)
+        return (room.get(OBJ[o]["room"].rstrip("0123456789"), "") if twin else "") + CN.get(cat, CN.get(cat.lower(), cat))
     for e in edits:
         if e["op"] == "remove":
             parts.append("移走" + cn(e["object_id"]))
         elif e["op"] == "move":
             parts.append("挪" + cn(e["object_id"]))
+        elif e["op"] == "replace" and "place" in e:
+            w, d = (round(v * 100) for v in e["product"]["size_m"][:2])
+            parts.append(f"{cn(e['object_id'])}换成 {e['product']['name']}（{w}×{d} cm）")
         elif e["op"] == "replace":
             parts.append("换" + PRICES[OBJ[e["object_id"]]["category"]][0].split("（")[0])
         else:
@@ -356,16 +459,22 @@ def candidates(base, furniture):
     bath = [d for d in narrow if any(r.startswith("bathroom") for r in d["rooms"])]
     door_opts = [[], [door_edit(d, "door_sliding") for d in bath], [door_edit(d, "door_sliding") for d in narrow],
                  [door_edit(d, "door_widen") for d in narrow]]
-    toilet = priced({"op": "replace", "object_id": TOILET, "shrink_m": 0.10}, False, False)
-    basin = priced({"op": "replace", "object_id": first("bathroomcabinet", OBJ[TOILET]["room"]), "shrink_m": 0.15}, False, False)
-    toilet_opts = [[], [toilet], [toilet, basin]]
-    furn_opts = [[], [priced(e, True, False) for e in furniture]]
+    toilet_opts = [[]]
+    if TOILET and "obj:" + TOILET in LABELS:
+        toilet = priced({"op": "replace", "object_id": TOILET, "shrink_m": 0.10}, False, False)
+        toilet_opts.append([toilet])
+        basin_id = first("bathroomcabinet", OBJ[TOILET]["room"])
+        if basin_id and "obj:" + basin_id in LABELS:
+            toilet_opts.append([toilet, priced({"op": "replace", "object_id": basin_id, "shrink_m": 0.15}, False, False)])
+    sw = swaps(base)
+    furn_opts = [[], [priced(e, True, False) for e in furniture], sw]
+    furn_opts = [o for k, o in enumerate(furn_opts) if (o or not k) and o not in furn_opts[:k]]
     out = []
     for fo in furn_opts:
         for to in toilet_opts:
             grids = BASE
             for e in fo + to:
-                grids = apply_edit(grids, e)
+                grids = grids and apply_edit(grids, e)
             for do in door_opts:
                 edits = fo + to + do
                 if not edits or grids is None:
@@ -383,13 +492,20 @@ def candidates(base, furniture):
 
 
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--src", type=pathlib.Path, default=FIX, help="directory with scene_ir.json and occupancy.npz")
+    ap.add_argument("--out", type=pathlib.Path, default=OUT)
+    ap.add_argument("--unlabeled", action="store_true", help='write "mock": false (lab mode shows no 样例 mark)')
+    args = ap.parse_args()
+    load(args.src)
     base = run_all(BASE)
     furniture, tried, _ = repair(base)
     plans = candidates(base, furniture)
     out = {
-        "mock": True,
+        "mock": not args.unlabeled,
         "generator": "web/tools/make_mock.py",
-        "note": "前端开发用的样例，不是评估器输出。判定是圆盘近似和粗略的终点检查，价格是样例价格表，数字不能进视频和报告。",
+        "note": ("前端开发用的样例，不是评估器输出。判定是圆盘近似和粗略的终点检查，价格是样例价格表，数字不能进视频和报告。"
+                 if not args.unlabeled else "由 web/tools/make_mock.py 生成，不是评估器输出：判定是圆盘近似和粗略的终点检查，价格是样例价格表。"),
         "scene_id": ir["scene_id"],
         "personas": [{"id": p["id"], "name": p["name"], "footprint": p["footprint"], "v_mps": p["kinematics"]["v_mps"]} for p in PERSONAS],
         "tasks": TASK_NAMES,
@@ -397,15 +513,15 @@ def main():
         "search": {"tried": tried, "candidates": len(plans)},
         "plans": [{"id": c["id"], **{k: v for k, v in c.items() if k != "id"}} for c in plans],
     }
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")))
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    args.out.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")))
     for r in base:
         print(r["persona"], r["task"], r.get("success"), r.get("fail_code"), r.get("min_clearance_m"), r.get("min_clearance_object"))
     print("baseline", out["baseline"]["score"], "furniture", furniture)
     for c in plans:
         fails = [f"{r['persona']}/{r['task']}:{r['fail_code']}" for r in c["runs"] if r["applicable"] and not r["success"]]
         print(c["id"], c["cost_cny"], c["score"], c["title"], "worse", c["worse"], "fails", fails)
-    print(OUT, OUT.stat().st_size, "bytes")
+    print(args.out, args.out.stat().st_size, "bytes")
 
 
 if __name__ == "__main__":

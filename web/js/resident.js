@@ -65,13 +65,39 @@
     return { x: a[1] + (b[1] - a[1]) * k, y: a[2] + (b[2] - a[2]) * k, yaw: k < 0.5 ? a[3] : b[3], i: lo + 1 };
   }
 
+  // 素材库 product models, loaded once per URL.
+  const models = {};
+  const model = url => (models[url] = models[url] || new Promise((ok, bad) => new THREE.GLTFLoader().load(url, g => ok(g.scene), undefined, bad)));
+
+  // A catalog product at edit.place: its model scaled to the listed size, front facing place.front.
+  // Product models face +z, so a plan front (fx, fy), which is (fx, 0, -fy) in the scene, needs yaw atan2(fx, -fy).
+  function placeProduct(v, e, floor, token) {
+    const [W, D, H] = e.product.size_m, [cx, cy] = e.place.center, [fx, fy] = e.place.front;
+    const g = new THREE.Group();
+    g.position.set(cx, floor, -cy); g.rotation.y = Math.atan2(fx, -fy);
+    v.ghosts.add(g);
+    const fit = m => {
+      const b = new THREE.Box3().setFromObject(m), size = b.getSize(new THREE.Vector3()), c = b.getCenter(new THREE.Vector3());
+      const k = new THREE.Vector3(W / size.x, H / size.y, D / size.z);
+      m.scale.multiply(k); m.position.set(-c.x * k.x, -b.min.y * k.y, -c.z * k.z);
+      m.traverse(x => { if (x.isMesh) { x.castShadow = x.receiveShadow = true; } });
+      g.add(m); if (v.shadowsDirty) v.shadowsDirty();
+    };
+    if (!e.product.glb) return fit(new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), mat('#C7A6DE')));
+    model(e.product.glb).then(src => { if (v.ghostToken === token) fit(src.clone(true)); })
+      .catch(err => console.warn('product GLB', e.product.glb, err));
+  }
+
   // Apply plan edits to the scene. mode: 'preview' (red ghost at the old place) | 'after' | null (reset).
-  // Edits act on both the IR prism and the GLB node of the same id: remove hides, move shifts,
-  // replace shrinks the footprint by shrink_m on each side around its centre. Door edits only get marked.
+  // Edits act on both the IR prism and the GLB node of the same id: remove hides, move shifts, replace with a catalog
+  // product hides the old piece and shows the product model; other replaces shrink the footprint by shrink_m on each
+  // side around its centre. Door edits only get marked.
   function applyPlan(v, edits, mode) {
+    v.planArgs = [edits, mode];  // app-boot reapplies it when the scene GLB finishes loading after the plan was shown
     v.ghosts = v.ghosts || new THREE.Group();
     if (!v.ghosts.parent) v.scene.add(v.ghosts);
     v.ghosts.clear();
+    const token = v.ghostToken = (v.ghostToken || 0) + 1;
     (v.edited || []).forEach(n => { n.visible = true; n.position.copy(n.userData.pos0); n.scale.set(1, 1, 1); });
     v.edited = [];
     if (mode) {
@@ -86,13 +112,15 @@
           v.edited.push(n);
           if (e.op === 'remove') n.visible = false;
           if (e.op === 'move') n.position.add(V(e.dx, e.dy, 0));
-          if (e.op === 'replace') {
+          if (e.op === 'replace' && e.place) n.visible = false;
+          else if (e.op === 'replace') {
             const b = n.userData.box0, c = b.getCenter(new THREE.Vector3()), d = b.getSize(new THREE.Vector3());
             const sx = Math.max(0.3, 1 - 2 * e.shrink_m / d.x), sz = Math.max(0.3, 1 - 2 * e.shrink_m / d.z);
             n.scale.set(sx, 1, sz);
             n.position.set(c.x + (n.userData.pos0.x - c.x) * sx, n.userData.pos0.y, c.z + (n.userData.pos0.z - c.z) * sz);
           }
         }
+        if (e.op === 'replace' && e.place && prism) placeProduct(v, e, prism.userData.box0.min.y, token);
       }
     }
     if (v.shadowsDirty) v.shadowsDirty();

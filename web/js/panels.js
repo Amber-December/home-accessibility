@@ -37,7 +37,7 @@
       <h4>房间 ${ir.rooms.length}</h4><ul class="list">${rooms}</ul>
       <h4>门 ${ir.doors.length}</h4><ul class="list">${doors}</ul>
       <h4>家具 ${ir.objects.length} 件</h4><p class="muted">点 3D 视图里的物体看尺寸。</p>
-      <button class="primary" data-act="go" data-arg="pick">确认户型</button>`;
+      <button class="primary" data-act="go" data-arg="pick">确认户型</button> <button data-act="import">换一套户型</button>`;
   }
 
   function stay(S, run) {
