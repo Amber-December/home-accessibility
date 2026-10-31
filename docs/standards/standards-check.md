@@ -1,4 +1,4 @@
-# 先住 LiveFirst · 无障碍阈值条文对照（GB 55019 / GB 50763 / ADA 2010）
+# 清先住 LiveFirst · 无障碍阈值条文对照（GB 55019 / GB 50763 / ADA 2010）
 
 用途：[simulation](../tech/simulation.md)、`src/ha/resident/personas.yaml` 和 `src/ha/enrich/templates.yaml` 里的阈值都以本表为准，每个数值对到规范条文。来源编号见文末。
 

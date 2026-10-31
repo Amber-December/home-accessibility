@@ -118,5 +118,5 @@ USDZ 由本机的 OpenUSD 解析，需要一次性装一个 Python 环境到本�
 
 - 算法：`node tests/core.test.cjs`、`node tests/fire-core.test.cjs`、`node tests/earthquake-core.test.cjs`、`node tests/crowd-hazards.test.cjs`。启动器：`node tests/launcher.test.cjs`。
 - USDZ 服务：`node tests/usdz-service.test.cjs`。需要先装好 USDZ 支持，测试会现场生成一个小 USDZ 房间，走完上传、转换、缓存和访问限制。
-- 浏览器测试需要 Playwright（`NODE_PATH` 指向已安装的包）和已启动的本地服务：`node tests/browser.test.cjs`、`node tests/accessibility.test.cjs`、`node tests/formats.test.cjs`、`node tests/visual-hazards.test.cjs`。`tests/run-usdz-browser.cjs` 导入 `ACCESS_TEST_USDZ` 指向的 USDZ（默认当前目录的 `scene000002.usdz`）。部分浏览器测试固定用 Edge（`channel:'msedge'`），其他平台要改成本机浏览器。
+- 浏览器测试需要 Playwright（`NODE_PATH` 指向已安装的包）和已启动的本地服务：`node tests/browser.test.cjs`、`node tests/accessibility.test.cjs`、`node tests/formats.test.cjs`、`node tests/visual-hazards.test.cjs`。`tests/run-usdz-browser.cjs` 导入 `ACCESS_TEST_USDZ` 指向的 USDZ（默认当前目录的 `scene000002.usdz`，WSR 原文件在 `$HA_DATA/World-SimReady-Home/raw/full/scene/scene000002/`）。部分浏览器测试固定用 Edge（`channel:'msedge'`），其他平台要改成本机浏览器。
 - 数字住户和房间入口回归：`node tests/resident-regression.test.cjs`。覆盖四种画像、白杖动作、全轨迹静态碰撞、固定起点的前后修复、报告导出、门动画、手动步入和六个办公房间的实际进入。

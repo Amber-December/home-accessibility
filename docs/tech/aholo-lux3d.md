@@ -1,4 +1,4 @@
-# 先住 LiveFirst · Aholo / Lux3D 接口与接入
+# 清先住 LiveFirst · Aholo / Lux3D 接口与接入
 
 代码通过 Python SDK 调用 Aholo，包是 `manycore-aholo-sdk-{core,asset,lux3d,world}`，版本锁在 `env/requirements-lock.txt`。上游源码：[manycoretech/aholo-spatial-sdk](https://github.com/manycoretech/aholo-spatial-sdk)（MIT）。
 
@@ -44,7 +44,7 @@ API key 放在本地 `.env` 的 `AHOLO_API_KEY`（中国区），不进 Git。�
 
 官方另有 Agent skill 套件 [manycore-research/Aholo-Lux3D](https://github.com/manycore-research/Aholo-Lux3D)，适合在对话里手动试单件商品。项目代码不依赖它。
 
-## 3. 在"先住"工作流里怎么用
+## 3. 在"清先住"工作流里怎么用
 
 ```text
 商品库 src/ha/assets/catalog.yaml（SKU、类目、W×D×H、图片、route、articulate）
