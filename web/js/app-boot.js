@@ -55,6 +55,8 @@
     }
     if (name === 'view') return S.v.split ? null : S.setView(arg);
     if (name === 'style') return S.setStyle(arg);
+    if (name === 'sceneMenu') return sceneMenu($('#scene-list').hidden);
+    if (name === 'scene') { S.scene = arg; sceneMenu(false); return S.renderScenes(); }
     if (name === 'fold') return S.fold(arg);
     if (name === 'layer') {
       S.layers[arg] = el.checked;
@@ -75,6 +77,30 @@
       if (name === 'next') { const at = S.tl.at(S.t); S.t = at.seg.t0 + at.seg.dur; }
       if (S.t >= S.tl.total() - 1e-3) { S.update(); S.onEnd(); } else S.play();
     }
+  };
+
+  // Scenes are grouped; adding one is one entry here. Only ready scenes can be picked.
+  const SCENES = [
+    { group: '日常', items: [
+      { id: 'day', name: '白天', note: 'T1–T4 日常动线', ready: true },
+      { id: 'night', name: '夜间', note: 'T6 起夜照明' },
+    ] },
+    { group: '灾害', items: [
+      { id: 'fire', name: '起火', note: 'T5 烟气疏散' },
+      { id: 'quake', name: '地震', note: '倒塌与通道阻断' },
+    ] },
+  ];
+  S.scene = 'day';
+  const sceneMenu = open => {
+    $('#scene-list').hidden = !open;
+    $('#scene .menu-btn').setAttribute('aria-expanded', open);
+  };
+  S.renderScenes = () => {
+    const esc = HA.panels.esc;
+    $('#scene-list').innerHTML = SCENES.map(g => `<h5>${esc(g.group)}</h5>` + g.items.map(it =>
+      `<button role="menuitemradio" aria-checked="${it.id === S.scene}" data-act="scene" data-arg="${it.id}"${it.ready ? '' : ' disabled title="后续开放"'}>` +
+      `${esc(it.name)}<span>${esc(it.ready ? it.note : `${it.note} · 后续开放`)}</span></button>`).join('')).join('');
+    $('#scene-name').textContent = SCENES.flatMap(g => g.items).find(it => it.id === S.scene).name;
   };
 
   S.setStyle = name => {
@@ -112,6 +138,7 @@
   }
 
   document.addEventListener('click', e => {
+    if (!$('#scene-list').hidden && !e.target.closest('#scene')) sceneMenu(false);
     const el = e.target.closest('[data-act]');
     if (el && !el.disabled) S.act(el.dataset.act, el.dataset.arg, el);
   });
@@ -129,6 +156,7 @@
       if (next != null) { S.pause(); S.seek(next); }
       return;
     }
+    if (e.code === 'Escape' && !$('#scene-list').hidden) { sceneMenu(false); $('#scene .menu-btn').focus(); return; }
     if (e.code === 'Escape' && !$('#problem').hidden) { S.hideProblem(); return; }
     if (e.code === 'Enter' && e.target === document.body) {
       const b = $('#problem:not([hidden]) button.primary') || $('#panel button.primary:not(:disabled)');
@@ -141,13 +169,11 @@
     try {
       const { ir, occ, result } = await HA.api.loadAll();
       Object.assign(S, { ir, occ, result });
-      const badges = [];
-      if (result.mock) badges.push(`<span class="badge mock" title="${HA.panels.esc(result.note)}">样例数据，非仿真结果</span>`);
-      if (result.baseline.runs.some(r => (r.monologue || []).some(m => m.source === 'template'))) badges.push('<span class="badge">规则模式</span>');
-      $('#badges').innerHTML = badges.join('');
+      // Room labels are drawn into canvas textures, so the web font must be loaded first.
+      await document.fonts.load('600 56px "LF Sans"', '客厅').catch(() => {});
       S.v = HA.viewer.create($('#view'), ir, occ);
       S.v.onView = S.onView; S.onView(S.v.view);
-      S.setStyle(HA.config.style); S.syncInsets();
+      S.setStyle(HA.config.style); S.renderScenes(); S.syncInsets();
       S.v.onFrame.push(dt => S.tick(dt));
       S.v.onPick = (ud, p) => {
         S.v.marks.forEach((k, id) => { if (k === 'blue') S.v.mark(id, null); });

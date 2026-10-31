@@ -1,4 +1,5 @@
 /* 清先住 · full-screen 3D with floating glass panels (PRD 5.10.3, 5.10.11). */
+@font-face { font-family: "LF Sans"; src: url(../fonts/LFSans.woff2) format("woff2"); font-weight: 400 600; font-display: swap; }
 @font-face { font-family: "LF Heading"; src: url(../fonts/LFHeading.woff2) format("woff2"); font-display: swap; }
 @font-face { font-family: "Michroma"; src: url(../fonts/Michroma-400.woff2) format("woff2"); font-display: swap; }
 @font-face { font-family: "Barlow SC"; src: url(../fonts/BarlowSemiCondensed-400.woff2) format("woff2"); font-weight: 400; font-display: swap; }
@@ -10,9 +11,10 @@
   --glass: rgba(251, 250, 248, .86); --shadow: 0 8px 28px rgba(36, 33, 42, .12);
   --gap: 12px; --head: 56px; --chat: 320px; --detail: 340px; --tl: 104px;
   --L: calc(var(--chat) + var(--gap)); --R: calc(var(--detail) + var(--gap));
-  --f-head: "LF Heading", "PingFang SC", "Microsoft YaHei", sans-serif;
-  --f-num: "Barlow SC", "PingFang SC", system-ui, sans-serif;
-  font: 14px/1.6 "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif; color: var(--ink);
+  --f-body: "LF Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --f-head: "LF Heading", var(--f-body);
+  --f-num: "Barlow SC", var(--f-body);
+  font: 14px/1.6 var(--f-body); color: var(--ink);
 }
 body.fold-left { --L: 0px; } body.fold-right { --R: 0px; }
 * { box-sizing: border-box; }
@@ -54,10 +56,19 @@ header { position: fixed; top: var(--gap); left: var(--gap); right: var(--gap); 
 #steps button.on { color: var(--purple); font-weight: 600; background: rgba(102, 8, 116, .08); }
 #steps button:disabled { color: #B3AEB8; }
 #steps .sep { width: 10px; height: 1px; background: var(--line); }
-#badges { display: flex; gap: 8px; }
-.badge { padding: 2px 10px; border-radius: 12px; font-size: 12px; background: #fff; border: 1px solid var(--line); }
-.badge.mock { color: var(--ink); border-color: var(--red); font-weight: 600;
-  background: repeating-linear-gradient(45deg, rgba(215, 38, 61, .12) 0 2px, transparent 2px 6px), #fff; }
+.brand img { display: block; }
+
+/* scene menu: grouped list, scenes that are not ready yet stay visible but disabled */
+.menu { position: relative; }
+.menu-btn { display: flex; align-items: center; gap: 6px; background: rgba(36, 33, 42, .05); border: none; border-radius: 10px; padding: 7px 12px; color: var(--muted); }
+.menu-btn b { color: var(--purple); font-weight: 600; } .menu-btn i { font-style: normal; font-size: 10px; }
+.menu-list { position: absolute; top: calc(100% + 8px); left: 0; min-width: 240px; padding: 6px; z-index: 5; background: rgba(251, 250, 248, .98); }
+.menu-list h5 { margin: 6px 8px 2px; font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: .08em; }
+.menu-list button { display: flex; width: 100%; align-items: baseline; gap: 10px; border: none; background: none; text-align: left; padding: 6px 8px; }
+.menu-list button:hover:not(:disabled) { background: rgba(102, 8, 116, .06); }
+.menu-list button[aria-checked="true"] { color: var(--purple); font-weight: 600; }
+.menu-list button[aria-checked="true"]::before { content: "●"; font-size: 8px; }
+.menu-list button span { margin-left: auto; font-size: 12px; font-weight: 400; color: var(--muted); }
 
 /* segmented groups */
 .seg { display: flex; gap: 2px; padding: 3px; border-radius: 10px; background: rgba(36, 33, 42, .05); }

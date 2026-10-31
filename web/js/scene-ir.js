@@ -32,7 +32,7 @@
   function textSprite(text, color = '#24212A', size = 0.55) {
     const c = document.createElement('canvas'); c.width = 512; c.height = 128;
     const g = c.getContext('2d');
-    g.font = '600 56px "PingFang SC","Microsoft YaHei",sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+    g.font = '600 56px "LF Sans","PingFang SC","Microsoft YaHei",sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
     g.fillStyle = color; g.fillText(text, 256, 64);
     const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace;
     const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, depthTest: false, transparent: true, toneMapped: false }));
