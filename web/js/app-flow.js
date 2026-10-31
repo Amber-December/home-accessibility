@@ -102,8 +102,32 @@
   }
 
   const repick = id => { if ($('#pick').innerHTML) $('#pick').innerHTML = HA.panels.object(S, id); };
+
+  // 导入户型: homes come from the 素材库 (lab/index.json). H1 opens the default 试住 data, others their own IR and result.
+  let homes = null;
+  const homeHref = h => {
+    if (h.hero === 'H1') return 'index.html';
+    const u = new URLSearchParams({ ir: h.ir, result: h.result });
+    return `index.html?${u}`;
+  };
+  async function importCard() {
+    try {
+      homes = homes || (await fetch('lab/index.json').then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })).homes;
+    } catch (err) { S.chat.say('agent', `户型列表没加载出来：${esc(err.message)}`); return; }
+    const cur = S.ir.scene_id;
+    const grid = homes.map(h => `<a class="home${h.id === cur ? ' on' : ''}" href="${esc(homeHref(h))}"${h.id === cur ? ' aria-current="true"' : ''}>` +
+      `<img src="${esc(h.preview)}" alt="" loading="lazy" width="96" height="96"><b>${esc(h.hero || h.id.replace('scene', '#'))}</b>` +
+      `<span class="num">${h.area_m2} m² · ${h.rooms.length} 间</span></a>`).join('');
+    S.sheet('chat');
+    S.chat.say('agent', '从素材库里选一套户型。载入后会读出房间、门和家具，先核对再试住。', {
+      title: `户型 ${homes.length} 套`,
+      body: `<div class="homes">${grid}</div><p class="muted">家具模型在 <a href="library.html">素材库</a>；想多套一起比，去 <a href="lab.html">实验室</a>。</p>`,
+    });
+  }
+
   // Actions dispatched from app-boot's S.act.
   S.flow = {
+    import: () => importCard(),
     say: text => S.onSay(text),
     intentOk() {
       const q = S.pending; if (!q) return;

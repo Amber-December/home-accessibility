@@ -46,6 +46,7 @@
     if (name === 'confirm') {
       const p = S.personaObj(), on = S.runs('base').filter(r => S.tasks.has(r.task));
       S.chat.say('user', `我是${HA.panels.esc(p.name)}，想试试${on.map(r => HA.panels.esc(r.name)).join('、')}。`);
+      S.sheet('chat');
       return S.intentCard();
     }
     if (name === 'persona') {
@@ -61,6 +62,7 @@
     if (name === 'sceneMenu') return sceneMenu($('#scene-list').hidden);
     if (name === 'scene') { S.scene = arg; sceneMenu(false); return S.renderScenes(); }
     if (name === 'fold') return S.fold(arg);
+    if (name === 'sheet') return S.sheet(arg);
     if (name === 'layer') {
       S.layers[arg] = el.checked;
       if (arg === 'heat') S.refreshHeat(); else if (arg === 'sweep') S.v.built.sweeps.visible = el.checked; else S.update();
@@ -113,11 +115,16 @@
   };
 
   // Folding a panel slides it out (CSS) and recentres the 3D view on the remaining free area.
-  const PANEL = { left: '#chat', right: '#detail' };
+  // On phones both panels share one bottom sheet below the view, so there is nothing to inset.
+  const PANEL = { left: '#chat', right: '#detail' }, phone = matchMedia('(max-width: 760px)');
   S.syncInsets = () => {
     if (!S.v) return;
-    const b = document.body.classList, edge = side => (b.contains('fold-' + side) ? 0 : $(PANEL[side]).offsetWidth + 12);
+    const b = document.body.classList, edge = side => (phone.matches || b.contains('fold-' + side) ? 0 : $(PANEL[side]).offsetWidth + 12);
     S.v.setInsets(edge('left'), edge('right'));
+  };
+  S.sheet = tab => {
+    document.body.classList.toggle('sheet-chat', tab === 'chat');
+    document.querySelectorAll('#sheet-tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.arg === tab));
   };
   S.fold = side => {
     const folded = document.body.classList.toggle('fold-' + side), btn = $(`.fold.${side}`);
@@ -189,10 +196,15 @@
         $('#pick').innerHTML = HA.panels.object(S, ud.id);
       };
       S.tl = HA.timeline.create($('#timeline'), { onSeek: t => { S.pause(); S.seek(t); }, onPlay: on => (on ? S.play() : S.pause()) });
-      if (HA.config.glb) S.v.loadGLB(HA.config.glb).catch(err => console.warn('GLB', err));
+      if (HA.config.glb) {
+        S.v.loadGLB(HA.config.glb)
+          .then(() => { if (S.v.planArgs && !S.v.split) HA.resident.applyPlan(S.v, ...S.v.planArgs); })
+          .catch(err => console.warn('GLB', err));
+      }
       const pr = PRESETS[HA.config.preset];
       S.preset = pr || null;
-      selectPersona(pr ? pr.persona : result.personas[0].id, pr && pr.tasks);
+      const want = HA.config.persona, persona = pr ? pr.persona : result.personas.some(p => p.id === want) ? want : result.personas[0].id;
+      selectPersona(persona, pr && pr.tasks);
       $('#loading').remove();
       S.chat.say('agent', `已载入户型 ${HA.panels.esc(ir.scene_id)}：${ir.rooms.length} 个房间、${ir.doors.length} 扇门、${ir.objects.length} 件物体。先核对户型，再选谁来住；也可以直接在下面说。`);
       S.examples(); S.chat.enable();
@@ -204,7 +216,8 @@
         }
         if (pr.say) S.onSay(pr.say);
       } else {
-        S.enter('home');
+        if (result.plans.some(p => p.id === HA.config.plan)) S.plan = HA.config.plan;
+        S.enter(['pick', 'stay', 'report', 'fix', 'compare'].includes(HA.config.step) ? HA.config.step : 'home');
       }
       window.HA_READY = true;
     } catch (err) {

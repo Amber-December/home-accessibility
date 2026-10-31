@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>清先住 LiveFirst · 素材库</title>
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/page.css">
+  <link rel="stylesheet" href="css/library.css">
+  <script type="importmap">
+  { "imports": { "three": "./vendor/three/build/three.module.js", "three/addons/": "./vendor/three/examples/jsm/" } }
+  </script>
+</head>
+<body>
+  <header class="top glass">
+    <a class="brand" href="index.html"><img src="logo.svg" alt="" width="30" height="30"><b>清先住</b><span class="en">LiveFirst</span></a>
+    <nav class="modes" aria-label="模式">
+      <a href="index.html">试住</a><a href="lab.html">实验室</a><a href="library.html" aria-current="page">素材库</a>
+    </nav>
+    <span class="note muted" id="note"></span>
+  </header>
+
+  <main class="cols lib">
+    <aside class="glass side" aria-label="筛选">
+      <div class="tabs" role="tablist" aria-label="素材类型">
+        <button role="tab" id="tab-furn" data-tab="furn" aria-selected="true">家具 <span class="num" id="n-furn"></span></button>
+        <button role="tab" id="tab-home" data-tab="home" aria-selected="false">户型 <span class="num" id="n-home"></span></button>
+      </div>
+      <input type="search" id="q" placeholder="搜索名称、系列" aria-label="搜索">
+      <div id="filters"></div>
+    </aside>
+
+    <section class="glass list" aria-labelledby="h-list">
+      <h2 id="h-list"><span id="list-title"></span> <span class="muted num" id="count"></span></h2>
+      <div class="cards" id="cards"></div>
+    </section>
+
+    <aside class="glass item" id="item" aria-live="polite" aria-label="详情"></aside>
+  </main>
+
+  <script src="js/text.js"></script>
+  <script type="module" src="js/library.js"></script>
+</body>
+</html>

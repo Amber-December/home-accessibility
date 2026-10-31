@@ -5,7 +5,8 @@
 
   function create(el, onSend) {
     el.innerHTML = `<div class="chat-log" role="log" aria-live="polite"></div>
-      <form class="chat-in"><input aria-label="说说谁来住、想做什么、预算多少" placeholder="例如：我坐手动轮椅，想看看能不能自己上厕所" disabled>
+      <form class="chat-in"><button type="button" class="add" data-act="import" aria-label="导入户型" title="从素材库导入户型" disabled>＋</button>
+      <input aria-label="说说谁来住、想做什么、预算多少" placeholder="例如：我坐手动轮椅，想看看能不能自己上厕所" disabled>
       <button disabled>发送</button></form>`;
     const log = el.querySelector('.chat-log'), form = el.querySelector('form'), input = form.querySelector('input');
     form.addEventListener('submit', e => {
@@ -24,7 +25,7 @@
         log.appendChild(m); log.scrollTop = log.scrollHeight;
         return m;
       },
-      enable() { input.disabled = form.querySelector('button').disabled = false; },
+      enable() { input.disabled = false; form.querySelectorAll('button').forEach(b => { b.disabled = false; }); },
       clear() { log.innerHTML = ''; },
     };
     return chat;

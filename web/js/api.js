@@ -13,6 +13,8 @@
     glb: q.get('glb') === 'none' ? '' : q.get('glb') || (q.get('ir') ? '' : 'models/H1/scene000064.glb'),
     style: q.get('style') === 'diag' ? 'diag' : 'real',
     preset: q.get('preset') || '',
+    // Deep links from the lab and the 素材库: open a step for one persona, optionally with a plan chosen.
+    step: q.get('step') || '', persona: q.get('persona') || '', plan: q.get('plan') || '',
     quality: q.get('quality') || 'normal',
   };
 
