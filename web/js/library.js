@@ -179,17 +179,31 @@ async function boot() {
   $('#cards').addEventListener('click', e => { const c = e.target.closest('.card'); if (c) select(c.dataset.id); });
   $('#item').addEventListener('click', e => { if (e.target.closest('[data-close]')) close(); });
   const dialog = $('#furniture-dialog'), form = $('#furniture-form'), progress = $('#furniture-progress');
-  $('#add-furniture').addEventListener('click', () => { form.reset(); progress.hidden = true; dialog.showModal(); });
+  $('#add-furniture').addEventListener('click', () => { form.reset(); progress.hidden = true; syncImportRequirements(); dialog.showModal(); });
+  const closeFurniture = () => { progress.hidden = true; dialog.close(); };
+  $('#close-furniture').addEventListener('click', closeFurniture);
+  $('#cancel-furniture').addEventListener('click', closeFurniture);
+  const syncImportRequirements = () => {
+    const hasModel = form.elements.model.files && form.elements.model.files.length > 0;
+    form.elements.reference.required = !hasModel;
+    form.elements.drawing.required = !hasModel;
+    form.elements.reference.closest('label').querySelector('span')?.remove();
+    form.elements.drawing.closest('label').querySelector('span')?.remove();
+    if (hasModel) progress.hidden = true;
+  };
+  form.elements.model.addEventListener('change', syncImportRequirements);
   form.addEventListener('submit', async e => {
-    if (e.submitter?.value === 'cancel') return;
     e.preventDefault();
-    const fd = new FormData(form), ref = fd.get('reference'), drawing = fd.get('drawing');
-    if (!(ref instanceof File) || !(drawing instanceof File)) return;
-    const refUrl = await readDataUrl(ref);
+    const fd = new FormData(form), ref = fd.get('reference'), drawing = fd.get('drawing'), model = fd.get('model');
+    const hasModel = model instanceof File && model.size > 0;
+    if (!hasModel && (!(ref instanceof File) || !ref.size || !(drawing instanceof File) || !drawing.size)) return;
+    const refUrl = ref instanceof File && ref.size ? await readDataUrl(ref) : 'logo.svg';
+    const modelUrl = hasModel ? await readDataUrl(model) : '';
     progress.hidden = false; progress.textContent = '准备上传…';
-    await HA.lux3d.run({ reference: ref, drawing }, s => { progress.textContent = `${s.index + 1} / ${s.total} · ${s.label}`; });
+    if (hasModel) progress.textContent = '读取已有 3D 模型并校准尺寸…';
+    else await HA.lux3d.run({ reference: ref, drawing }, s => { progress.textContent = `${s.index + 1} / ${s.total} · ${s.label}`; });
     const id = `custom-${Date.now()}`;
-    const item = { id, name: fd.get('name'), variant: '我的家具', category: fd.get('category'), size_m: [+fd.get('width') / 100, +fd.get('depth') / 100, +fd.get('height') / 100], price_cny: 0, price_src: '用户上传', url: '', img: refUrl, ref: refUrl, glb: '', lux3d: true, inputs: [], used_in: [], limitations: ['模型由 Agent + Lux3D 生成，当前为本地演示资产'], harness: { dims_src: { width: ['user', '参数图纸'], depth: ['user', '参数图纸'], height: ['user', '参数图纸'] }, mechanisms: fd.get('joints') ? { '活动部件': 1 } : {}, joints: fd.get('joints') ? { n: 1, configs: 1, penetration_m: 0, passed: true } : null, rescale: null, review: null } };
+    const item = { id, name: fd.get('name'), variant: '我的家具', category: fd.get('category'), size_m: [+fd.get('width') / 100, +fd.get('depth') / 100, +fd.get('height') / 100], price_cny: 0, price_src: '用户上传', url: '', img: refUrl, ref: refUrl, glb: modelUrl, lux3d: !hasModel, inputs: [], used_in: [], limitations: [hasModel ? '模型由用户导入，已保留原始网格并按参数尺寸校准' : '模型由 Agent + Lux3D 生成，当前为本地演示资产'], harness: { dims_src: { width: ['user', '参数图纸'], depth: ['user', '参数图纸'], height: ['user', '参数图纸'] }, mechanisms: fd.get('joints') ? { '活动部件': 1 } : {}, joints: fd.get('joints') ? { n: 1, configs: 1, penetration_m: 0, passed: true } : null, rescale: null, review: null } };
     const customs = customItems(); customs.push(item); saveCustom(customs); C.items.push(item);
     dialog.close(); st.tab = 'furn'; st.id = id; render();
   });

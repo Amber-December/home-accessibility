@@ -40,3 +40,4 @@ tr.hero td:first-child::after { content: attr(data-hero); margin-left: 4px; padd
   .grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
 }
 .upload-source { display: inline-flex !important; color: var(--purple); cursor: pointer; border: 1px dashed var(--purple); border-radius: 8px; padding: 8px; }
+.upload-source.model-source { color: var(--teal); border-color: var(--teal); }

@@ -134,7 +134,15 @@
       const file = e.target.files[0];
       if (!file) return;
       document.querySelector('input[name="src"][value="upload"]').checked = true;
+      $('#lab-file-label').textContent = `已选择户型文件：${file.name}`;
       $('#src-info').textContent = `已选择「${file.name}」，识别完成后将加入我的户型库。当前演示沿用项目户型结果。`;
+    });
+    $('#lab-model').addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      document.querySelector('input[name="src"][value="upload"]').checked = true;
+      $('#lab-model-label').textContent = `已选择 3D 模型：${file.name}`;
+      $('#src-info').textContent = `已选择「${file.name}」，将读取模型边界并匹配户型坐标。当前演示沿用项目户型结果。`;
     });
     if (q.get('run')) { done = D.homes.length; } renderGrid();
     window.HA_READY = true;
