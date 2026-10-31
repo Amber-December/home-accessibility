@@ -5,12 +5,18 @@
   const HA = window.HA = window.HA || {};
   const q = new URLSearchParams(location.search);
   const FIX = '../tests/fixtures/H1/';
+  const H1 = 'models/H1/scene000064.glb';
+  const glbFor = ir => {
+    if (!ir) return H1;
+    const sid = (/(scene\d+)\/scene_ir\.json$/.exec(ir) || [])[1];
+    return !sid ? '' : sid === 'scene000064' ? H1 : ir.replace(/scene_ir\.json$/, `${sid}.glb`);
+  };
   HA.config = {
     ir: q.get('ir') || FIX + 'scene_ir.json',
     occupancy: q.get('occ') || FIX + 'occupancy.npz',
     result: q.get('result') || 'mock/H1/sim_result.json',
-    // H1 ships its GLB; ?glb=none falls back to the IR white model.
-    glb: q.get('glb') === 'none' ? '' : q.get('glb') || (q.get('ir') ? '' : 'models/H1/scene000064.glb'),
+    // Every home ships a display GLB next to its IR (H1 under models/); ?glb=none falls back to the IR white model.
+    glb: q.get('glb') === 'none' ? '' : q.get('glb') || glbFor(q.get('ir')),
     style: q.get('style') === 'diag' ? 'diag' : 'real',
     preset: q.get('preset') || '',
     // Deep links from the lab and the 素材库: open a step for one persona, optionally with a plan chosen.

@@ -5,7 +5,6 @@
   const T = HA.text, $ = s => document.querySelector(s);
   const esc = s => String(s ?? '').replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
   const q = new URLSearchParams(location.search);
-  const GLB = { scene000064: 'models/H1/scene000064.glb' };
   const LEGEND = [['ok', '通过'], ['fix', '没过，能改好'], ['fail', '没过，改不好'], ['na', '不适用'], ['wait', '待运行']];
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   let D, done = 0, timer = null;
@@ -34,7 +33,6 @@
   function link(h, s, j) {
     const p = (s.p.find(p => j.fails.some(k => k.startsWith(p.id + '/'))) || s.p[0] || D.personas[0]).id;
     const u = new URLSearchParams({ ir: h.ir, result: h.result, step: 'report', persona: p });
-    if (GLB[h.id]) u.set('glb', GLB[h.id]);
     return `index.html?${u}`;
   }
 
