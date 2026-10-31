@@ -263,7 +263,9 @@
     function applyOffset(w, h, dt) {
       // CameraControls and WebGL view offsets use the opposite screen-space sign:
       // a right rail reduces the free area to the left, so the scene must move left.
-      const dx = (v.insets.right - v.insets.left) / 2;
+      // setViewOffset uses drawing-buffer pixels, while panel measurements are CSS pixels.
+      const dpr = w / Math.max(1, el.clientWidth);
+      const dx = (v.insets.right - v.insets.left) * dpr / 2;
       dxNow = smooth() ? dxNow + (dx - dxNow) * Math.min(1, dt * 10) : dx;
       if (Math.abs(dxNow - dx) < 0.5) dxNow = dx;
       if (dxNow) camera.setViewOffset(w, h, dxNow, 0, w, h); else camera.clearViewOffset();
@@ -279,23 +281,25 @@
       if (v.view === 'walk') stepWalk(dt);
       if (v.view === 'plan') controls.maxPolarAngle = Math.PI * 0.49;
       const w = el.clientWidth, h = el.clientHeight;
+      const drawing = renderer.getDrawingBufferSize(new THREE.Vector2());
+      const rw = drawing.x, rh = drawing.y;
       if (v.split) {
         renderer.setScissorTest(true);
         v.split.forEach((side, i) => {
           side.apply();
           placeCamera(side.pose && side.pose(), false, v.view === 'walk' ? 'bird' : v.view, true); controls.update(0);
-          camera.clearViewOffset(); camera.aspect = (w / 2) / h; camera.updateProjectionMatrix();
-          renderer.setViewport(i * w / 2, 0, w / 2, h); renderer.setScissor(i * w / 2, 0, w / 2, h);
+          camera.clearViewOffset(); camera.aspect = (rw / 2) / rh; camera.updateProjectionMatrix();
+          renderer.setViewport(i * rw / 2, 0, rw / 2, rh); renderer.setScissor(i * rw / 2, 0, rw / 2, rh);
           renderer.render(scene, camera);
         });
-        renderer.setScissorTest(false); renderer.setViewport(0, 0, w, h);
+        renderer.setScissorTest(false); renderer.setViewport(0, 0, rw, rh);
       } else {
         camera.aspect = w / h; camera.updateProjectionMatrix();
         // Plan and bird views retain their user framing. Follow / first-person / walk
         // are driven by the resident pose every frame.
         if (v.view !== 'plan' && v.view !== 'bird') placeCamera(v.pose, true);
         controls.update(dt);
-        applyOffset(w, h, dt); camera.updateProjectionMatrix();
+        applyOffset(rw, rh, dt); camera.updateProjectionMatrix();
         fx.render(dt);
       }
       requestAnimationFrame(frame);
