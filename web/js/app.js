@@ -4,7 +4,7 @@
   const HA = window.HA;
   const $ = s => document.querySelector(s);
   const S = HA.app = {
-    step: 'home', persona: null, tasks: new Set(), plan: null, variant: 'base', t: 0, view: 'top',
+    step: 'home', persona: null, tasks: new Set(), plan: null, variant: 'base', t: 0, view: 'plan',
     layers: { heat: false, sweep: false, fp: true }, preset: null, sides: [], announced: new Set(),
   };
 

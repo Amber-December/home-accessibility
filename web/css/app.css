@@ -76,6 +76,7 @@ nav.modes a[aria-current="page"] { background: var(--purple); color: #fff; }
 /* segmented groups */
 .seg { display: flex; gap: 2px; padding: 3px; border-radius: 10px; background: rgba(36, 33, 42, .05); }
 .seg button { border: none; background: none; padding: 4px 10px; border-radius: 7px; }
+.seg button { white-space: nowrap; }
 .seg button.on, .seg button[aria-pressed="true"] { background: var(--purple); color: #fff; }
 .seg label { display: flex; align-items: center; gap: 4px; padding: 2px 8px; font-size: 13px; cursor: pointer; }
 .seg input { accent-color: var(--purple); }
@@ -105,6 +106,9 @@ body.fold-right .panel.right { transform: translateX(calc(100% + 2 * var(--gap))
 .fold.right { right: calc(var(--R) + var(--gap) / 2); }
 body.fold-left .fold.left { left: var(--gap); } body.fold-right .fold.right { right: var(--gap); }
 
+.panel-head { flex: none; display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding: 12px 14px 9px; border-bottom: 1px solid var(--line); }
+.panel-head b { font: 15px/1.2 var(--f-head); color: var(--purple); }
+.panel-head span { color: var(--muted); font-size: 11px; white-space: nowrap; }
 #chat { display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
 .chat-log { flex: 1; overflow: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
 .msg p { margin: 0; } .msg { max-width: 100%; display: flex; flex-direction: column; }
@@ -124,7 +128,8 @@ body.fold-left .fold.left { left: var(--gap); } body.fold-right .fold.right { ri
 .mcard .homes img { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 5px; background: #F4F2EF; }
 .mcard .homes b { font-size: 12px; } .mcard .homes span { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-#detail { overflow: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; }
+#detail { overflow: auto; padding: 0 16px 14px; display: flex; flex-direction: column; gap: 12px; }
+#detail .panel-head { margin: 0 -16px; padding-left: 16px; padding-right: 16px; }
 #detail > #panel > button { margin-top: 12px; width: 100%; padding: 9px 12px; }
 .card { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; margin-bottom: 8px; cursor: pointer; background: #fff; }
 .card.on { border-color: var(--purple); box-shadow: 0 0 0 2px rgba(102, 8, 116, .14); }
@@ -229,6 +234,8 @@ svg.scatter { width: 100%; height: auto; display: block; font-family: var(--f-nu
   :root { --gap: 8px; --head: 86px; --sheet: 46vh; --tabs: 40px; --tl: 76px; --L: 0px; --R: 0px; font-size: 13px; }
   header { top: 0; left: 0; right: 0; height: var(--head); border-radius: 0; flex-wrap: wrap; align-content: center; gap: 6px 8px; padding: 6px 10px; }
   .brand .en, #styles { display: none; }
+  .panel-head { padding-top: 9px; padding-bottom: 7px; }
+  .panel-head span { overflow: hidden; text-overflow: ellipsis; }
   .brand b { font-size: 18px; } .brand img { width: 24px; height: 24px; }
   nav.modes a { padding: 3px 8px; font-size: 12px; }
   #scene { margin-left: auto; } .menu-btn { padding: 4px 8px; font-size: 12px; }
@@ -246,6 +253,7 @@ svg.scatter { width: 100%; height: auto; display: block; font-family: var(--f-nu
   #sheet-tabs button[aria-selected="true"] { background: rgba(102, 8, 116, .08); color: var(--purple); font-weight: 600; }
   #tools { top: calc(var(--head) + 6px); left: 6px; right: 6px; flex-wrap: wrap; gap: 4px; }
   #tools .seg button { padding: 2px 7px; font-size: 12px; } #tools .seg label { padding: 2px 5px; font-size: 12px; }
+  #views { max-width: calc(100vw - 16px); overflow-x: auto; scrollbar-width: none; }
   footer#timeline { left: 0; right: 0; bottom: var(--sheet); height: var(--tl); border-radius: 0; padding: 6px 8px; gap: 8px; }
   .tl-ctrl { width: 64px; gap: 3px; } .tl-play { width: 100%; padding: 2px 6px; } .tl-speed { display: none; }
   .tl-rowname { width: 40px; } .tl-track { height: 24px; }

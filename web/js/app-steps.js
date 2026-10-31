@@ -73,13 +73,13 @@
     HA.resident.applyPlan(S.v, null, null);
     S.renderSteps();
     if (step === 'home' || step === 'pick') {
-      S.setupPlayback(['base']); setView('top'); setLayer('heat', step === 'pick'); showTimeline(false);
+      S.setupPlayback(['base']); setView('plan'); setLayer('heat', step === 'pick'); showTimeline(false);
       S.sides.forEach(s => { s.marker.visible = false; if (s.trail) s.trail.visible = false; });
     } else if (step === 'stay') {
       S.setupPlayback(['base']); setLayer('heat', false); showTimeline(true); setView(S.preset && S.preset.view || 'follow');
       if (!S.preset || S.preset.autoplay) S.play();
     } else if (step === 'report') {
-      S.setupPlayback(['base']); setView('top'); setLayer('heat', true); showTimeline(true);
+      S.setupPlayback(['base']); setView('plan'); setLayer('heat', true); showTimeline(true);
       const items = HA.panels.issues(S, 'base');
       items.filter(x => x.v.severity === 'red').forEach(x => S.v.mark(x.v.object_id, 'red'));
       // 结论卡 (PRD 5.3): how many places fail, the score, one 看现场 per red item, then 小改 / 整屋重新布置.
@@ -92,7 +92,7 @@
         buttons: [{ label: '小改', act: 'go', arg: 'fix', primary: true, disabled: !S.result.plans.length },
           { label: '整屋重新布置', act: 'go', arg: 'relayout', disabled: true, title: '后续开放' }] });
     } else if (step === 'fix') {
-      S.ensurePlan(); setView('top'); setLayer('heat', true); showTimeline(false);
+      S.ensurePlan(); setView('plan'); setLayer('heat', true); showTimeline(false);
       S.showPlan(); S.fixCard();
       const pl = S.plan && S.planObj(), e = pl && pl.edits.find(e => S.ir.objects.some(o => o.id === e.object_id));
       if (e) { const o = S.ir.objects.find(o => o.id === e.object_id); S.v.flyTo((o.aabb.min[0] + o.aabb.max[0]) / 2, (o.aabb.min[1] + o.aabb.max[1]) / 2, 9); }
@@ -100,7 +100,7 @@
       const pl = S.planObj(), worse = S.allRuns('base').filter(r => r.applicable && r.success && !S.run(pl.id, r.persona, r.task).success);
       S.chat.say('agent', `方案 ${pl.id} 改完：${S.score('base')} → ${pl.score} 分，${worse.length ? `变差 ${worse.length} 项` : '没有住户变差'}。`, {
         buttons: [{ label: '导出报告', act: 'export', primary: true }] });
-      S.setupPlayback(['base', S.plan]); setView('top'); setLayer('heat', false); showTimeline(true);
+      S.setupPlayback(['base', S.plan]); setView('bird'); setLayer('heat', false); showTimeline(true);
       $('#split-labels').hidden = false; $('#split-right').textContent = `方案 ${pl.id}`;
       S.v.split = S.sides.map((side, i) => ({ apply() {
         HA.resident.applyPlan(S.v, i ? pl.edits : null, i ? 'after' : null);

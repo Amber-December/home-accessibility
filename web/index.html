@@ -39,9 +39,9 @@
     </div>
   </header>
 
-  <aside id="chat" class="glass panel left" aria-label="对话"></aside>
+  <aside id="chat" class="glass panel left" aria-label="对话与过程"></aside>
   <button class="fold left" data-act="fold" data-arg="left" aria-label="收起对话面板" aria-expanded="true">‹</button>
-  <aside id="detail" class="glass panel right" aria-label="详情"><div id="panel" aria-live="polite"></div><div id="pick"></div></aside>
+  <aside id="detail" class="glass panel right" aria-label="参数与证据"><div class="panel-head"><b>参数与证据</b><span>住户、碰撞与热力图</span></div><div id="panel" aria-live="polite"></div><div id="pick"></div></aside>
   <button class="fold right" data-act="fold" data-arg="right" aria-label="收起详情面板" aria-expanded="true">›</button>
   <nav id="sheet-tabs" class="glass" role="tablist" aria-label="面板">
     <button role="tab" data-act="sheet" data-arg="chat" aria-selected="false">对话</button>
@@ -50,10 +50,11 @@
 
   <div id="tools">
     <div class="seg glass" id="views" role="group" aria-label="视角">
-      <button data-act="view" data-arg="top" title="快捷键 1">俯视</button>
-      <button data-act="view" data-arg="follow" title="快捷键 2">跟随</button>
-      <button data-act="view" data-arg="fp" title="快捷键 3">第一人称</button>
-      <button data-act="view" data-arg="walk" title="快捷键 4；方向键或 WASD 移动，拖动转头，Esc 退出">步入</button>
+      <button data-act="view" data-arg="plan" title="快捷键 1；正俯视平面">平面</button>
+      <button data-act="view" data-arg="bird" title="快捷键 2；可拖动旋转透视">鸟瞰</button>
+      <button data-act="view" data-arg="follow" title="快捷键 3；跟随住户移动">跟随</button>
+      <button data-act="view" data-arg="fp" title="快捷键 4；住户视线">第一人称</button>
+      <button data-act="view" data-arg="walk" title="快捷键 5；方向键或 WASD 移动，拖动转头，Esc 退出">步入</button>
     </div>
     <div class="seg glass" id="layers" role="group" aria-label="图层">
       <label><input type="checkbox" data-act="layer" data-arg="heat">通行余量</label>

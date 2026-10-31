@@ -4,7 +4,8 @@
   const HA = window.HA = window.HA || {};
 
   function create(el, onSend) {
-    el.innerHTML = `<div class="chat-log" role="log" aria-live="polite"></div>
+    el.innerHTML = `<div class="panel-head"><b>对话与过程</b><span>用自然语言设定住户与任务</span></div>
+      <div class="chat-log" role="log" aria-live="polite"></div>
       <form class="chat-in"><button type="button" class="add" data-act="import" aria-label="导入户型" title="从素材库导入户型" disabled>＋</button>
       <input aria-label="说说谁来住、想做什么、预算多少" placeholder="例如：我坐手动轮椅，想看看能不能自己上厕所" disabled>
       <button disabled>发送</button></form>`;

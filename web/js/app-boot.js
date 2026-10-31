@@ -57,10 +57,15 @@
       if (el.checked) S.tasks.add(arg); else if (S.tasks.size > 1) S.tasks.delete(arg); else el.checked = true;
       S.renderPanel(); return;
     }
-    if (name === 'view') return S.v.split ? null : S.setView(arg);
+    if (name === 'view') return S.setView(arg);
     if (name === 'style') return S.setStyle(arg);
     if (name === 'sceneMenu') return sceneMenu($('#scene-list').hidden);
-    if (name === 'scene') { S.scene = arg; sceneMenu(false); return S.renderScenes(); }
+    if (name === 'scene') {
+      S.scene = arg; sceneMenu(false); S.renderScenes();
+      const item = SCENES.flatMap(g => g.items).find(x => x.id === arg);
+      if (item) S.chat.say('agent', `已切换到${HA.panels.esc(item.name)}情景：${HA.panels.esc(item.note)}。当前住户与任务参数保持不变，可继续调整右侧参数。`);
+      return;
+    }
     if (name === 'fold') return S.fold(arg);
     if (name === 'sheet') return S.sheet(arg);
     if (name === 'layer') {
@@ -134,6 +139,11 @@
     S.syncInsets();
   };
   window.addEventListener('resize', () => S.syncInsets());
+  // Update insets continuously while panels animate, so the free canvas stays centred.
+  [PANEL.left, PANEL.right].forEach(sel => {
+    const panel = $(sel);
+    if (panel && window.ResizeObserver) new ResizeObserver(() => S.syncInsets()).observe(panel);
+  });
 
   // Absolute times of every event on the current timeline, for ←/→ stepping.
   function eventTimes() {
@@ -156,8 +166,8 @@
   document.addEventListener('keydown', e => {
     if (!S.v || /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName) || e.ctrlKey || e.metaKey || e.altKey) return;
     const tl = S.tl && !$('#timeline').hidden;
-    const view = { Digit1: 'top', Digit2: 'follow', Digit3: 'fp', Digit4: 'walk' }[e.code];
-    if (view) { if (!S.v.split) S.setView(view); return; }
+    const view = { Digit1: 'plan', Digit2: 'bird', Digit3: 'follow', Digit4: 'fp', Digit5: 'walk' }[e.code];
+    if (view) { S.setView(view); return; }
     if (e.code === 'Space' && tl) { e.preventDefault(); S.playing ? S.pause() : S.play(); return; }
     if ((e.code === 'ArrowLeft' || e.code === 'ArrowRight') && tl) {
       e.preventDefault();

@@ -1,4 +1,4 @@
-/* three.js viewer: renderer, post-processing, styles (real / diag), views (top / follow / fp / walk), picking, marks.
+/* three.js viewer: renderer, post-processing, styles (real / diag), views (plan / bird / follow / fp / walk), picking, marks.
    Camera moves go through camera-controls so every transition is smooth and can be skipped for reduced motion. */
 (() => {
   'use strict';
@@ -6,7 +6,7 @@
   const { V, WALL_H, CUT_H } = HA.sceneBuild;
   const RED = new THREE.Color('#D7263D'), PURPLE = new THREE.Color('#660874');
   const DIAG = { wall: '#FBFAF8', ground: '#E4E1DA', door: '#E2DED6', object: '#F3F1EC' };
-  const VIEWS = ['top', 'follow', 'fp', 'walk'];
+  const VIEWS = ['plan', 'bird', 'follow', 'fp', 'walk'];
 
   function create(el, ir, occ) {
     const { CameraControls, RoomEnvironment } = HA.lib;
@@ -45,7 +45,7 @@
 
     const v = {
       renderer, scene, camera, controls, built, ir, fx, center: [cx, cy], span,
-      view: 'top', style: 'real', pose: null, eye: 1.2, split: null, insets: { left: 0, right: 0 },
+      view: 'plan', style: 'real', pose: null, eye: 1.2, split: null, insets: { left: 0, right: 0 },
       marks: new Map(), onFrame: [], onPick: null, onView: null, glb: null, glbById: {},
     };
     const smooth = () => !HA.reducedMotion.matches;
@@ -55,22 +55,25 @@
       cutPlane.constant = cut ? CUT_H : 1e3;
       for (const id of cutHide) if (v.glbById[id]) v.glbById[id].visible = !cut;
     };
-    v.home = (anim = true) => {
+    v.home = (anim = true, bird = false) => {
       const p = V(cx, cy - span * 0.55, span * 1.15), t = V(cx, cy, 0);
-      controls.setLookAt(p.x, p.y, p.z, t.x, t.y, t.z, anim && smooth());
+      const q = bird ? p : V(cx, cy, span * 1.35);
+      controls.setLookAt(q.x, q.y, q.z, t.x, t.y, t.z, anim && smooth());
     };
     v.setView = name => {
       if (!VIEWS.includes(name)) return;
       if (name === 'walk' && v.view !== 'walk') { v.prevView = v.view; startWalk(); }
-      v.view = name; controls.enabled = name === 'top';
-      v.setWallCut(name === 'top' || name === 'follow');
-      built.labels.visible = name === 'top';
-      if (name === 'top') v.home();
+      v.view = name; controls.enabled = name === 'bird';
+      controls.maxPolarAngle = name === 'plan' || name === 'bird' ? Math.PI * 0.49 : Math.PI;
+      v.setWallCut(name === 'plan' || name === 'bird' || name === 'follow');
+      built.labels.visible = name === 'plan' || name === 'bird';
+      if (name === 'plan') v.home();
+      if (name === 'bird') v.home(true, true);
       if (v.onView) v.onView(name);
     };
 
     v.flyTo = (x, y, dist = 4.5) => {
-      if (v.view !== 'top') v.setView('top');
+      if (v.view !== 'plan' && v.view !== 'bird') v.setView('bird');
       const p = V(x, y - dist * 0.6, dist), t = V(x, y, 0);
       controls.setLookAt(p.x, p.y, p.z, t.x, t.y, t.z, smooth());
     };
@@ -175,7 +178,7 @@
     function startWalk() { const p = v.pose || [cx, cy, Math.PI / 2]; v.walk = { x: p[0], y: p[1], yaw: p[2], pitch: -0.08 }; keys.clear(); }
     window.addEventListener('keydown', e => {
       if (v.view !== 'walk' || e.target.tagName === 'INPUT') return;
-      if (e.code === 'Escape') { v.setView(v.prevView || 'top'); return; }
+      if (e.code === 'Escape') { v.setView(v.prevView || 'plan'); return; }
       if (MOVE.includes(e.code)) { keys.add(e.code); e.preventDefault(); e.stopPropagation(); }
     }, true);
     window.addEventListener('keyup', e => keys.delete(e.code));
@@ -188,16 +191,26 @@
       if (free(w.x, ny)) w.y = ny;
     }
 
-    function placeCamera(pose, anim) {
-      if (v.view === 'top') return;
+    function placeCamera(pose, anim, viewName = v.view, force = false) {
+      if (viewName === 'plan') {
+        const q = V(cx, cy, span * 1.35), t = V(cx, cy, 0);
+        controls.setLookAt(q.x, q.y, q.z, t.x, t.y, t.z, anim && smooth());
+        return;
+      }
+      if (viewName === 'bird' && !force) return;
+      if (viewName === 'bird') {
+        const q = V(cx, cy - span * 0.55, span * 1.15), t = V(cx, cy, 0);
+        controls.setLookAt(q.x, q.y, q.z, t.x, t.y, t.z, anim && smooth());
+        return;
+      }
       let p, t;
-      if (v.view === 'walk') {
+      if (viewName === 'walk') {
         const w = v.walk, c = Math.cos(w.pitch);
         p = V(w.x, w.y, v.eye); t = V(w.x + Math.cos(w.yaw) * c * 2, w.y + Math.sin(w.yaw) * c * 2, v.eye + Math.sin(w.pitch) * 2);
       } else {
         if (!pose) return;
         const [x, y, yaw] = pose, f = [Math.cos(yaw), Math.sin(yaw)];
-        if (v.view === 'follow') { p = V(x - f[0] * 3.2, y - f[1] * 3.2, 4.4); t = V(x + f[0] * 0.6, y + f[1] * 0.6, 0.4); }
+        if (viewName === 'follow') { p = V(x - f[0] * 3.2, y - f[1] * 3.2, 4.4); t = V(x + f[0] * 0.6, y + f[1] * 0.6, 0.4); }
         else { p = V(x - f[0] * 0.15, y - f[1] * 0.15, v.eye); t = V(x + f[0] * 2, y + f[1] * 2, v.eye - 0.25); anim = false; }
       }
       controls.maxPolarAngle = Math.PI;
@@ -209,7 +222,9 @@
     v.setInsets = (left, right) => { v.insets = { left, right }; };
     let dxNow = 0;
     function applyOffset(w, h, dt) {
-      const dx = (v.insets.left - v.insets.right) / 2;
+      // CameraControls and WebGL view offsets use the opposite screen-space sign:
+      // a right rail reduces the free area to the left, so the scene must move left.
+      const dx = (v.insets.right - v.insets.left) / 2;
       dxNow = smooth() ? dxNow + (dx - dxNow) * Math.min(1, dt * 10) : dx;
       if (Math.abs(dxNow - dx) < 0.5) dxNow = dx;
       if (dxNow) camera.setViewOffset(w, h, dxNow, 0, w, h); else camera.clearViewOffset();
@@ -223,26 +238,30 @@
       const dt = Math.min(0.1, (now - last) / 1000); last = now;
       v.onFrame.forEach(f => f(dt));
       if (v.view === 'walk') stepWalk(dt);
-      if (v.view === 'top') controls.maxPolarAngle = Math.PI * 0.49;
+      if (v.view === 'plan') controls.maxPolarAngle = Math.PI * 0.49;
       const w = el.clientWidth, h = el.clientHeight;
       if (v.split) {
         renderer.setScissorTest(true);
         v.split.forEach((side, i) => {
           side.apply();
-          placeCamera(side.pose && side.pose(), false); controls.update(0);
+          placeCamera(side.pose && side.pose(), false, v.view === 'walk' ? 'bird' : v.view, true); controls.update(0);
           camera.clearViewOffset(); camera.aspect = (w / 2) / h; camera.updateProjectionMatrix();
           renderer.setViewport(i * w / 2, 0, w / 2, h); renderer.setScissor(i * w / 2, 0, w / 2, h);
           renderer.render(scene, camera);
         });
         renderer.setScissorTest(false); renderer.setViewport(0, 0, w, h);
       } else {
-        placeCamera(v.pose, true); controls.update(dt);
-        camera.aspect = w / h; camera.updateProjectionMatrix(); applyOffset(w, h, dt);
+        camera.aspect = w / h; camera.updateProjectionMatrix();
+        // Plan and bird views retain their user framing. Follow / first-person / walk
+        // are driven by the resident pose every frame.
+        if (v.view !== 'plan' && v.view !== 'bird') placeCamera(v.pose, true);
+        controls.update(dt);
+        applyOffset(w, h, dt); camera.updateProjectionMatrix();
         fx.render(dt);
       }
       requestAnimationFrame(frame);
     }
-    v.home(false); v.setView('top'); v.setStyle(HA.config.style); v.shadowsDirty();
+    v.home(false); v.setView('plan'); v.setStyle(HA.config.style); v.shadowsDirty();
     requestAnimationFrame(frame);
     return v;
   }
