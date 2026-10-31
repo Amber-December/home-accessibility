@@ -6,7 +6,6 @@ const HA = window.HA, T = HA.text, $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
 const q = new URLSearchParams(location.search);
 const phone = matchMedia('(max-width: 760px)');
-const GLB = { scene000064: 'models/H1/scene000064.glb' };
 const AREA = [['all', '全部'], ['s', '60 m² 以下', a => a < 60], ['m', '60–90 m²', a => a >= 60 && a <= 90], ['l', '90 m² 以上', a => a > 90]];
 const st = { tab: q.get('tab') === 'home' ? 'home' : 'furn', q: '', cat: 'all', motion: 'all', used: false, area: 'all', id: q.get('id') };
 let C, L, stop = null;
@@ -16,7 +15,7 @@ const homeName = id => { const h = L.homes.find(h => h.id === id); return h && h
 // The H1 home opens the default 试住 data (same scene, the richer fixture); others open their lab IR and result.
 const homeLink = (id, extra = {}) => {
   const h = L.homes.find(h => h.id === id), u = new URLSearchParams();
-  if (h && h.hero !== 'H1') { u.set('ir', h.ir); u.set('result', h.result); if (GLB[h.id]) u.set('glb', GLB[h.id]); }
+  if (h && h.hero !== 'H1') { u.set('ir', h.ir); u.set('result', h.result); }
   Object.entries(extra).forEach(([k, v]) => u.set(k, v));
   return `index.html${u.size ? `?${u}` : ''}`;
 };

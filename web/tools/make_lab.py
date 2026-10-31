@@ -1,18 +1,17 @@
-"""Build the 实验室 data set: a few WSR homes from an E1 import run, each with a generated result.
+"""Build the 实验室 data set: a few WSR homes from an E1 import run.
 
 For every home in SCENES it copies scene_ir.json and occupancy.npz into web/lab/<scene>/, writes a small preview
-JPEG, runs make_mock.py --unlabeled on it, and finally writes web/lab/index.json with one summary row per home.
-The results are make_mock.py output (disc planning, sample prices), not evaluator output.
+JPEG and writes web/lab/index.json with one row per home. web/tools/make_lab.cjs then runs B's engine and the plan
+search on every home and fills in the outcomes.
 
     python web/tools/make_lab.py [--run $HA_OUTPUTS/runs/E1/<run>] [-j 6] [--index-only]
+    node web/tools/make_lab.cjs
 """
 import argparse
 import json
 import os
 import pathlib
 import shutil
-import subprocess
-import sys
 from concurrent.futures import ThreadPoolExecutor
 
 from PIL import Image
@@ -37,28 +36,13 @@ def build(src, scene):
     im = Image.open(src / "preview.png").convert("RGB")
     im.thumbnail((360, 360))
     im.save(d / "preview.jpg", "JPEG", quality=80)
-    subprocess.run([sys.executable, str(ROOT / "web/tools/make_mock.py"), "--src", str(d), "--out", str(d / "sim_result.json"),
-                    "--unlabeled"], check=True, stdout=subprocess.DEVNULL)
     return scene
 
 
-def outcome(runs):
-    """{"persona/task": "ok" | fail code | "na"} for one variant."""
-    return {f"{r['persona']}/{r['task']}": "na" if not r["applicable"] else "ok" if r["success"] else r["fail_code"]
-            for r in runs}
-
-
 def row(scene, summary):
-    """One home for the lab page: baseline and every plan as outcome maps, so the page can filter without the runs."""
-    res = json.loads((OUT / scene / "sim_result.json").read_text())
-    return {
-        "id": scene, "hero": HERO.get(scene), "area_m2": summary["area"], "rooms": summary["rooms_list"],
-        "ir": f"lab/{scene}/scene_ir.json", "result": f"lab/{scene}/sim_result.json", "preview": f"lab/{scene}/preview.jpg",
-        "score": res["baseline"]["score"], "runs": outcome(res["baseline"]["runs"]),
-        "na_reason": {f"{r['persona']}/{r['task']}": r["reason"] for r in res["baseline"]["runs"] if not r["applicable"]},
-        "plans": [{"id": p["id"], "title": p["title"], "cost_cny": p["cost_cny"], "rent_ok": p["rent_ok"], "wall": p["wall"],
-                   "score": p["score"], "worse": bool(p["worse"]), "runs": outcome(p["runs"])} for p in res["plans"]],
-    }
+    """One home for the lab page; make_lab.cjs adds score, runs, na_reason and plans."""
+    return {"id": scene, "hero": HERO.get(scene), "area_m2": summary["area"], "rooms": summary["rooms_list"],
+            "ir": f"lab/{scene}/scene_ir.json", "preview": f"lab/{scene}/preview.jpg"}
 
 
 def main():
@@ -76,17 +60,11 @@ def main():
         for s in ex.map(lambda s: build(args.run / "scenes" / s, s), [] if args.index_only else SCENES):
             print("done", s, flush=True)
     rows = [row(s, summary[s]) for s in SCENES]
-    first = json.loads((OUT / SCENES[0] / "sim_result.json").read_text())
     (OUT / "index.json").write_text(json.dumps({
         "source": "WorldSimReady-Home 户型，经 src/ha/ir 导入为 Scene IR",
-        "generator": "web/tools/make_lab.py + web/tools/make_mock.py",
-        "note": "结果由 make_mock.py 生成，不是评估器输出：判定是圆盘近似和粗略的终点检查，价格是样例价格表。",
-        "personas": first["personas"], "tasks": first["tasks"],
+        "generator": "web/tools/make_lab.py（户型导入）+ web/tools/make_lab.cjs（仿真引擎和方案搜索）",
         "homes": rows}, ensure_ascii=False, separators=(",", ":")))
-    for r in rows:
-        ok = list(r["runs"].values())
-        print(r["id"], r["area_m2"], r["score"], f"{ok.count('ok')}/{len(ok) - ok.count('na')}", len(r["plans"]))
-
+    print("wrote", len(rows), "homes; now run node web/tools/make_lab.cjs")
 
 if __name__ == "__main__":
     main()

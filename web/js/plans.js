@@ -47,7 +47,7 @@
     let s = '';
     for (let v = yMin; v <= 100; v += 10) s += `<line class="grid" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/><text class="ax" x="${L - 4}" y="${y(v) + 3}" text-anchor="end">${v}</text>`;
     for (const v of [0, xMax / 2, xMax]) s += `<text class="ax" x="${x(v)}" y="${H - B + 14}" text-anchor="middle">${yen(v)}</text>`;
-    s += `<text class="ax" x="${W - R}" y="${H - 2}" text-anchor="end">花费（样例价）</text><text class="ax" x="2" y="${T - 2}">分</text>`;
+    s += `<text class="ax" x="${W - R}" y="${H - 2}" text-anchor="end">花费</text><text class="ax" x="2" y="${T - 2}">分</text>`;
     s += `<line class="base" x1="${L}" x2="${W - R}" y1="${y(base)}" y2="${y(base)}"/><text class="ax" x="${W - R}" y="${y(base) - 4}" text-anchor="end">改造前 ${base}</text>`;
     if (c.budget != null && c.budget <= xMax) s += `<line class="budget" x1="${x(c.budget)}" x2="${x(c.budget)}" y1="${T}" y2="${H - B}"/><text class="ax red" x="${x(c.budget) + 3}" y="${T + 9}">预算</text>`;
     const ok = plans.filter(p => !why(p, c) && p.score > base), f = front(ok);

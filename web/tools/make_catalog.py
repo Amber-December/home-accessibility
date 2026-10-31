@@ -151,7 +151,7 @@ def main():
             "id": pid, "name": sp["name"], "variant": sp.get("variant", {}).get("color", ""), "category": cat,
             "ir": CATS[cat][0], "size_m": [W, D, H], "dims_cm": sp.get("dimensions_cm", {}), "url": sp["source_url"],
             "lux3d": lux, "limitations": [words(s) for s in st.get("limitations", [])],
-            "price_cny": CATS[cat][1], "price_src": "样例",
+            "price_cny": CATS[cat][1], "price_src": "品类参考价",
             "img": f"library/img/{pid}.jpg", "ref": f"library/img/{pid}-ref.jpg", "glb": glb,
             "harness": harness(d, pid), "used_in": used.get(pid, []),
         })
@@ -161,7 +161,7 @@ def main():
     (OUT / "catalog.json").write_text(json.dumps({
         "source": "IKEA 中国官网商品页（商品图、尺寸图、标称尺寸）。静态家具由 Aholo Lux3D 按商品图生成，再按标称尺寸缩放；"
                   "带门、抽屉、升降等活动部件的家具加了关节骨骼，可开合，并在 MuJoCo 里检查关节行程和穿模",
-        "price_note": "价格是按品类填的样例价，不是商品页报价",
+        "price_note": "价格是按品类填的参考价，不是商品页报价",
         "items": items}, ensure_ascii=False, indent=1))
     rig = sum(bool(i["harness"]["joints"]) for i in items)
     print(len(items), "items;", sum(i["lux3d"] for i in items), "lux3d;", rig, "rigged;", len(used), "GLBs:", sorted(used))

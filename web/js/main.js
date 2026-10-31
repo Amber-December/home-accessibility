@@ -16,8 +16,8 @@ HA.lib = { PP, N8AOPostPass, CameraControls, RoomEnvironment };
 HA.reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
 // text.js is a deferred classic script in index.html so the loading braille shows before the libraries arrive.
-const MODULES = ['api', 'scene-ir', 'fx', 'viewer', 'resident', 'layers', 'timeline', 'panels', 'chat',
-  'plans', 'intent', 'app', 'app-steps', 'app-flow', 'app-boot'];
+const MODULES = ['api', 'bsim-plan', 'bsim', 'scene-ir', 'fx', 'viewer', 'resident', 'layers', 'risk', 'timeline', 'panels', 'chat',
+  'plans', 'intent', 'plan-match', 'app', 'app-steps', 'app-flow', 'app-people', 'app-scenes', 'app-boot'];
 
 function load(name) {
   return new Promise((ok, bad) => {

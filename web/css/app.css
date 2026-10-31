@@ -123,6 +123,17 @@ body.fold-left .fold.left { left: var(--gap); } body.fold-right .fold.right { ri
 .mcard .homes a.on { border-color: var(--purple); box-shadow: 0 0 0 1px var(--purple) inset; }
 .mcard .homes img { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 5px; background: #F4F2EF; }
 .mcard .homes b { font-size: 12px; } .mcard .homes span { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mcard .btn { display: inline-block; border: 1px solid var(--line); background: #fff; color: var(--ink); border-radius: 8px; padding: 6px 12px;
+  cursor: pointer; text-decoration: none; }
+.mcard .btn.primary { background: var(--purple); border-color: var(--purple); color: #fff; }
+.mcard .btn.primary:hover { background: #530660; }
+.mcard .btn:focus-within { outline: 2px solid var(--purple); outline-offset: 2px; }
+.plan-up { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 4px 0 6px; }
+.plan-up .muted { font-size: 12px; }
+button.link { border: 0; background: none; padding: 0 4px; color: var(--purple); text-decoration: underline; font-size: 12px; }
+.plan-q { display: flex; align-items: center; gap: 8px; margin: 4px 0 6px; }
+.plan-q img { width: 120px; max-height: 120px; object-fit: contain; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
+.plan-q span { font-size: 11px; }
 
 #detail { overflow: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; }
 #detail > #panel > button { margin-top: 12px; width: 100%; padding: 9px 12px; }
@@ -211,6 +222,18 @@ svg.scatter { width: 100%; height: auto; display: block; font-family: var(--f-nu
 .scatter circle { cursor: pointer; } .scatter circle.ok { fill: var(--purple); fill-opacity: .8; }
 .scatter circle.out { fill: #fff; stroke: #A8A3AD; } .scatter circle.sel { stroke: var(--purple); stroke-width: 3; stroke-opacity: .35; }
 .scatter .tag { font-size: 9px; font-weight: 600; fill: var(--purple); }
+
+/* ---- risk points: B's palette, low to high ---- */
+#risk-legend { padding: 6px 10px; font-size: 12px; border-radius: 10px; display: grid; gap: 3px; min-width: 180px; }
+#risk-legend .ramp, .ramp { display: block; height: 8px; border-radius: 4px; background: linear-gradient(90deg, #28b9e8, #ffcf61, #ffa04c, #f15d4b, #c7335d); }
+#risk-legend .ends { display: flex; justify-content: space-between; color: var(--muted); }
+.riskcells li { cursor: pointer; } .riskcells i.sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; }
+.persona .sw { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: 0; }
+.persona .params { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px 8px; margin: 6px 0; font-size: 12px; }
+.persona .params label { display: grid; gap: 2px; color: var(--muted); } .persona .params input { width: 100%; }
+.persona .ph input[type=checkbox] { margin-right: 6px; }
+.who-runs { width: 100%; font-size: 12px; border-collapse: collapse; margin: 6px 0; } .who-runs td { padding: 2px 4px; border-top: 1px solid var(--line); }
+.addp { display: flex; gap: 6px; align-items: center; margin: 8px 0; font-size: 12px; }
 
 /* ---- clearance bands: colour and pattern together (PRD 5.10.5) ---- */
 .legend { display: flex; gap: 10px; font-size: 12px; color: var(--muted); flex-wrap: wrap; margin: 8px 0; align-items: center; }
