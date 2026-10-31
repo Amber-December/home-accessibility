@@ -3,7 +3,7 @@
   'use strict';const L=window.IndoorLab,N=L.ResidentNav;
   L.RESIDENT_PROFILES={
     wheelchair:{name:'轮椅住户',type:'wheelchair',width:.72,length:1.05,speed:.72,angularSpeed:.65,reach:.75,maxHeight:1.25,doorEffort:.7,transferPadding:.22,probeDelay:0,color:'#607ce0'},
-    assisted:{name:'助行器老人',type:'assisted',width:.64,length:.82,speed:.48,angularSpeed:.48,reach:.65,maxHeight:1.4,doorEffort:.6,transferPadding:.16,probeDelay:0,color:'#d39c53'},
+    assisted:{name:'助行器使用者',type:'assisted',width:.64,length:.82,speed:.48,angularSpeed:.48,reach:.65,maxHeight:1.4,doorEffort:.6,transferPadding:.16,probeDelay:0,color:'#d39c53'},
     blind:{name:'视障 / 白杖住户',type:'blind',width:.52,length:.5,speed:.65,angularSpeed:.8,reach:.68,maxHeight:1.6,doorEffort:.7,transferPadding:.1,probeDelay:.65,color:'#22aa9b'},
     upper:{name:'上肢活动受限住户',type:'upper',width:.5,length:.46,speed:.95,angularSpeed:.8,reach:.42,maxHeight:1.1,doorEffort:.35,transferPadding:.12,probeDelay:0,color:'#9370cc'}
   };
