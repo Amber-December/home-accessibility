@@ -79,7 +79,7 @@ personas:
       src: custom (no clause; GB 50034 not checked)
 
   - id: walker_elder
-    name: 助行器老人
+    name: 助行器使用者
     footprint:
       shape: rect
       size: [0.65, 0.80]

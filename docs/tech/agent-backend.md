@@ -203,7 +203,7 @@ for room in 按优先级排序的房间（卫生间、主卧、厨房、客厅�
 | 项 | 做法 |
 |---|---|
 | 框架 | Python ASGI：FastAPI + uvicorn |
-| 进程 | 一个 API 进程（浏览器直接访问）；仿真在进程池里跑（演示用 ≤ 8 个 worker）；Lab 模式（prd §2.3、F8）的批量体检和家具系列评测用命令行脚本按户型分片跑（simulation §11），不经过 API 进程，看板只读结果目录 |
+| 进程 | 一个 API 进程（浏览器直接访问）；仿真在进程池里跑（演示用 ≤ 8 个 worker）；评测模式（prd §2.3、F8）的批量体检和家具系列评测用命令行脚本按户型分片跑（simulation §11），不经过 API 进程，看板只读结果目录 |
 | 会话 | `$HA_OUTPUTS/sessions/<session_id>/`：消息记录、IR 版本树、各 run 的指针、`trace.jsonl`。会话只追加，不改写 |
 | 文件服务 | GLB、IR、轨迹、报告按路径白名单提供，只读 |
 | LLM | `src/ha/llm.py`：协议默认 OpenAI 兼容的 Chat Completions，`HA_LLM_PROTOCOL=anthropic` 时走 Anthropic Messages；端点、密钥、模型分别读 `HA_LLM_BASE_URL`、`HA_LLM_TOKEN`、`HA_LLM_MODEL`。temperature 0，磁盘缓存键是 JSON 数组 `[模型名, system, prompt]` 的 sha256（simulation §7.3）。凭证只从环境变量读（`.env` 加载进环境），不写日志、不进缓存；端点没配置时调用方切规则版 |
@@ -223,7 +223,7 @@ for room in 按优先级排序的房间（卫生间、主卧、厨房、客厅�
 | POST | `/api/runs/{run_id}/export` | 生成 PDF |
 | POST | `/api/jobs/{job_id}/cancel` | 取消长任务 |
 | POST | `/api/models/usdz` | 上传 USDZ，用 OpenUSD 转成 Y 向上、米制的 GLB 后返回（prd §5.6、F1）。做法同交互原型的 `scripts/convert_usdz.py`：上限 180 MB、600 万三角面、180 秒，结果按文件内容的 sha256 缓存，只接受同源请求 |
-| GET | `/api/lab/{experiment}` | Lab 看板数据：实验配置、汇总表、失败场景清单（只读，来自 `$HA_OUTPUTS/runs/<实验>/`） |
+| GET | `/api/lab/{experiment}` | 评测看板数据：实验配置、汇总表、失败场景清单（只读，来自 `$HA_OUTPUTS/runs/<实验>/`） |
 
 ## 11. 事件协议（SSE）
 

@@ -22,8 +22,8 @@ API key 放在本地 `.env` 的 `AHOLO_API_KEY`（中国区），不进 Git。�
 | `generate/text-to-3d` | 文字（加可选参考图）生成 3D | 商品没有可用图片时按 prompt 生成外形，或生成"换品"候选的占位资产 |
 | `part-split` | GLB 拆部件 | 资产工厂不调用；铰接直接作用在整件 GLB 上 |
 | `articulation-animation` | GLB 加 prompt，生成可动部件和动画 | 冰箱门的开启范围，影响通行和够取 |
-| `animations/rig`（auto-rig） | 人形角色 GLB 自动绑骨，输出带骨骼和蒙皮的 GLB | 数字住户的人体模型 |
-| `animations/retarget`（animation-retarget） | 给已绑骨的 GLB 套公开动作库里的动作，一次 1–10 个，输出 GLB 或 FBX | 住户动作：`Walk_Loop`（行走）、`Sitting_Idle_Loop`（坐在轮椅上）、`Push_Loop`（推助行器）、`Interact`、`PickUp_Table`（够取）。只用于**可视化**，能力判定按画像外形 |
+| `animations/rig`（auto-rig） | 人形角色 GLB 自动绑骨，输出带骨骼和蒙皮的 GLB | 数字住户的人体模型：所有画像共用一个，陪护也用它 |
+| `animations/retarget`（animation-retarget） | 给已绑骨的 GLB 套公开动作库里的动作，一次 1–10 个，输出 GLB 或 FBX | 住户动作，一次 retarget 套 10 个：`Sitting_Idle_Loop`（坐在轮椅上）、`Driving_Loop`（电动轮椅）、`Push_Loop`（推助行器、陪护推轮椅）、`Walk_Loop`（行走）、`Interact`（开门、开冰箱）、`PickUp_Table`（够取）、`Sitting_Exit` 和 `Sitting_Enter`（床椅转移）、`Idle_No_Loop`（放弃）、`Idle_TalkingPhone_Loop`（求助）。和运动层动作的对应见 prd §5.6。只用于**可视化**，能力判定按画像外形 |
 | `generate/material-transfer` | 换材质，可指定目标高度（mm） | 同款不同色，次要 |
 | `multi-format-export` | 导出 usdz / obj_zip / fbx_zip / stl / 3mf | USD 给 Isaac Sim，OBJ 给 PyBullet / MuJoCo |
 | `generate/multimodal-to-image` | 文生图或图改图 | 次要 |
@@ -96,6 +96,8 @@ API key 放在本地 `.env` 的 `AHOLO_API_KEY`（中国区），不进 Git。�
 | text-to-3d | 13 |
 | articulation-animation | 28 |
 | multi-format-export | 1 |
+
+auto-rig 和 animation-retarget 不经过资产工厂，单价在 create 前现场 quote。
 
 单件 SKU 的花费按 route 累加：
 
