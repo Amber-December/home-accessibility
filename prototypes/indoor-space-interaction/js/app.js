@@ -1,16 +1,97 @@
 (() => {
   'use strict';const L=window.IndoorLab,$=id=>document.getElementById(id);
-  let view,sim,model,grid,workbench,running=false,rate=1,busy=false,files=[],goalMode=false,selectedCell=-1,last=performance.now(),accumulator=0,uiAt=0,frames=0,fpsAt=last,toastTimer;
+  let view,sim,model,grid,workbench,disaster=null,running=false,rate=1,busy=false,files=[],goalMode=false,selectedCell=-1,last=performance.now(),accumulator=0,uiAt=0,frames=0,fpsAt=last,toastTimer;
   const escape=text=>String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const time=t=>`${String(Math.floor(t/60)).padStart(2,'0')}:${String(Math.floor(t%60)).padStart(2,'0')}`;
   function toast(message,error=false){$('toast').textContent=message;$('toast').classList.toggle('error',error);$('toast').hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').hidden=true,error?10000:5500);}
   function settings(){return{count:Number($('agent-count').value),population:$('population').value,speed:Number($('walk-speed').value),vision:Number($('vision').value),search:Number($('search-range').value),goalPolicy:$('goal-policy').value};}
   function setRunning(value){running=!!value&&!busy&&!!sim&&sim.agents.length>0;$('play-icon').textContent=running?'Ⅱ':'▶';$('play-text').textContent=running?'暂停模拟':'开始模拟';$('run-status').textContent=busy?'正在构建':running?'模拟进行中':sim?.time>0?'模拟已暂停':'准备就绪';}
-  function setBusy(value,message='正在构建场景…'){busy=value;$('loading').hidden=!value;$('loading-text').textContent=message;for(const id of ['play-button','demo-button','demo-preset','model-files','cell-size','agent-count','population','reimport-button','model-unit','model-up','floor-level','reset-button','add-goal','operation-mode','resident-profile','resident-run','resident-repair','resident-before','resident-after','resident-restore'])$(id).disabled=value||(id==='reimport-button'&&!files.length);for(const input of document.querySelectorAll('#resident-controls input,#resident-controls select'))input.disabled=value;if(value)setRunning(false);}
+  function setBusy(value,message='正在构建场景…'){busy=value;$('loading').hidden=!value;$('loading-text').textContent=message;for(const id of ['play-button','demo-button','demo-preset','model-files','cell-size','agent-count','population','reimport-button','model-unit','model-up','floor-level','reset-button','add-goal','operation-mode','resident-profile','resident-run','resident-repair','resident-before','resident-after','resident-restore','disaster-type','disaster-intensity','disaster-start','disaster-reset'])$(id).disabled=value||(id==='reimport-button'&&!files.length);for(const input of document.querySelectorAll('#resident-controls input,#resident-controls select'))input.disabled=value;if(value)setRunning(false);}
   function activeGoals(){if(!model)return;const policy=$('goal-policy').value;model.goals=[...(policy==='custom'?[]:model.defaultGoals.filter(g=>!model.hiddenDefaultGoals.includes(g.id))),...(policy==='default'?[]:model.customGoals)];}
   function connectSim(prepared){activeGoals();sim=workbench?.build(grid,model,prepared)||new L.Simulation(grid,model.goals,settings());sim.onEvent=()=>renderEvents();view.selected=-1;selectedCell=-1;$('selection').hidden=true;$('cell-inspector').hidden=true;view.selectCell(-1);accumulator=0;renderGoals();renderEvents();updateUI();view.updateActors(sim.agents,sim.time,$('vision-visible').checked,sim.settings.vision);fpsAt=performance.now();frames=0;if(sim.agents.length<sim.settings.count)toast(`当前空间可安全放置 ${sim.agents.length} / ${sim.settings.count} 人；可减少人数或检查单位、地面及碰撞栅格。`,true);}
   function autoGoals(g){const free=g.nav(.25).free;if(!free.length)return[];const b=model.bounds,targets=[[.18,.18],[.82,.18],[.5,.5],[.18,.82],[.82,.82]],used=new Set(),goals=[];for(const [u,v]of targets){const i=g.nearest({x:b.minX+(b.maxX-b.minX)*u,z:b.minZ+(b.maxZ-b.minZ)*v},.25);if(i<0||used.has(i))continue;used.add(i);goals.push({id:goals.length+1,name:`目的地 ${goals.length+1}`,...g.point(i)});}return goals;}
+  function findExits(){if(!grid)return[];const edge=[];for(let i=0;i<grid.size;i++){const c=i%grid.cols,r=Math.floor(i/grid.cols);if(c===0||r===0||c===grid.cols-1||r===grid.rows-1){const p=grid.point(i);if(!grid.blocked(i)&&grid.isClear(p.x,p.z,.25))edge.push(p);}}if(!edge.length)return autoGoals(grid).slice(0,2);const chosen=[];for(const p of edge){if(chosen.every(q=>Math.hypot(p.x-q.x,p.z-q.z)>Math.max(2,grid.cell*6)))chosen.push(p);if(chosen.length>=4)break;}return chosen;}
+  function clearDisaster(){
+    if(sim)sim.setHazard(null,'none',[]);
+    const previous=disaster;
+    disaster=null;
+    previous?.dispose?.();
+    view?.setDisaster(null,'none');
+    $('disaster-status').textContent='灾害已清除。可重新选择火灾或地震实验。';
+  }
+  function buildFuelMap(){
+    const values=new Float32Array(grid.size); 
+    const combustible=/(furniture|bed|sofa|chair|table|cabinet|wood|curtain|rug|carpet|cushion|paper|book|木|家具|床|沙发|椅|桌|柜|窗帘|地毯|布)/i;
+    const lowFuel=/(floor|wall|ceiling|metal|glass|stone|tile|door|window|地板|墙|顶|金属|玻璃|石|瓷|门|窗)/i;
+    for(let i=0;i<grid.size;i++){
+      if(grid.blocked(i)){values[i]=0;continue;}
+      const own=grid.obstacles[grid.owner[i]||0];
+      const text=`${own?.name||''} ${own?.kind||''}`;
+      values[i]=combustible.test(text) ? .95 : lowFuel.test(text) ? .08 : .035;
+      if(values[i] < .5){
+        const c=i%grid.cols,r=Math.floor(i/grid.cols);
+        for(let dr=-2;dr<=2;dr++)for(let dc=-2;dc<=2;dc++){
+          const cc=c+dc,rr=r+dr;if(cc<0||rr<0||cc>=grid.cols||rr>=grid.rows)continue;
+          const n=grid.obstacles[grid.owner[rr*grid.cols+cc]||0],nt=`${n?.name||''} ${n?.kind||''}`;
+          if(combustible.test(nt)){values[i]=Math.max(values[i],.72);}
+        }
+      }
+    }
+    return values;
+  }
+  function obstacleBodies(){
+    const by=new Map();
+    for(let i=0;i<grid.size;i++){
+      const owner=grid.owner[i];if(!owner)continue;
+      let item=by.get(owner);if(!item){item={id:owner,cells:[],height:1.8,fragility:.9};by.set(owner,item);}
+      item.cells.push(grid.point(i));
+    }
+    return [...by.values()].map(o=>{
+      const xs=o.cells.map(p=>p.x),zs=o.cells.map(p=>p.z);
+      return {...o,center:{x:xs.reduce((a,b)=>a+b,0)/xs.length,z:zs.reduce((a,b)=>a+b,0)/zs.length},width:Math.max(grid.cell,Math.max(...xs)-Math.min(...xs)+grid.cell),depth:Math.max(grid.cell,Math.max(...zs)-Math.min(...zs)+grid.cell)};
+    });
+  }
+  async function startDisaster(){
+    if(!sim||busy)return;
+    const type=$('disaster-type').value;
+    if(type==='none'){clearDisaster();return;}
+    if(sim.isResident){
+      $('operation-mode').value='crowd';
+      workbench?.invalidate();
+      setBusy(true,'正在切换到人群灾害仿真…');
+      try{await install(model);}catch(e){toast(e.message,true);console.error(e);return;}finally{setBusy(false);}
+      if(!sim||sim.isResident){toast('灾害实验需要人群仿真模式。',true);return;}
+    }
+    clearDisaster();
+    const intensity=Number($('disaster-intensity').value),exits=findExits();
+    if(type==='fire'){
+      disaster=new L.FireModel(grid,{seed:21879,wind:{x:.18*intensity,z:.05*intensity},sourcePower:360*intensity,fireHeat:230*intensity,conductivity:.38,smokeDiffusion:.44,ceilingRise:.2,burnRate:.09,fireSmoke:.3});
+      const fuelMap=buildFuelMap();
+      disaster.setFuelMap?.(fuelMap);
+      const free=grid.nav(.25).mainFree;
+      if(!free.length){toast('当前场景没有可用地面，无法设置火源。',true);return;}
+      const fuelCandidates=free.filter(i=>fuelMap[i]>.55);
+      const sourcePool=fuelCandidates.length?fuelCandidates:free;
+      const source=sourcePool[(21879+Math.floor(intensity*10))%sourcePool.length];
+      disaster.addSource({cell:source,name:'随机火源',power:360*intensity,smoke:.46*intensity,flame:1});
+      disaster.rebuildEscapeDistance(exits);
+      sim.setHazard(disaster,'fire',exits);
+      view.setDisaster(disaster,'fire');
+      $('disaster-status').textContent=`火灾实验中 · ${exits.length} 个出口 · 网格温度 / 烟气 / 火焰每 30Hz 更新`;
+    }else{
+      await L.QuakePhysics.prepare();
+      const physics=new L.QuakePhysics(view,model,grid,{maxBodies:72,maxFragments:120});
+      const eqObs=physics.descriptors;
+      disaster=new L.EarthquakeScenario(grid,eqObs,{seed:7319,pga:.32*intensity,frequency:2.2,duration:12,collapseThreshold:Math.max(.35,.58-intensity*.1),physics}).start();
+      sim.setHazard(disaster,'earthquake',exits);
+      view.setDisaster(disaster,'earthquake');
+      $('disaster-status').textContent=`地震实验中 · PGA ${(disaster.options.pga).toFixed(2)}g · 结构损伤与碎片风险每 30Hz 更新`;
+    }
+    $('disaster-start').disabled=false;
+    setRunning(true);
+  }
   async function install(next,preparedGrid,preparedResults){
+    clearDisaster();
     const nextGrid=preparedGrid||await L.buildGrid(next.group,next.bounds,Number($('cell-size').value),message=>$('loading-text').textContent=message);
     if(!nextGrid.nav(.25).free.length){if(next!==model)L.dispose(next.group);throw new Error('没有可容纳步行者的通行区域。请检查模型单位、地面标高和向上轴。');}
     const newModel=model!==next;model=next;grid=nextGrid;if(!model.defaultGoals){model.defaultGoals=(model.goals.length?model.goals:autoGoals(grid)).map(g=>({...g,source:'default'}));model.customGoals=[];model.hiddenDefaultGoals=[];}if(newModel)$('goal-policy').value='default';activeGoals();
@@ -22,12 +103,12 @@
     if(model.warnings)toast(model.warnings,true);
   }
   async function loadDemo(){if(busy)return;workbench?.invalidate();setBusy(true);try{await install($('demo-preset').value==='home'?L.makeResidentHome():$('demo-preset').value==='office'?L.makeOfficeDemo():L.makeDemo());files=[];$('reimport-button').disabled=true;}catch(e){toast(e.message,true);console.error(e);}finally{setBusy(false);setRunning(false);}}
-  async function loadFiles(selected){if(busy||!selected.length)return;setBusy(true,'正在解析模型文件…');let next;try{next=await L.importModel(selected,{unit:Number($('model-unit').value),up:$('model-up').value,floor:$('floor-level').value===''?NaN:Number($('floor-level').value)},message=>$('loading-text').textContent=message);await install(next);files=[...selected];toast(`已加载 ${next.name}。请先检查尺度、地面和碰撞栅格，再开始模拟。`);}catch(e){toast(e.message,true);console.error(e);}finally{setBusy(false);setRunning(false);$('model-files').value='';}}
-  function reset(){if(!sim||busy)return;const wasRunning=running;connectSim();setRunning(wasRunning);}
+  async function loadFiles(selected){if(busy||!selected.length)return;setBusy(true,'正在解析模型文件…');let next;try{next=await L.importModel(selected,{unit:$('model-unit').value==='auto'?NaN:Number($('model-unit').value),up:$('model-up').value,floor:$('floor-level').value===''?NaN:Number($('floor-level').value)},message=>$('loading-text').textContent=message);await install(next);files=[...selected];toast(next.source?.usd?`已加载完整住宅 · ${(next.bounds.maxX-next.bounds.minX).toFixed(1)} × ${(next.bounds.maxZ-next.bounds.minZ).toFixed(1)} m · 白蓝材质 · 人物按真实身高显示。`:`已加载 ${next.name}。请先检查尺度、地面和碰撞栅格，再开始模拟。`);}catch(e){toast(e.message,true);console.error(e);}finally{setBusy(false);setRunning(false);$('model-files').value='';}}
+  function reset(){if(!sim||busy)return;const wasRunning=running;clearDisaster();connectSim();setRunning(wasRunning);}
   function renderGoals(){view.updateGoals(model.goals);$('goal-list').innerHTML=model.goals.length?model.goals.map((g,i)=>`<div class="goal-row"><span class="goal-marker">${i+1}</span><button data-focus="${g.id}">${escape(g.name)}<small class="goal-source">${g.source==='custom'?'自定义':'默认'} · ${g.x.toFixed(1)}, ${g.z.toFixed(1)} m</small></button><button class="goal-remove" data-remove="${g.id}" title="移除目的地" aria-label="移除 ${escape(g.name)}">×</button></div>`).join(''):'<p class="hint">尚无自定义目的地。请点选地面或输入坐标添加；行人会等待目标。</p>';$('goal-note').textContent=`当前启用 ${model.goals.length} 个目标；已保存 ${model.customGoals.length} 个自定义目标。切换模式会保留目标，重置本次模拟。`;}
   function addCustomGoal(p){if(!model||busy)return false;const i=grid.index(p.x,p.z);if(!Number.isFinite(p.x)||!Number.isFinite(p.z)||i<0||grid.blocked(i)){toast('请选择模型范围内未被障碍占据且有地板支撑的地面。',true);return false;}if(model.customGoals.length>=20){toast('最多保存 20 个自定义目的地。',true);return false;}const id=Math.max(1000,...model.customGoals.map(g=>g.id))+1,name=$('goal-name').value.trim()||`自定义目标 ${id-1000}`;model.customGoals.push({id,name,...p,source:'custom'});if($('goal-policy').value==='default')$('goal-policy').value='mixed';reset();$('goal-x').value=p.x.toFixed(2);$('goal-z').value=p.z.toFixed(2);toast(`已添加「${name}」；${$('goal-policy').value==='mixed'?'默认与自定义目标共同参与':'使用自定义目标'}。`);return true;}
   function renderEvents(){if(!sim)return;$('event-count').textContent=sim.eventTotal;$('event-list').innerHTML=sim.events.length?sim.events.slice(-18).reverse().map(e=>`<button class="event-row" data-event="${e.id}"><span class="event-icon ${e.type}">${e.type==='blocked'?'!':'↔'}</span><span><b>${e.type==='blocked'?'目的地受阻':'障碍接触'} · ${escape(L.PROFILES[e.profile].name)}</b><small>${time(e.time)} / AGENT ${String(e.agent+1).padStart(2,'0')} / ${e.x.toFixed(1)}, ${e.z.toFixed(1)}</small></span></button>`).join(''):'<div class="empty-state"><span>⌁</span><p>从一次行走开始。<br>接触和受阻将在这里留下记录。</p></div>';}
-  function updateUI(){if(!sim)return;const stats=sim.summary();$('elapsed').textContent=time(sim.time);$('arrivals').textContent=sim.arrivals;$('contacts').textContent=sim.contacts;$('blocked').textContent=sim.blocked;$('moving').innerHTML=`${sim.agents.filter(a=>a.state==='moving').length} <small>/ ${sim.agents.length}</small>`;$('success-rate').textContent=stats.finishedTripArrivalRate===null?'—':`${Math.round(stats.finishedTripArrivalRate*100)}%`;
+  function updateUI(){if(!sim)return;const stats=sim.summary();if(disaster){if(disaster instanceof L.FireModel){const fs=disaster.summary();$('disaster-status').textContent=`火灾实验中 · ${disaster.exits.length} 个出口 · 已点燃 ${fs.ignitedCells} · 燃烧 ${fs.burningCells} · 高危 ${fs.dangerousCells} · ${fs.time.toFixed(1)} s`;}else if(disaster instanceof L.EarthquakeScenario){const qs=disaster.summary();const bound=sim.hazard===disaster?'绑定':'未绑定';$('disaster-status').textContent=`地震实验中 · PGA ${qs.pga.toFixed(2)}g · 摇晃 ${qs.time.toFixed(1)} s · 倒塌 ${qs.collapsed} · 掉落 ${qs.debris} · ${bound}`;}}$('elapsed').textContent=time(sim.time);$('arrivals').textContent=sim.arrivals;$('contacts').textContent=sim.contacts;$('blocked').textContent=sim.blocked;$('moving').innerHTML=`${sim.agents.filter(a=>a.state==='moving').length} <small>/ ${sim.agents.length}</small>`;$('success-rate').textContent=stats.finishedTripArrivalRate===null?'—':`${Math.round(stats.finishedTripArrivalRate*100)}%`;
     const mode=$('heat-mode').value,{max,sampledArea}=view.updateHeat(mode);$('heat-max').textContent=max?`MAX ${max.toFixed(0)} 次`:'尚无障碍事件';$('sample-area').textContent=`${sampledArea.toFixed(1)} m²`;
     $('risk-score').textContent=sim.distance>0?(sim.contacts*100/sim.distance).toFixed(1):'—';
     const history=sim.history,maxA=Math.max(1,...history.map(h=>h.arrivals));$('sparkline').setAttribute('d',history.length>1?history.map((h,i)=>`${i?'L':'M'}${(i/(history.length-1)*104).toFixed(1)},${(35-h.arrivals/maxA*30).toFixed(1)}`).join(' '):'M0,35 L105,35');
@@ -45,6 +126,7 @@
     $('play-button').onclick=()=>{if(sim?.isResident&&sim.finished)reset();setRunning(!running);};$('reset-button').onclick=reset;$('demo-button').onclick=loadDemo;$('demo-preset').onchange=loadDemo;$('model-files').onchange=e=>loadFiles(e.target.files);$('reimport-button').onclick=()=>loadFiles(files);
     $('hide-controls').onclick=()=>document.querySelector('.control-panel').classList.add('collapsed');$('show-controls').onclick=()=>document.querySelector('.control-panel').classList.toggle('collapsed');
     $('render-quality').value=view.pipeline.quality;$('render-quality').onchange=()=>view.pipeline.setQuality($('render-quality').value);
+    $('render-style').value=view.pipeline.style;$('render-style').onchange=()=>view.setRenderStyle($('render-style').value);
     $('launch-note').textContent=location.protocol==='file:'?'HTML 直开模式：部分模型加载受限制，推荐用 BAT 启动本地服务。':`本地 HTTP 服务 · 端口 ${location.port||80} · 模型仅在本机解析`;
     $('goal-policy').onchange=reset;$('restore-goals').onclick=()=>{model.hiddenDefaultGoals=[];$('goal-policy').value='default';reset();toast('已恢复场景默认目的地；自定义目标仍保留。');};$('goal-form-toggle').onclick=()=>{$('goal-form').hidden=!$('goal-form').hidden;};$('save-goal').onclick=()=>{if($('goal-x').value===''||$('goal-z').value===''){toast('请填写 X 和 Z 坐标。',true);return;}addCustomGoal({x:Number($('goal-x').value),z:Number($('goal-z').value)});};
     $('zones-visible').onchange=()=>{if(model?.zones)model.zones.visible=$('zones-visible').checked;};
@@ -54,6 +136,7 @@
     for(const e of ['dragenter','dragover'])$('drop-zone').addEventListener(e,event=>{event.preventDefault();$('drop-zone').classList.add('drag');});for(const e of ['dragleave','drop'])$('drop-zone').addEventListener(e,event=>{event.preventDefault();$('drop-zone').classList.remove('drag');});$('drop-zone').addEventListener('drop',e=>loadFiles(e.dataTransfer.files));
     $('agent-count').oninput=()=>{$('count-value').textContent=`${$('agent-count').value} 人`;};$('agent-count').onchange=reset;$('population').onchange=reset;
     $('walk-speed').oninput=()=>{$('speed-value').textContent=`${Number($('walk-speed').value).toFixed(1)} ×`;if(sim)sim.settings.speed=Number($('walk-speed').value);};$('vision').onchange=()=>{if(sim)sim.settings.vision=Number($('vision').value);};$('search-range').onchange=()=>{if(sim)sim.settings.search=Number($('search-range').value);};
+    $('disaster-intensity').oninput=()=>{$('disaster-intensity-value').textContent=`${Number($('disaster-intensity').value).toFixed(1)} ×`;};$('disaster-start').onclick=startDisaster;$('disaster-reset').onclick=clearDisaster;$('agent-bubbles').onchange=()=>view.agentBubbles?.setVisible($('agent-bubbles').checked);
     $('cell-size').onchange=async()=>{if(busy)return;setBusy(true);try{await install(model);}catch(e){toast(e.message,true);}finally{setBusy(false);setRunning(false);}};
     document.querySelectorAll('[data-view]').forEach(button=>button.onclick=()=>{document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b===button));view.setView(button.dataset.view);if(button.dataset.view==='walk'){setRunning(false);toast('自由步入：WASD 移动，左键拖动看方向，E 开关附近的门。');}$('tool-hint').textContent=button.dataset.view==='walk'?'WASD 移动 / 左键拖动看方向 / E 开关附近门':button.dataset.view==='human'?'跟随选中住户 / 点击切换':'左键旋转 / 右键平移 / 滚轮缩放';});
     document.querySelectorAll('[data-rate]').forEach(button=>button.onclick=()=>{rate=Number(button.dataset.rate);document.querySelectorAll('[data-rate]').forEach(b=>b.classList.toggle('active',b===button));});
@@ -69,7 +152,7 @@
   }
   try{if(!window.THREE)throw new Error('本地 Three.js 未加载，请确认上级目录的 js/vendor/three-r128 存在。');view=new L.SceneView($('viewport'));workbench=new L.ResidentWorkbench({state:()=>({view,sim,model,grid,busy}),reset,install,play:setRunning,busy:setBusy,toast,loadDemo,download});bind();loadDemo();requestAnimationFrame(animate);}catch(e){$('loading').hidden=false;$('loading-text').textContent=`无法启动：${e.message}`;console.error(e);}
   // Read-only diagnostics for local QA and extending the architecture.
-  L.app={get view(){return view;},get simulation(){return sim;},get grid(){return grid;},get model(){return model;},get workbench(){return workbench;},get running(){return running;},get busy(){return busy;},reset,loadDemo};
+  L.app={get view(){return view;},get simulation(){return sim;},get grid(){return grid;},get model(){return model;},get workbench(){return workbench;},get disaster(){return disaster;},get running(){return running;},get busy(){return busy;},reset,loadDemo,startDisaster,clearDisaster};
 })();
 
 
